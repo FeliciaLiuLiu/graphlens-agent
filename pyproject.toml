@@ -8,7 +8,11 @@ version = "0.1.0"
 description = "Backend proof of concept for extracting, validating, and analyzing graph JSON."
 requires-python = ">=3.9"
 dependencies = [
+  "fastapi>=0.115,<1",
+  "httpx>=0.27,<1",
   "networkx>=3.2,<4",
+  "pytest>=8,<9",
+  "uvicorn>=0.27,<1",
 ]
 
 [tool.setuptools.packages.find]
