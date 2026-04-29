@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "graphlens-agent"
+version = "0.1.0"
+description = "Backend proof of concept for extracting, validating, and analyzing graph JSON."
+requires-python = ">=3.9"
+dependencies = [
+  "networkx>=3.2,<4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
