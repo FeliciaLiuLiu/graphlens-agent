@@ -53,3 +53,39 @@ def test_analyze_graph_endpoint_returns_validation_errors():
     detail = response.json()["detail"]
     assert any(issue["path"].endswith(".source") for issue in detail)
     assert any("unknown source node" in issue["message"] for issue in detail)
+
+
+def test_extract_graph_accepts_valid_png_upload():
+    response = client.post(
+        "/extract-graph",
+        files={"file": ("graph.png", b"fake image bytes", "image/png")},
+    )
+
+    assert response.status_code == 200
+    graph = response.json()
+    assert graph["metadata"]["schema_version"] == "1.0"
+    assert graph["metadata"]["source_type"] == "screenshot"
+
+
+def test_extract_graph_rejects_invalid_file_type():
+    response = client.post(
+        "/extract-graph",
+        files={"file": ("graph.txt", b"not an image", "text/plain")},
+    )
+
+    assert response.status_code == 400
+    assert "Unsupported file type" in response.json()["detail"]
+
+
+def test_extract_graph_returns_successful_mock_graph_json_response():
+    response = client.post(
+        "/extract-graph",
+        files={"file": ("network.jpeg", b"fake image bytes", "image/jpeg")},
+    )
+
+    assert response.status_code == 200
+    graph = response.json()
+    assert len(graph["nodes"]) == 5
+    assert len(graph["edges"]) == 4
+    assert graph["nodes"][-1]["id"] == "acct_collector"
+    assert any("Mock extraction result" in warning for warning in graph["warnings"])
