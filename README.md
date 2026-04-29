@@ -109,11 +109,13 @@ graphlens-agent/
 ├── src/
 │   └── graphlens_agent/
 │       ├── analytics.py
+│       ├── api.py
 │       ├── cli.py
 │       ├── io.py
 │       ├── schema.py
 │       └── validator.py
 ├── tests/
+│   ├── test_api.py
 │   └── test_phase1.py
 ├── pyproject.toml
 └── README.md
@@ -122,11 +124,31 @@ graphlens-agent/
 ## Run Tests
 
 ```bash
-python3 -m unittest discover -s tests -v
+python -m pytest -q
 ```
 
 ## Run CLI
 
 ```bash
 PYTHONPATH=src python -m graphlens_agent.cli samples/fan_in_collector.json
+```
+
+## Run API
+
+```bash
+PYTHONPATH=src uvicorn graphlens_agent.api:app --reload
+```
+
+Health check:
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+Analyze graph JSON:
+
+```bash
+curl -X POST http://127.0.0.1:8000/analyze-graph \
+  -H "Content-Type: application/json" \
+  --data @samples/fan_in_collector.json
 ```
