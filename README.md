@@ -95,6 +95,7 @@ Phase 1 covers backend-only functionality:
 - Deterministic graph analytics
 - Sample graph JSON
 - Automated tests
+- Mock screenshot-to-graph extraction endpoint
 
 Frontend work is intentionally out of scope for Phase 1.
 
@@ -111,6 +112,7 @@ graphlens-agent/
 │       ├── analytics.py
 │       ├── api.py
 │       ├── cli.py
+│       ├── extraction.py
 │       ├── io.py
 │       ├── schema.py
 │       └── validator.py
@@ -152,3 +154,12 @@ curl -X POST http://127.0.0.1:8000/analyze-graph \
   -H "Content-Type: application/json" \
   --data @samples/fan_in_collector.json
 ```
+
+Extract graph JSON from an uploaded image:
+
+```bash
+curl -X POST http://127.0.0.1:8000/extract-graph \
+  -F "file=@path/to/graph.png"
+```
+
+The Phase 2A extraction endpoint uses a mock provider and returns the bundled sample graph JSON with a warning. Real computer vision, OCR, and model calls are not implemented yet.
