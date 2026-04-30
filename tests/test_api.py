@@ -127,3 +127,42 @@ def test_extract_graph_local_cv_returns_501(monkeypatch):
 
     assert response.status_code == 501
     assert "Local OCR/OpenCV screenshot extraction is planned but not implemented yet" in response.json()["detail"]
+
+
+def test_screenshot_to_narrative_pipeline_successful_mock(monkeypatch):
+    monkeypatch.delenv("GRAPH_EXTRACTION_PROVIDER", raising=False)
+
+    response = client.post(
+        "/pipeline/screenshot-to-narrative",
+        files={"file": ("graph.png", b"fake image bytes", "image/png")},
+    )
+
+    assert response.status_code == 200
+    result = response.json()
+    assert result["provider_used"] == "MockScreenshotExtractionProvider"
+    assert result["graph"]["metadata"]["schema_version"] == "1.0"
+    assert result["analytics"]["summary"]["graph_motif"] == "fan_in_aggregation"
+    assert "Central Account (acct_collector)" in result["narrative"]["Plain-Language Summary"]
+    assert any("Mock extraction result" in warning for warning in result["warnings"])
+
+
+def test_screenshot_to_narrative_pipeline_rejects_invalid_file_type():
+    response = client.post(
+        "/pipeline/screenshot-to-narrative",
+        files={"file": ("graph.txt", b"not an image", "text/plain")},
+    )
+
+    assert response.status_code == 400
+    assert "Unsupported file type" in response.json()["detail"]
+
+
+def test_screenshot_to_narrative_pipeline_local_cv_returns_501(monkeypatch):
+    monkeypatch.setenv("GRAPH_EXTRACTION_PROVIDER", "local_cv")
+
+    response = client.post(
+        "/pipeline/screenshot-to-narrative",
+        files={"file": ("graph.png", b"fake image bytes", "image/png")},
+    )
+
+    assert response.status_code == 501
+    assert "Local OCR/OpenCV screenshot extraction is planned but not implemented yet" in response.json()["detail"]
