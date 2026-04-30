@@ -1,110 +1,88 @@
 # GraphLens Agent
 
-GraphLens Agent is an agentic AI proof of concept that converts graph screenshots into structured graph JSON, runs graph analytics, and generates evidence-backed narratives that non-technical users can understand.
+GraphLens Agent is a backend proof of concept for converting graph-shaped data into validated graph JSON and deterministic graph analytics.
 
-The goal of this project is to help analysts, investigators, product teams, and business stakeholders understand graph-based model outputs without requiring deep knowledge of graph neural networks, graph analytics, or network visualization.
+The project is intentionally company-safe:
 
-## 1. Project Purpose
+- It uses synthetic sample data only.
+- It does not require external model APIs.
+- It does not require external API keys.
+- It does not call OpenAI, Gemini, Anthropic, or any other hosted vision or language model.
+- Structured graph JSON is the preferred source of truth.
+- Screenshot extraction is a fallback path for demos and future local computer-vision work.
 
-Many graph analytics and GNN-based systems produce outputs that are difficult for non-technical users to interpret. A graph screenshot may show nodes, edges, arrows, labels, and risk patterns, but the business meaning is often unclear.
+## Purpose
 
-GraphLens Agent addresses this gap by building an AI agent that can:
+Graph analytics and graph model outputs can be difficult for non-technical users to inspect. A graph may include nodes, edges, directions, labels, amounts, confidence scores, and risk-like patterns, but the structure often needs to be normalized before it can be analyzed or explained.
 
-1. Read a graph screenshot.
-2. Extract nodes, edges, labels, directions, and edge values.
-3. Convert the screenshot into a structured JSON representation.
-4. Run graph analytics on the extracted structure.
-5. Detect graph patterns such as fan-in, fan-out, hub-and-spoke, chain, cycle, and collector behavior.
-6. Generate plain-language narratives backed by graph evidence.
-7. Provide warnings when the extraction is uncertain.
+GraphLens Agent focuses on the backend foundation:
 
-The system is designed as a company-usable POC, not just a chatbot demo.
+1. Accept structured graph JSON.
+2. Validate nodes, edges, metadata, confidence scores, and warnings.
+3. Run deterministic graph analytics with NetworkX.
+4. Detect graph patterns such as fan-in, fan-out, hub-and-spoke, chain, cycle, and collector behavior.
+5. Provide evidence fields that future explanation layers can use.
+6. Provide a screenshot upload endpoint as a fallback extraction path.
 
-## 2. Example Use Case
+Narrative generation and frontend UI are not implemented yet.
 
-A user uploads a graph screenshot showing multiple accounts sending money into one central account.
+## Example Use Case
 
-GraphLens Agent should extract the graph structure and identify that:
+The bundled sample uses synthetic account-like nodes and synthetic transfer-like edges. It shows several source nodes pointing into one central node.
 
-- There are multiple source accounts.
-- They all send funds to the same target account.
-- The target account acts like a collector.
-- The transaction amounts are similar or repeated.
-- The overall graph pattern is a fan-in aggregation pattern.
+GraphLens Agent can identify:
 
-The agent then generates a narrative such as:
+- Multiple source nodes.
+- One shared target node.
+- A collector-style central node.
+- Repeated or similar edge amounts.
+- A fan-in aggregation pattern.
 
-> This graph shows several accounts sending similar amounts into one central account. The central account appears to act as a collection point. The key signal is not one individual transfer, but the overall structure: multiple sources, one shared destination, and repeated transaction amounts. This pattern may be worth reviewing in a risk or AML workflow, although it does not prove wrongdoing by itself.
+This does not make any real-world claim. It is a synthetic analytics demo.
 
-## 3. Core Concept
+## Backend Layers
 
-The project separates graph understanding into four layers:
+1. **Graph Data Model**
+   - Normalizes graph data into a consistent JSON schema.
+   - Stores nodes, edges, graph metadata, confidence scores, positions, and warnings.
 
-1. **Visual Extraction**
-   - Converts a graph screenshot into structured data.
-   - Extracts visible nodes, node labels, edges, arrows, edge labels, and approximate positions.
-
-2. **Graph Data Model**
-   - Normalizes the extracted information into a consistent JSON schema.
-   - Stores nodes, edges, graph metadata, confidence scores, and warnings.
+2. **Validation**
+   - Rejects malformed graph JSON.
+   - Verifies edge endpoints reference known nodes.
+   - Preserves warnings for low-confidence extraction.
 
 3. **Graph Analytics**
-   - Runs deterministic algorithms using graph libraries.
-   - Computes metrics such as in-degree, out-degree, central node, total inbound amount, repeated amount pattern, and graph motif.
+   - Computes in-degree, out-degree, central node, inbound amount, repeated amount patterns, collector behavior, and graph motif.
 
-4. **Narrative Generation**
-   - Uses an LLM-based agent to convert graph facts into human-readable explanations.
-   - Ensures the narrative is grounded in extracted graph evidence.
+4. **Screenshot Extraction Fallback**
+   - `mock` provider returns bundled synthetic sample graph JSON.
+   - `local_cv` provider is a planned local OCR/OpenCV extraction path and currently returns HTTP 501.
+   - No external model API is used.
 
-## 4. Target Users
+## Current Backend Scope
 
-This POC is designed for:
-
-- Non-technical business stakeholders
-- Risk analysts
-- Fraud analysts
-- AML investigators
-- Product managers
-- Model governance teams
-- Data science teams explaining GNN outputs
-- Engineering teams building AI-assisted analytics tools
-
-## 5. MVP Scope
-
-The first version focuses on a simple but useful workflow:
-
-```text
-Graph Screenshot
-      ↓
-Screenshot-to-Graph Extraction
-      ↓
-Graph JSON
-      ↓
-Graph Analytics
-      ↓
-Plain-Language Narrative
-```
-
-## Phase 1 Backend Scope
-
-Phase 1 covers backend-only functionality:
+The current backend includes:
 
 - Graph JSON data model
 - JSON Schema artifact
 - Graph JSON validator
 - Deterministic graph analytics
-- Sample graph JSON
+- CLI analytics command
+- FastAPI `/health`
+- FastAPI `/analyze-graph`
+- FastAPI `/extract-graph`
+- Mock screenshot extraction provider
+- Planned `local_cv` provider skeleton
+- Synthetic sample graph JSON
 - Automated tests
-- Mock screenshot-to-graph extraction endpoint
-
-Frontend work is intentionally out of scope for Phase 1.
 
 ## Project Structure
 
 ```text
 graphlens-agent/
 ├── samples/
-│   └── fan_in_collector.json
+│   ├── fan_in_collector.json
+│   └── fan_in_graph.png
 ├── schemas/
 │   └── graph.schema.json
 ├── src/
@@ -118,7 +96,9 @@ graphlens-agent/
 │       └── validator.py
 ├── tests/
 │   ├── test_api.py
+│   ├── test_extraction.py
 │   └── test_phase1.py
+├── .env.example
 ├── pyproject.toml
 └── README.md
 ```
@@ -155,11 +135,46 @@ curl -X POST http://127.0.0.1:8000/analyze-graph \
   --data @samples/fan_in_collector.json
 ```
 
-Extract graph JSON from an uploaded image:
+Extract graph JSON from an uploaded image in mock mode:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/extract-graph \
-  -F "file=@path/to/graph.png"
+  -F "file=@samples/fan_in_graph.png"
 ```
 
-The Phase 2A extraction endpoint uses a mock provider and returns the bundled sample graph JSON with a warning. Real computer vision, OCR, and model calls are not implemented yet.
+## Extraction Provider Configuration
+
+`POST /extract-graph` selects an extraction provider with `GRAPH_EXTRACTION_PROVIDER`.
+
+Allowed values:
+
+- `mock`
+- `local_cv`
+
+Mock mode is the default portfolio-demo mode. It does not inspect the uploaded image; it returns the bundled synthetic sample graph JSON with a warning.
+
+```bash
+GRAPH_EXTRACTION_PROVIDER=mock \
+PYTHONPATH=src uvicorn graphlens_agent.api:app --reload
+```
+
+`local_cv` mode is reserved for future local OCR/OpenCV screenshot extraction. It is intentionally not implemented yet and returns HTTP 501.
+
+```bash
+GRAPH_EXTRACTION_PROVIDER=local_cv \
+PYTHONPATH=src uvicorn graphlens_agent.api:app --reload
+```
+
+`.env.example` contains only:
+
+```bash
+GRAPH_EXTRACTION_PROVIDER=mock
+```
+
+No external API keys are needed.
+
+## Screenshot Extraction Notes
+
+Structured graph JSON should be used whenever available. It is the most reliable input for validation and analytics.
+
+Screenshot extraction is a fallback workflow. Even when local OCR/OpenCV extraction is added later, extracted graph JSON should be treated as a draft that may require human validation, especially when labels, arrows, edge values, or node positions are unclear.
