@@ -6,16 +6,19 @@ from typing import Any, Dict
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
 from graphlens_agent.analytics import analyze_graph
-from graphlens_agent.extraction import MockScreenshotExtractionProvider, ScreenshotExtractionProvider
+from graphlens_agent.extraction import (
+    LocalCVNotImplementedError,
+    ProviderConfigurationError,
+    get_screenshot_extraction_provider,
+)
 from graphlens_agent.validator import GraphValidationError, validate_graph_document
 
 ALLOWED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg"}
-screenshot_extraction_provider: ScreenshotExtractionProvider = MockScreenshotExtractionProvider()
 
 app = FastAPI(
     title="GraphLens Agent API",
     version="0.1.0",
-    description="API for validating graph JSON, analyzing graphs, and mock screenshot extraction.",
+    description="API for validating graph JSON, analyzing graphs, and screenshot extraction.",
 )
 
 
@@ -29,16 +32,7 @@ def analyze_graph_endpoint(payload: Dict[str, Any]) -> Dict[str, Any]:
     try:
         document = validate_graph_document(payload)
     except GraphValidationError as error:
-        raise HTTPException(
-            status_code=422,
-            detail=[
-                {
-                    "path": issue.path,
-                    "message": issue.message,
-                }
-                for issue in error.issues
-            ],
-        ) from error
+        raise HTTPException(status_code=422, detail=_validation_error_detail(error)) from error
 
     return analyze_graph(document)
 
@@ -54,9 +48,28 @@ async def extract_graph_endpoint(file: UploadFile = File(...)) -> Dict[str, Any]
         )
 
     content = await file.read()
-    document = screenshot_extraction_provider.extract(
-        filename=file.filename,
-        content_type=file.content_type,
-        content=content,
-    )
+    try:
+        provider = get_screenshot_extraction_provider()
+        document = provider.extract(
+            filename=file.filename,
+            content_type=file.content_type,
+            content=content,
+        )
+    except ProviderConfigurationError as error:
+        raise HTTPException(status_code=500, detail=str(error)) from error
+    except LocalCVNotImplementedError as error:
+        raise HTTPException(status_code=501, detail=str(error)) from error
+    except GraphValidationError as error:
+        raise HTTPException(status_code=422, detail=_validation_error_detail(error)) from error
+
     return document.to_dict()
+
+
+def _validation_error_detail(error: GraphValidationError) -> list[Dict[str, str]]:
+    return [
+        {
+            "path": issue.path,
+            "message": issue.message,
+        }
+        for issue in error.issues
+    ]

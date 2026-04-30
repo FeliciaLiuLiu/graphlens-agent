@@ -89,3 +89,28 @@ def test_extract_graph_returns_successful_mock_graph_json_response():
     assert len(graph["edges"]) == 4
     assert graph["nodes"][-1]["id"] == "acct_collector"
     assert any("Mock extraction result" in warning for warning in graph["warnings"])
+
+
+def test_extract_graph_invalid_provider_name_returns_clear_error(monkeypatch):
+    monkeypatch.setenv("GRAPH_EXTRACTION_PROVIDER", "unsupported")
+
+    response = client.post(
+        "/extract-graph",
+        files={"file": ("network.png", b"fake image bytes", "image/png")},
+    )
+
+    assert response.status_code == 500
+    assert "Unsupported GRAPH_EXTRACTION_PROVIDER" in response.json()["detail"]
+    assert "mock, local_cv" in response.json()["detail"]
+
+
+def test_extract_graph_local_cv_returns_501(monkeypatch):
+    monkeypatch.setenv("GRAPH_EXTRACTION_PROVIDER", "local_cv")
+
+    response = client.post(
+        "/extract-graph",
+        files={"file": ("network.png", b"fake image bytes", "image/png")},
+    )
+
+    assert response.status_code == 501
+    assert "Local OCR/OpenCV screenshot extraction is planned but not implemented yet" in response.json()["detail"]
