@@ -55,6 +55,19 @@ def test_analyze_graph_endpoint_returns_validation_errors():
     assert any("unknown source node" in issue["message"] for issue in detail)
 
 
+def test_explain_graph_endpoint_returns_analytics_and_narrative():
+    response = client.post("/explain-graph", json=load_sample())
+
+    assert response.status_code == 200
+    result = response.json()
+    assert result["analytics"]["summary"]["graph_motif"] == "fan_in_aggregation"
+    assert result["analytics"]["summary"]["collector_node"] == "acct_collector"
+    narrative = result["narrative"]
+    assert "Plain-Language Summary" in narrative
+    assert "Central Account (acct_collector)" in narrative["Plain-Language Summary"]
+    assert "not proof of wrongdoing" in " ".join(narrative["Caveats"])
+
+
 def test_extract_graph_accepts_valid_png_upload():
     response = client.post(
         "/extract-graph",
