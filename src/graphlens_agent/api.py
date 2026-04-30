@@ -11,6 +11,7 @@ from graphlens_agent.extraction import (
     ProviderConfigurationError,
     get_screenshot_extraction_provider,
 )
+from graphlens_agent.narrative import generate_narrative
 from graphlens_agent.validator import GraphValidationError, validate_graph_document
 
 ALLOWED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg"}
@@ -35,6 +36,21 @@ def analyze_graph_endpoint(payload: Dict[str, Any]) -> Dict[str, Any]:
         raise HTTPException(status_code=422, detail=_validation_error_detail(error)) from error
 
     return analyze_graph(document)
+
+
+@app.post("/explain-graph")
+def explain_graph_endpoint(payload: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        document = validate_graph_document(payload)
+    except GraphValidationError as error:
+        raise HTTPException(status_code=422, detail=_validation_error_detail(error)) from error
+
+    analytics = analyze_graph(document)
+    narrative = generate_narrative(document, analytics)
+    return {
+        "analytics": analytics,
+        "narrative": narrative,
+    }
 
 
 @app.post("/extract-graph")

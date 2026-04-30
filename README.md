@@ -21,10 +21,10 @@ GraphLens Agent focuses on the backend foundation:
 2. Validate nodes, edges, metadata, confidence scores, and warnings.
 3. Run deterministic graph analytics with NetworkX.
 4. Detect graph patterns such as fan-in, fan-out, hub-and-spoke, chain, cycle, and collector behavior.
-5. Provide evidence fields that future explanation layers can use.
+5. Generate rule-based plain-language narratives from analytics evidence.
 6. Provide a screenshot upload endpoint as a fallback extraction path.
 
-Narrative generation and frontend UI are not implemented yet.
+Frontend UI is not implemented yet.
 
 ## Example Use Case
 
@@ -54,7 +54,12 @@ This does not make any real-world claim. It is a synthetic analytics demo.
 3. **Graph Analytics**
    - Computes in-degree, out-degree, central node, inbound amount, repeated amount patterns, collector behavior, and graph motif.
 
-4. **Screenshot Extraction Fallback**
+4. **Rule-Based Narrative Generation**
+   - Converts analytics output into plain-language sections.
+   - Uses deterministic templates and graph facts only.
+   - Does not use an LLM or external model API.
+
+5. **Screenshot Extraction Fallback**
    - `mock` provider returns bundled synthetic sample graph JSON.
    - `local_cv` provider is a planned local OCR/OpenCV extraction path and currently returns HTTP 501.
    - No external model API is used.
@@ -70,7 +75,9 @@ The current backend includes:
 - CLI analytics command
 - FastAPI `/health`
 - FastAPI `/analyze-graph`
+- FastAPI `/explain-graph`
 - FastAPI `/extract-graph`
+- Rule-based narrative generation
 - Mock screenshot extraction provider
 - Planned `local_cv` provider skeleton
 - Synthetic sample graph JSON
@@ -92,11 +99,13 @@ graphlens-agent/
 │       ├── cli.py
 │       ├── extraction.py
 │       ├── io.py
+│       ├── narrative.py
 │       ├── schema.py
 │       └── validator.py
 ├── tests/
 │   ├── test_api.py
 │   ├── test_extraction.py
+│   ├── test_narrative.py
 │   └── test_phase1.py
 ├── .env.example
 ├── pyproject.toml
@@ -131,6 +140,14 @@ Analyze graph JSON:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/analyze-graph \
+  -H "Content-Type: application/json" \
+  --data @samples/fan_in_collector.json
+```
+
+Explain graph JSON with analytics and a rule-based narrative:
+
+```bash
+curl -X POST http://127.0.0.1:8000/explain-graph \
   -H "Content-Type: application/json" \
   --data @samples/fan_in_collector.json
 ```
@@ -172,6 +189,27 @@ GRAPH_EXTRACTION_PROVIDER=mock
 ```
 
 No external API keys are needed.
+
+## Rule-Based Narrative Design
+
+`POST /explain-graph` validates graph JSON, runs deterministic analytics, and returns both analytics and narrative sections.
+
+Narrative sections:
+
+- Plain-Language Summary
+- What Is Happening
+- Why This Pattern Matters
+- Evidence From the Graph
+- Suggested Next Review Steps
+- Caveats
+
+Currently supported motif narratives:
+
+- `fan_in_aggregation`
+- `fan_out_distribution`
+- `unknown`
+
+The narrative layer uses rules, analytics output, graph labels, graph metrics, evidence lines, and validation warnings. It does not call an LLM or any external model API.
 
 ## Screenshot Extraction Notes
 
