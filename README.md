@@ -64,6 +64,11 @@ This does not make any real-world claim. It is a synthetic analytics demo.
    - `local_cv` provider is a planned local OCR/OpenCV extraction path and currently returns HTTP 501.
    - No external model API is used.
 
+6. **End-to-End Screenshot Pipeline**
+   - Accepts an uploaded graph screenshot.
+   - Runs extraction, validation, analytics, and rule-based narrative generation.
+   - Returns graph JSON, analytics, narrative, warnings, and the provider used.
+
 ## Current Backend Scope
 
 The current backend includes:
@@ -77,6 +82,7 @@ The current backend includes:
 - FastAPI `/analyze-graph`
 - FastAPI `/explain-graph`
 - FastAPI `/extract-graph`
+- FastAPI `/pipeline/screenshot-to-narrative`
 - Rule-based narrative generation
 - Mock screenshot extraction provider
 - Planned `local_cv` provider skeleton
@@ -159,6 +165,21 @@ curl -X POST http://127.0.0.1:8000/extract-graph \
   -F "file=@samples/fan_in_graph.png"
 ```
 
+Run the end-to-end screenshot-to-narrative pipeline:
+
+```bash
+curl -X POST http://127.0.0.1:8000/pipeline/screenshot-to-narrative \
+  -F "file=@samples/fan_in_graph.png"
+```
+
+The pipeline response includes:
+
+- `graph`
+- `analytics`
+- `narrative`
+- `warnings`
+- `provider_used`
+
 ## Extraction Provider Configuration
 
 `POST /extract-graph` selects an extraction provider with `GRAPH_EXTRACTION_PROVIDER`.
@@ -215,4 +236,4 @@ The narrative layer uses rules, analytics output, graph labels, graph metrics, e
 
 Structured graph JSON should be used whenever available. It is the most reliable input for validation and analytics.
 
-Screenshot extraction is a fallback workflow. Even when local OCR/OpenCV extraction is added later, extracted graph JSON should be treated as a draft that may require human validation, especially when labels, arrows, edge values, or node positions are unclear.
+Screenshot extraction is a fallback workflow. The end-to-end pipeline still uses the configured local provider and deterministic rules only; no external model API is used. Even when local OCR/OpenCV extraction is added later, extracted graph JSON should be treated as a draft that may require human validation, especially when labels, arrows, edge values, or node positions are unclear.
