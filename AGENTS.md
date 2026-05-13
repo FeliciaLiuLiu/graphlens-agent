@@ -23,6 +23,7 @@ This repo is organized into:
 
 ### Model
 
+- Model code lives in `src/afc_network_narrative/model/`.
 - Current working model backends are local Ollama `qwen2.5vl:3b`, local `Qwen2.5-VL-7B-Instruct`, and local `microsoft/Florence-2-base-ft`.
 - They are wrapped by `OllamaVLMAdapter`, `QwenVLAdapter`, and `Florence2Adapter`, which implement the generic `VLMAdapter` interface.
 - Future backend names are reserved for `approved_endpoint`, `llama`, `gemini`, `openai`, `claude`, and `granite`.
@@ -55,7 +56,7 @@ Working rule:
 
 ### Harness
 
-`src/afc_network_narrative/` is the engineering-owned execution layer.
+`src/afc_network_narrative/harness/` is the engineering-owned execution layer.
 
 Put the following kinds of changes in the harness:
 
@@ -65,7 +66,6 @@ Put the following kinds of changes in the harness:
 - new evidence field support
 - new API behavior
 - new input modality support
-- new VLM backend implementation
 - orchestration changes
 - validation changes
 - retry, cache, or execution-flow changes
@@ -95,8 +95,16 @@ Edit Python when:
 - a skill asks for a capability the current contracts do not support
 - a new computed feature is required
 - a new rule condition or evidence type is required
-- the model adapter behavior changes
 - the API contract changes
+
+### Change Model
+
+Edit `src/afc_network_narrative/model/` when:
+
+- a new VLM backend is required
+- adapter selection logic changes
+- model-specific request, response parsing, or local loading changes
+- a backend dependency such as Ollama, Transformers, Qwen utilities, or a future endpoint client changes
 
 ## Contract Enforcement
 

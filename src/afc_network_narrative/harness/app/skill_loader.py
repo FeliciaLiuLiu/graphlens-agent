@@ -8,7 +8,11 @@ from typing import Any
 
 
 def project_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    current = Path(__file__).resolve()
+    for parent in current.parents:
+        if (parent / "pyproject.toml").exists() and (parent / "skills").is_dir():
+            return parent
+    raise ValueError("Could not locate project root containing pyproject.toml and skills/.")
 
 
 @lru_cache(maxsize=None)

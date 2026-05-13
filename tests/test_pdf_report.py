@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from afc_network_narrative.app.pipeline import analyze_graph
-from afc_network_narrative.reporting.pdf_report import build_report_pdf_bytes
+from afc_network_narrative.harness.app.pipeline import analyze_graph
+from afc_network_narrative.harness.reporting.pdf_report import build_report_pdf_bytes
 from test_graph_features import fan_in_graph
 
 

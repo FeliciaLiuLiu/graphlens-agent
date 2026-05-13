@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import load_narrative_policy
-from afc_network_narrative.schemas.afc_output_schema import AFCNarrativeOutput
+from afc_network_narrative.harness.app.skill_loader import load_narrative_policy
+from afc_network_narrative.harness.schemas.afc_output_schema import AFCNarrativeOutput
 
 PAGE_WIDTH = 612
 PAGE_HEIGHT = 792

@@ -5,9 +5,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import load_narrative_policy, load_prohibited_claims
-from afc_network_narrative.app.pipeline import analyze_graph
-from afc_network_narrative.evaluation.metrics import (
+from afc_network_narrative.harness.app.skill_loader import load_narrative_policy, load_prohibited_claims
+from afc_network_narrative.harness.app.pipeline import analyze_graph
+from afc_network_narrative.harness.evaluation.metrics import (
     missing_context_correctness,
     narrative_grounding_score,
     precision,

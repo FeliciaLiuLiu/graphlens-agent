@@ -5,14 +5,14 @@ from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
-from afc_network_narrative.schemas.graph_extraction_schema import (
+from afc_network_narrative.harness.schemas.graph_extraction_schema import (
     GraphExtraction,
     GraphValidationError,
     validate_graph_extraction,
 )
-from afc_network_narrative.vlm.base import VLMAdapter, VLMAdapterError
-from afc_network_narrative.vlm.config import VLMConfig
-from afc_network_narrative.vlm.json_utils import extract_json_text
+from afc_network_narrative.model.base import VLMAdapter, VLMAdapterError
+from afc_network_narrative.model.config import VLMConfig
+from afc_network_narrative.model.json_utils import extract_json_text
 
 
 class Florence2Adapter(VLMAdapter):

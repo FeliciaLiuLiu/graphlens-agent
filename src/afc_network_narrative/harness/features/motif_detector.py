@@ -4,8 +4,8 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import load_typology_skill
-from afc_network_narrative.schemas.graph_extraction_schema import Edge, GraphExtraction
+from afc_network_narrative.harness.app.skill_loader import load_typology_skill
+from afc_network_narrative.harness.schemas.graph_extraction_schema import Edge, GraphExtraction
 
 
 @dataclass

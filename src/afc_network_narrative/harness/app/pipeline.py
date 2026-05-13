@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import Any
 
-from afc_network_narrative.features.graph_features import build_graph_features
-from afc_network_narrative.narrative.narrative_builder import build_narrative_output
-from afc_network_narrative.rules.rule_engine import RuleEngine
-from afc_network_narrative.rules.scoring import score_alert
-from afc_network_narrative.schemas.afc_output_schema import AFCNarrativeOutput
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction, validate_graph_extraction
-from afc_network_narrative.vlm.base import VLMAdapter
+from afc_network_narrative.harness.features.graph_features import build_graph_features
+from afc_network_narrative.harness.narrative.narrative_builder import build_narrative_output
+from afc_network_narrative.harness.rules.rule_engine import RuleEngine
+from afc_network_narrative.harness.rules.scoring import score_alert
+from afc_network_narrative.harness.schemas.afc_output_schema import AFCNarrativeOutput
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction, validate_graph_extraction
+from afc_network_narrative.model.base import VLMAdapter
 
 
 def analyze_graph(graph_payload: GraphExtraction | dict[str, Any] | str) -> AFCNarrativeOutput:

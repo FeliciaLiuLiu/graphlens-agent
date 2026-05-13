@@ -8,7 +8,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from afc_network_narrative.vlm import create_vlm_adapter
+from afc_network_narrative.model import create_vlm_adapter
 
 
 def parse_args() -> argparse.Namespace:

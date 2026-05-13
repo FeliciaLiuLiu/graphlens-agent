@@ -7,10 +7,10 @@ from typing import Any
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.responses import Response
 
-from afc_network_narrative.app.pipeline import analyze_graph, analyze_image_file
-from afc_network_narrative.reporting.pdf_report import build_report_pdf_bytes
-from afc_network_narrative.schemas.graph_extraction_schema import GraphValidationError
-from afc_network_narrative.vlm import VLMAdapter, VLMAdapterError, VLMConfig, create_vlm_adapter
+from afc_network_narrative.harness.app.pipeline import analyze_graph, analyze_image_file
+from afc_network_narrative.harness.reporting.pdf_report import build_report_pdf_bytes
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphValidationError
+from afc_network_narrative.model import VLMAdapter, VLMAdapterError, VLMConfig, create_vlm_adapter
 
 app = FastAPI(title="afc-network-narrative", version="0.1.0")
 _adapter_cache: dict[VLMConfig, VLMAdapter] = {}

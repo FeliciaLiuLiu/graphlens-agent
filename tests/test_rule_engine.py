@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from afc_network_narrative.features.graph_features import build_graph_features
-from afc_network_narrative.rules.rule_engine import RuleEngine
-from afc_network_narrative.schemas.graph_extraction_schema import validate_graph_extraction
+from afc_network_narrative.harness.features.graph_features import build_graph_features
+from afc_network_narrative.harness.rules.rule_engine import RuleEngine
+from afc_network_narrative.harness.schemas.graph_extraction_schema import validate_graph_extraction
 from test_graph_features import edge, fan_in_graph, fan_out_graph, node
 
 

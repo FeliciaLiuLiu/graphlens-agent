@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
 
 
 class VLMAdapterError(RuntimeError):

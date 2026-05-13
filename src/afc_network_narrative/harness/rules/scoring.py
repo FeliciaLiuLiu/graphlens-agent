@@ -3,10 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import load_scoring_policy
-from afc_network_narrative.features.graph_features import GraphFeatures
-from afc_network_narrative.rules.rule_engine import TypologyMatch
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.harness.app.skill_loader import load_scoring_policy
+from afc_network_narrative.harness.features.graph_features import GraphFeatures
+from afc_network_narrative.harness.rules.rule_engine import TypologyMatch
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
 
 
 def score_alert(

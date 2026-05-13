@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from afc_network_narrative.features.amount_parser import parse_amount
+from afc_network_narrative.harness.features.amount_parser import parse_amount
 
 
 def test_parse_amount_k_values() -> None:

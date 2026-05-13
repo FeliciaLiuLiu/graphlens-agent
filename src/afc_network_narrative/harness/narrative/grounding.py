@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from afc_network_narrative.rules.rule_engine import TypologyMatch
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.harness.rules.rule_engine import TypologyMatch
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
 
 
 def build_evidence(graph: GraphExtraction, matches: list[TypologyMatch]) -> list[dict[str, Any]]:

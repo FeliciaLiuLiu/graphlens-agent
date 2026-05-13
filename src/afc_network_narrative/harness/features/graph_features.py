@@ -4,8 +4,8 @@ from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
 
-from afc_network_narrative.features.motif_detector import MotifResult, detect_motifs
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.harness.features.motif_detector import MotifResult, detect_motifs
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
 
 
 @dataclass

@@ -4,8 +4,8 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import load_typology_skill
-from afc_network_narrative.features.amount_parser import parse_amount_with_currency, normalize_currency
+from afc_network_narrative.harness.app.skill_loader import load_typology_skill
+from afc_network_narrative.harness.features.amount_parser import parse_amount_with_currency, normalize_currency
 
 
 class GraphValidationError(ValueError):

@@ -8,8 +8,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from afc_network_narrative.app.pipeline import analyze_graph
-from afc_network_narrative.reporting.pdf_report import write_report_pdf
+from afc_network_narrative.harness.app.pipeline import analyze_graph
+from afc_network_narrative.harness.reporting.pdf_report import write_report_pdf
 
 
 def main() -> None:

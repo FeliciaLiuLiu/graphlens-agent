@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from afc_network_narrative.app.pipeline import analyze_image_file
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction, validate_graph_extraction
-from afc_network_narrative.vlm import (
+from afc_network_narrative.harness.app.pipeline import analyze_image_file
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction, validate_graph_extraction
+from afc_network_narrative.model import (
     Florence2Adapter,
     OllamaVLMAdapter,
     QwenVLAdapter,
@@ -12,7 +12,7 @@ from afc_network_narrative.vlm import (
     VLMAdapterError,
     create_vlm_adapter,
 )
-from afc_network_narrative.vlm.json_utils import extract_json_text
+from afc_network_narrative.model.json_utils import extract_json_text
 
 
 def minimal_graph() -> dict:

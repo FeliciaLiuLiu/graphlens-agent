@@ -1,9 +1,9 @@
-from afc_network_narrative.vlm.base import VLMAdapter, VLMAdapterError
-from afc_network_narrative.vlm.config import VLMConfig
-from afc_network_narrative.vlm.factory import create_vlm_adapter
-from afc_network_narrative.vlm.florence import Florence2Adapter
-from afc_network_narrative.vlm.ollama import OllamaVLMAdapter
-from afc_network_narrative.vlm.placeholders import (
+from afc_network_narrative.model.base import VLMAdapter, VLMAdapterError
+from afc_network_narrative.model.config import VLMConfig
+from afc_network_narrative.model.factory import create_vlm_adapter
+from afc_network_narrative.model.florence import Florence2Adapter
+from afc_network_narrative.model.ollama import OllamaVLMAdapter
+from afc_network_narrative.model.placeholders import (
     ApprovedEndpointVLMAdapter,
     ClaudeVLMAdapter,
     GeminiVLMAdapter,
@@ -11,7 +11,7 @@ from afc_network_narrative.vlm.placeholders import (
     LlamaVisionAdapter,
     OpenAIVLMAdapter,
 )
-from afc_network_narrative.vlm.qwen import QwenVLAdapter
+from afc_network_narrative.model.qwen import QwenVLAdapter
 
 __all__ = [
     "ApprovedEndpointVLMAdapter",

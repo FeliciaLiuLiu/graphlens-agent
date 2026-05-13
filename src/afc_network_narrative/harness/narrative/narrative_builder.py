@@ -3,17 +3,17 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import (
+from afc_network_narrative.harness.app.skill_loader import (
     load_investigation_playbooks,
     load_narrative_policy,
     load_narrative_template,
     load_prohibited_claims,
 )
-from afc_network_narrative.features.graph_features import GraphFeatures
-from afc_network_narrative.narrative.grounding import assert_no_prohibited_claims, build_evidence
-from afc_network_narrative.rules.rule_engine import TypologyMatch, missing_context_limitations
-from afc_network_narrative.schemas.afc_output_schema import AFCNarrativeOutput
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.harness.features.graph_features import GraphFeatures
+from afc_network_narrative.harness.narrative.grounding import assert_no_prohibited_claims, build_evidence
+from afc_network_narrative.harness.rules.rule_engine import TypologyMatch, missing_context_limitations
+from afc_network_narrative.harness.schemas.afc_output_schema import AFCNarrativeOutput
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
 
 
 def build_narrative_output(

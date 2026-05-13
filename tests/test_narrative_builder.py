@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from afc_network_narrative.app.pipeline import analyze_graph
+from afc_network_narrative.harness.app.pipeline import analyze_graph
 from test_graph_features import fan_in_graph
 
 

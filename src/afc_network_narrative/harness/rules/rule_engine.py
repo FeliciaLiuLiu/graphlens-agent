@@ -4,9 +4,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from afc_network_narrative.app.skill_loader import load_typology_skill
-from afc_network_narrative.features.graph_features import GraphFeatures, NodeFeature
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.harness.app.skill_loader import load_typology_skill
+from afc_network_narrative.harness.features.graph_features import GraphFeatures, NodeFeature
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
 
 
 @dataclass

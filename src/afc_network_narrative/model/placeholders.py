@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from afc_network_narrative.schemas.graph_extraction_schema import GraphExtraction
-from afc_network_narrative.vlm.base import VLMAdapter, VLMAdapterError
-from afc_network_narrative.vlm.config import VLMConfig
+from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphExtraction
+from afc_network_narrative.model.base import VLMAdapter, VLMAdapterError
+from afc_network_narrative.model.config import VLMConfig
 
 
 class NotImplementedVLMAdapter(VLMAdapter):

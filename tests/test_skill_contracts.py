@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from afc_network_narrative.app.skill_loader import (
+from afc_network_narrative.harness.app.skill_loader import (
     load_graph_extraction_schema,
     load_investigation_playbooks,
     load_narrative_policy,

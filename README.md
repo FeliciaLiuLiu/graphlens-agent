@@ -12,7 +12,7 @@ This project is intentionally split into three layers:
 
 ### Model
 
-The model layer is adapter-based. The rest of the system talks only to the generic `VLMAdapter` interface:
+The model layer lives in `src/afc_network_narrative/model/`. It is adapter-based. The rest of the system talks only to the generic `VLMAdapter` interface:
 
 ```text
 image input -> VLMAdapter.extract_graph(...) -> GraphExtraction
@@ -37,7 +37,7 @@ All model adapters must return the same validated `GraphExtraction` contract. Mo
 
 ### Skills
 
-The `skills/` directory contains SME-owned AFC domain knowledge and policy.
+The `skills/` directory contains SME-owned AFC domain knowledge and policy. SMEs should be able to change these files without editing Python code when the change is policy, threshold, wording, typology, scoring, playbook, or template related.
 
 Typical skill content includes:
 
@@ -57,11 +57,11 @@ Working rule:
 
 ### Harness
 
-The `src/afc_network_narrative/` Python code is the engineering-owned execution layer.
+The harness lives in `src/afc_network_narrative/harness/`. It is the engineering-owned execution layer.
 
 The harness is responsible for:
 
-- model loading
+- adapter selection and pipeline orchestration
 - skill loading
 - skill contract validation
 - graph validation
@@ -76,6 +76,17 @@ The harness is responsible for:
 Working rule:
 
 - If an engineer must change how the system executes, validates, computes, or orchestrates, the change belongs in the harness.
+
+## Repository Layout
+
+```text
+src/afc_network_narrative/
+  model/       # Model layer: VLMAdapter, backend factory, Ollama/Qwen/Florence adapters.
+  harness/     # Harness engineering: API, pipeline, schemas, features, rules, narrative, reporting, evaluation.
+skills/        # Skills layer: AFC rules, policies, prompts, playbooks, templates, and contracts.
+scripts/       # CLI utilities for downloads, image analysis, graph JSON analysis, and smoke tests.
+tests/         # Unit tests for model adapters, harness behavior, skill contracts, and narratives.
+```
 
 ## Pipeline
 
@@ -94,8 +105,20 @@ The visual model is not fine-tuned and is not used for AFC interpretation. It on
 
 Use this decision rule before editing the repo:
 
+- Change `src/afc_network_narrative/model/` when the change is about VLM backend selection, model-specific request/response handling, local model loading, or image-to-`GraphExtraction` normalization.
 - Change `skills/` when the change is about AFC knowledge, policy, wording, thresholds, scoring policy, or narrative style.
 - Change the harness when the change requires new computation, new execution behavior, new API behavior, or new rule-engine capability.
+
+### Change Model
+
+These changes belong in `src/afc_network_narrative/model/`:
+
+- add a new VLM backend
+- change adapter selection logic
+- change an adapter prompt transport or request format
+- parse a model-specific raw response
+- normalize model output into `GraphExtraction`
+- isolate model-specific dependencies such as Ollama, Transformers, Qwen utilities, or future endpoint clients
 
 ### Change Skills Only
 
@@ -122,16 +145,16 @@ These changes usually require Python edits:
 - add a new evidence field not currently supported by the rule engine
 - support a new input type such as PDF, multi-image, or video
 - change API request or response contracts
-- change model adapter behavior
 - change validation flow, retries, caching, or async execution
 
 ### Practical Test
 
 Ask this question:
 
+- If the change is about how a visual model is called or normalized, the change belongs in `model/`.
 - If an AFC SME should be able to make the change without editing Python, the change belongs in `skills/`.
 
-If the answer is no, the change belongs in the harness.
+If neither is true and the change affects execution, validation, computation, output generation, or tests, the change belongs in `harness/`.
 
 ## Skill Contracts
 
@@ -301,7 +324,7 @@ python scripts/analyze_graph_json.py image/testimage1.graph.json \
 Start the API server:
 
 ```bash
-uvicorn afc_network_narrative.app.main:app --host 127.0.0.1 --port 8000
+uvicorn afc_network_narrative.harness.app.main:app --host 127.0.0.1 --port 8000
 ```
 
 Write the JSON result to `output/report.json`:
