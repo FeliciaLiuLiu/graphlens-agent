@@ -43,6 +43,7 @@ Put the following kinds of changes in `skills/`:
 - typology glossary text
 - source descriptions
 - scoring policy
+- SAR/STR red flag review-signal policy
 - investigation playbooks
 - narrative policy
 - narrative template text

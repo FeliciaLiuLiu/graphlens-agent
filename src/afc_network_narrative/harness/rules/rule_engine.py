@@ -13,6 +13,10 @@ from afc_network_narrative.harness.schemas.graph_extraction_schema import GraphE
 class TypologyMatch:
     typology_id: str
     name: str
+    risk_family: str | None
+    scenario_type: str | None
+    source_registry_ids: list[str]
+    requires_context: list[str]
     confidence: float
     afc_interpretation: str
     caution: str
@@ -24,6 +28,10 @@ class TypologyMatch:
         return {
             "typology_id": self.typology_id,
             "name": self.name,
+            "risk_family": self.risk_family,
+            "scenario_type": self.scenario_type,
+            "source_registry_ids": self.source_registry_ids,
+            "requires_context": self.requires_context,
             "confidence": self.confidence,
             "afc_interpretation": self.afc_interpretation,
             "caution": self.caution,
@@ -99,6 +107,10 @@ class RuleEngine:
         return TypologyMatch(
             typology_id=rule["id"],
             name=rule["name"],
+            risk_family=rule.get("risk_family"),
+            scenario_type=rule.get("scenario_type"),
+            source_registry_ids=[str(item) for item in rule.get("source_registry_ids", [])],
+            requires_context=[str(item) for item in rule.get("requires_context", [])],
             confidence=confidence,
             afc_interpretation=rule["afc_interpretation"],
             caution=rule["caution"],
@@ -172,10 +184,18 @@ def evidence_for_field(
         return {"metric": "fan_out_nodes", "value": features.motifs.fan_out}
     if field == "fan_in_nodes":
         return {"metric": "fan_in_nodes", "value": features.motifs.fan_in}
+    if field == "inbound_hub_nodes":
+        return {"metric": "inbound_hub_nodes", "value": features.motifs.inbound_hub}
+    if field == "outbound_hub_nodes":
+        return {"metric": "outbound_hub_nodes", "value": features.motifs.outbound_hub}
+    if field == "pass_through_nodes":
+        return {"metric": "pass_through_nodes", "value": features.motifs.pass_through_relay}
     if field == "cycle_count":
         return {"metric": "cycle_count", "value": len(features.motifs.cycle_or_circular_flow)}
     if field == "many_to_many_groups":
         return {"metric": "many_to_many_groups", "value": len(features.motifs.bipartite_many_to_many)}
+    if field == "two_hop_path_count":
+        return {"metric": "two_hop_path_count", "value": len(features.motifs.two_hop_paths)}
     raise ValueError(f"Unsupported evidence field {field!r} in typology skill.")
 
 
@@ -232,6 +252,10 @@ def graph_metric_value(metric_name: str, features: GraphFeatures) -> float:
         return float(features.repeated_amount_score)
     if metric_name == "repeated_amount_value":
         return float(features.repeated_amount_value or 0.0)
+    if metric_name == "distinct_counterparty_count":
+        return float(features.distinct_counterparty_count)
+    if metric_name == "overall_extraction_confidence":
+        return float(features.overall_extraction_confidence)
     raise ValueError(f"Unsupported graph metric {metric_name!r} in typology skill.")
 
 

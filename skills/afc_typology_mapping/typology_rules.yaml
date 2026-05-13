@@ -4,6 +4,13 @@ role_hint_tokens:
   - collector
   - distributor
   - relay
+  - conduit
+  - beneficiary
+  - originator
+  - sender
+  - recipient
+  - hub
+  - master
 motif_detection_policy:
   thresholds:
     fan_in: 5
@@ -33,6 +40,11 @@ context_limitations:
 typologies:
   - id: fan_in_collection
     name: fan-in collection
+    risk_family: collection_concentration
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
     match_scope: node
     base_confidence: 0.55
     conditions:
@@ -47,6 +59,11 @@ typologies:
     investigation_boost: "Review central collection node and inbound counterparties."
   - id: fan_out_distribution
     name: fan-out distribution
+    risk_family: distribution_concentration
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
     match_scope: node
     base_confidence: 0.53
     conditions:
@@ -61,6 +78,11 @@ typologies:
     investigation_boost: "Review distributor node and outbound counterparties."
   - id: gather_scatter
     name: gather-scatter
+    risk_family: multi_stage_flow
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_financial_entity_indicators
     match_scope: node
     base_confidence: 0.6
     conditions:
@@ -76,6 +98,11 @@ typologies:
     investigation_boost: "Review timing between inbound and outbound movement."
   - id: scatter_gather
     name: scatter-gather
+    risk_family: multi_stage_flow
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_financial_entity_indicators
     match_scope: graph
     base_confidence: 0.58
     conditions:
@@ -90,6 +117,11 @@ typologies:
     investigation_boost: "Review linked hubs and whether flows connect in time."
   - id: pass_through_relay
     name: pass-through relay
+    risk_family: multi_stage_flow
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_financial_entity_indicators
     match_scope: node
     base_confidence: 0.56
     conditions:
@@ -105,6 +137,11 @@ typologies:
     investigation_boost: "Review retained balance and timing of onward transfers."
   - id: cycle_or_circular_flow
     name: cycle or circular flow
+    risk_family: circular_or_layered_flow
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
     match_scope: graph
     base_confidence: 0.62
     conditions:
@@ -117,6 +154,11 @@ typologies:
     investigation_boost: "Review whether funds return to related parties or accounts."
   - id: bipartite_many_to_many
     name: bipartite many-to-many
+    risk_family: coordinated_network
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
     match_scope: graph
     base_confidence: 0.57
     conditions:
@@ -129,6 +171,10 @@ typologies:
     investigation_boost: "Review shared attributes across both sides of the network."
   - id: equal_amount_coordination
     name: equal-amount coordination
+    risk_family: amount_pattern
+    scenario_type: graph_supported
+    source_registry_ids:
+      - fintrac_financial_entity_indicators
     match_scope: graph
     base_confidence: 0.5
     conditions:
@@ -140,3 +186,167 @@ typologies:
       - repeated_amount_score
       - repeated_amount_value
     investigation_boost: "Review whether repeated amounts have a documented operational explanation."
+  - id: inbound_hub_concentration
+    name: inbound hub concentration
+    risk_family: collection_concentration
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
+    match_scope: graph
+    base_confidence: 0.48
+    conditions:
+      motif: inbound_hub
+      min_count: 1
+    afc_interpretation: "At least one node receives funds from several counterparties, which is consistent with a concentration pattern that may warrant review."
+    caution: "Inbound concentration is a review signal and does not establish source-of-funds concerns without customer and transaction context."
+    evidence_fields:
+      - inbound_hub_nodes
+      - fan_in_nodes
+    investigation_boost: "Review whether inbound counterparties, payment purposes, and customer profile support the concentration pattern."
+  - id: outbound_hub_concentration
+    name: outbound hub concentration
+    risk_family: distribution_concentration
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
+    match_scope: graph
+    base_confidence: 0.48
+    conditions:
+      motif: outbound_hub
+      min_count: 1
+    afc_interpretation: "At least one node sends funds to several counterparties, which is consistent with a distribution pattern that may warrant review."
+    caution: "Outbound concentration alone does not establish improper activity without business-purpose and counterparty context."
+    evidence_fields:
+      - outbound_hub_nodes
+      - fan_out_nodes
+    investigation_boost: "Review outbound counterparties, payment purpose, and whether recipients share attributes."
+  - id: multi_hop_layering
+    name: multi-hop layering
+    risk_family: circular_or_layered_flow
+    scenario_type: graph_supported
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_financial_entity_indicators
+    match_scope: graph
+    base_confidence: 0.54
+    conditions:
+      motif: two_hop_paths
+      min_count: 1
+    afc_interpretation: "Funds move through at least one intermediate node, which is consistent with a potential layering or relay pattern when supported by timing and account-purpose context."
+    caution: "Two-hop movement is common in legitimate activity and requires timing, balance, and purpose review before escalation."
+    evidence_fields:
+      - two_hop_path_count
+      - pass_through_nodes
+    investigation_boost: "Review whether incoming funds move onward quickly, whether balances are retained, and whether each hop has a documented purpose."
+  - id: potential_funnel_account_activity
+    name: funnel or master-account activity
+    risk_family: collection_concentration
+    scenario_type: graph_supported_with_context_required
+    source_registry_ids:
+      - fincen_funnel_account_advisory
+      - ffiec_appendix_f_red_flags
+    requires_context:
+      - timestamps
+      - geography
+      - customer_profile
+      - channel
+      - customer_baseline
+    match_scope: graph
+    base_confidence: 0.5
+    conditions:
+      motif: fan_in
+      min_count: 1
+    afc_interpretation: "Multiple sources consolidate into a central node, which can resemble a potential funnel or master-account pattern when supported by geography, timing, and customer-purpose context."
+    caution: "A funnel-account hypothesis cannot be concluded from graph topology alone."
+    evidence_fields:
+      - fan_in_nodes
+      - inbound_hub_nodes
+    investigation_boost: "Review deposit or transfer locations, expected account purpose, transaction timing, and onward movement."
+context_required_scenarios:
+  - id: structuring_or_reporting_evasion
+    name: structuring or reporting-evasion review
+    description: "Potential attempts to avoid reporting or recordkeeping thresholds require product type, cash or monetary instrument context, threshold proximity, timing, and evidence of evasion intent."
+    required_context:
+      - product type
+      - cash or monetary instrument indicator
+      - regulatory threshold proximity
+      - timestamps
+      - customer explanation
+      - branch or channel information
+    review_guidance: "Repeated or similar amounts should not be treated as structuring unless transaction type, threshold proximity, and facts support an evasion hypothesis."
+    caution: "The graph alone does not determine structuring."
+    source_registry_ids:
+      - ffiec_structuring_appendix_g
+      - fincen_sar_msb_guidance
+  - id: rapid_movement_velocity
+    name: rapid movement or velocity review
+    description: "Rapid in-and-out movement requires timestamps, sequence, account balance, and business-purpose context."
+    required_context:
+      - timestamps
+      - balance movement
+      - settlement sequence
+      - customer profile
+      - expected activity
+    review_guidance: "Assess whether inbound funds are quickly sent onward and whether the timing is consistent with the customer purpose."
+    caution: "Velocity cannot be assessed when timestamps are absent."
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_str_guidance
+  - id: shell_company_or_tbml_review
+    name: shell-company or trade-based money laundering review
+    description: "Shell-company and trade-based concerns require ownership, business purpose, invoices, goods or services, jurisdictions, and entity profile."
+    required_context:
+      - beneficial ownership
+      - business purpose
+      - invoice or trade documentation
+      - goods or services description
+      - jurisdiction exposure
+      - customer baseline
+    review_guidance: "Review whether parties, purposes, and goods or services are consistent with the customer profile."
+    caution: "A graph pattern alone does not identify a shell company or trade-based money laundering."
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fincen_shell_company_guidance
+  - id: sanctions_or_tf_review
+    name: sanctions or terrorist-financing review
+    description: "Sanctions and terrorist-financing concerns require explicit sanctions-screening, geography, party, purpose, and intelligence context."
+    required_context:
+      - sanctions screening results
+      - geography
+      - party identifiers
+      - beneficial ownership
+      - purpose of payment
+      - adverse media or law-enforcement context
+    review_guidance: "Do not infer sanctions evasion or terrorist financing from topology alone; use explicit screening and context."
+    caution: "This system must not make sanctions or terrorist-financing conclusions without supporting contextual evidence."
+    source_registry_ids:
+      - fintrac_str_guidance
+      - fintrac_financial_entity_indicators
+  - id: human_trafficking_or_exploitation_review
+    name: human trafficking or exploitation review
+    description: "Human trafficking and exploitation concerns require specific typology indicators, customer behavior, merchant/category context, geography, and victim or third-party indicators."
+    required_context:
+      - customer behavior
+      - merchant or category information
+      - geography
+      - third-party control indicators
+      - law-enforcement or adverse media context
+    review_guidance: "Do not infer human trafficking or exploitation from a network graph without typology-specific contextual indicators."
+    caution: "The graph alone is insufficient for this conclusion."
+    source_registry_ids:
+      - fintrac_financial_entity_indicators
+  - id: fraud_or_mule_network_review
+    name: fraud or mule-network review
+    description: "Money mule or fraud concerns require fraud reports, victim claims, account takeover indicators, device/IP overlap, rapid withdrawals, or instructed onward movement."
+    required_context:
+      - fraud claims or returns
+      - device and IP data
+      - account opening age
+      - customer communication indicators
+      - withdrawal or transfer timing
+    review_guidance: "Use graph concentration or relay signals as review prompts, then confirm with fraud and account-behavior context."
+    caution: "Do not label a person or account as a mule unless graph structure and supporting context justify a cautious hypothesis."
+    source_registry_ids:
+      - fintrac_financial_entity_indicators

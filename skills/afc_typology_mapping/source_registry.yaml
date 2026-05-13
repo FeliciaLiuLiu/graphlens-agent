@@ -7,6 +7,38 @@
     {
       "id": "visible_graph_image",
       "description": "Visible node labels, arrows, and amount labels extracted from the uploaded image."
+    },
+    {
+      "id": "ffiec_suspicious_activity_monitoring",
+      "description": "FFIEC BSA/AML Examination Manual discussion of surveillance or automated account monitoring systems identifying transactions, unusual patterns, or deviations from expected activity."
+    },
+    {
+      "id": "ffiec_appendix_f_red_flags",
+      "description": "FFIEC BSA/AML Examination Manual Appendix F examples of money laundering and terrorist financing red flags, including consolidation, funneling, shell-company, and unusual funds-transfer patterns."
+    },
+    {
+      "id": "ffiec_structuring_appendix_g",
+      "description": "FFIEC BSA/AML Examination Manual Appendix G discussion of structuring and reporting-evasion concepts."
+    },
+    {
+      "id": "fincen_sar_msb_guidance",
+      "description": "FinCEN public SAR guidance describing suspicious activity categories such as illegal-source funds, BSA evasion, and transactions with no apparent lawful purpose after review of available facts."
+    },
+    {
+      "id": "fincen_funnel_account_advisory",
+      "description": "FinCEN advisory material on funnel-account activity and related red flags."
+    },
+    {
+      "id": "fincen_shell_company_guidance",
+      "description": "FinCEN public guidance on potential money laundering risks related to shell companies."
+    },
+    {
+      "id": "fintrac_financial_entity_indicators",
+      "description": "FINTRAC ML/TF indicators for financial entities, emphasizing that indicators should be assessed with facts and context."
+    },
+    {
+      "id": "fintrac_str_guidance",
+      "description": "FINTRAC suspicious transaction reporting guidance on reasonable grounds to suspect, facts, context, indicators, and narrative completeness."
     }
   ]
 }

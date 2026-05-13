@@ -5,6 +5,7 @@
   "additionalProperties": false,
   "required": [
     "typology_points",
+    "typology_scoring",
     "boosts",
     "supported_role_labels",
     "deductions",
@@ -14,7 +15,8 @@
     "priority_bands",
     "reason_templates",
     "explanation_template",
-    "empty_reason_codes_text"
+    "empty_reason_codes_text",
+    "sar_review_policy"
   ],
   "properties": {
     "typology_points": {
@@ -22,6 +24,17 @@
       "minProperties": 1,
       "additionalProperties": {
         "type": "integer"
+      }
+    },
+    "typology_scoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["additive", "max_per_risk_family"]
+        }
       }
     },
     "boosts": {
@@ -86,6 +99,35 @@
       }
     },
     "explanation_template": {"type": "string", "minLength": 1},
-    "empty_reason_codes_text": {"type": "string", "minLength": 1}
+    "empty_reason_codes_text": {"type": "string", "minLength": 1},
+    "sar_review_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_value",
+        "boundary_text",
+        "review_text_by_priority_band",
+        "required_context",
+        "not_assessed_from_graph_only"
+      ],
+      "properties": {
+        "decision_value": {"type": "string", "minLength": 1},
+        "boundary_text": {"type": "string", "minLength": 1},
+        "review_text_by_priority_band": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "required_context": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "not_assessed_from_graph_only": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
   }
 }

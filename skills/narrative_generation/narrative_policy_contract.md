@@ -42,10 +42,13 @@ If an AFC SME should be able to change it without editing Python, it belongs in 
 
 Required keys:
 
+- `alert_candidate`
 - `network_observation`
 - `typology_hypothesis`
 - `no_match_hypothesis`
 - `alert_boost`
+- `sar_red_flag_match`
+- `sar_red_flag_no_match`
 - `key_evidence_match`
 - `key_evidence_fallback`
 - `evidence_item`
@@ -55,6 +58,12 @@ Each required key must be a non-empty string.
 
 ### Required placeholders
 
+`alert_candidate` must contain:
+
+- `{priority_band}`
+- `{score}`
+- `{explanation}`
+
 `network_observation` must contain:
 
 - `{node_count}`
@@ -62,10 +71,12 @@ Each required key must be a non-empty string.
 - `{fan_in_nodes}`
 - `{fan_out_nodes}`
 - `{pass_through_nodes}`
+- `{key_entities}`
 
 `typology_hypothesis` must contain:
 
 - `{typology_name}`
+- `{afc_interpretation}`
 - `{confidence}`
 - `{evidence}`
 - `{caution}`
@@ -75,6 +86,14 @@ Each required key must be a non-empty string.
 - `{priority_band}`
 - `{score}`
 - `{explanation}`
+- `{sar_review}`
+
+`sar_red_flag_match` must contain:
+
+- `{name}`
+- `{matched_text}`
+- `{review_question}`
+- `{caution}`
 
 `key_evidence_match` must contain:
 
@@ -132,6 +151,7 @@ Required keys:
 - `summary_item_templates`
 - `typology_line_template`
 - `alert_boost_template`
+- `sar_red_flag_line_template`
 - `evidence_line_template`
 - `max_evidence_items`
 
@@ -157,6 +177,12 @@ Required keys:
 - `{score}`
 - `{explanation}`
 
+`sar_red_flag_line_template` must contain:
+
+- `{name}`
+- `{matched_text}`
+- `{review_question}`
+
 `evidence_line_template` must contain:
 
 - `{label}`
@@ -166,9 +192,11 @@ Required keys:
 
 The outer template must contain these placeholders exactly once or more:
 
+- `{alert_candidate}`
 - `{network_observation}`
 - `{typology_hypothesis}`
 - `{alert_boost}`
+- `{sar_red_flags}`
 - `{evidence}`
 - `{recommended_steps}`
 - `{limitations}`

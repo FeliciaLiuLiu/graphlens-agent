@@ -12,7 +12,7 @@ endobj
 endobj
 3 0 obj
 <<
-/Contents 8 0 R /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources <<
+/Contents 10 0 R /MediaBox [ 0 0 612 792 ] /Parent 9 0 R /Resources <<
 /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >> /Rotate 0 /Trans <<
 
@@ -22,7 +22,7 @@ endobj
 endobj
 4 0 obj
 <<
-/Contents 9 0 R /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources <<
+/Contents 11 0 R /MediaBox [ 0 0 612 792 ] /Parent 9 0 R /Resources <<
 /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >> /Rotate 0 /Trans <<
 
@@ -32,23 +32,43 @@ endobj
 endobj
 5 0 obj
 <<
-/PageMode /UseNone /Pages 7 0 R /Type /Catalog
+/Contents 12 0 R /MediaBox [ 0 0 612 792 ] /Parent 9 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
 6 0 obj
 <<
-/Author (anonymous) /CreationDate (D:20260509005612-04'00') /Creator (anonymous) /Keywords () /ModDate (D:20260509005612-04'00') /Producer (ReportLab PDF Library - \(opensource\)) 
-  /Subject (unspecified) /Title (AFC Network Narrative Report) /Trapped /False
+/Contents 13 0 R /MediaBox [ 0 0 612 792 ] /Parent 9 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
 >>
 endobj
 7 0 obj
 <<
-/Count 2 /Kids [ 3 0 R 4 0 R ] /Type /Pages
+/PageMode /UseNone /Pages 9 0 R /Type /Catalog
 >>
 endobj
 8 0 obj
 <<
-/Length 5342
+/Author (anonymous) /CreationDate (D:20260513184859-04'00') /Creator (anonymous) /Keywords () /ModDate (D:20260513184859-04'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (unspecified) /Title (AFC Network Narrative Report) /Trapped /False
+>>
+endobj
+9 0 obj
+<<
+/Count 4 /Kids [ 3 0 R 4 0 R 5 0 R 6 0 R ] /Type /Pages
+>>
+endobj
+10 0 obj
+<<
+/Length 6347
 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
@@ -63,71 +83,176 @@ BT 1 0 0 1 54 684 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
 BT 1 0 0 1 54 672 Tm (Human-Readable Narrative) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 654 Tm (Network observation: the validated graph contains 12 nodes and 11 directed edges. Detected) Tj T* ET
+BT 1 0 0 1 54 654 Tm (Alert-review candidate assessment: This graph is a Medium alert-review candidate with score) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 640 Tm (motifs include fan-in nodes jennifer_davenport, fan-out nodes none, and pass-through relay) Tj T* ET
+BT 1 0 0 1 54 640 Tm ( 40. Investigation priority is Medium with score 40. Reason codes:) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 626 Tm (candidates none.  AFC typology hypothesis: the graph is consistent with a potential fan-in) Tj T* ET
+BT 1 0 0 1 54 626 Tm (typology:fan_in_collection, boost:distinct_counterparties. The score means the graph may) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 612 Tm (collection pattern \(confidence 0.714\) based on in_degree=8 on node jennifer_davenport;) Tj T* ET
+BT 1 0 0 1 54 612 Tm (warrant analyst review; it is not a suspicious activity conclusion and is not a SAR/STR) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 598 Tm (weighted_inbound_amount=12625.0 on node jennifer_davenport; repeated_amount_score=0.364 at) Tj T* ET
+BT 1 0 0 1 54 598 Tm (filing decision.  What the graph shows: The validated graph contains 12 nodes and 11) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 584 Tm (amount 1200.0. Fan-in structure alone is not a final suspicious activity conclusion.  Alert) Tj T* ET
+BT 1 0 0 1 54 584 Tm (directed edges. Detected motifs include fan-in nodes JENNIFER DAVENPORT) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 570 Tm ( investigation boost: Medium priority, score 40. Investigation priority is Medium with) Tj T* ET
+BT 1 0 0 1 54 570 Tm (\(jennifer_davenport\), fan-out nodes none, and pass-through relay candidates none. Key) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 556 Tm (score 40. Reason codes: typology:fan_in_collection, boost:distinct_counterparties. This may) Tj T* ET
+BT 1 0 0 1 54 556 Tm (extracted entities include JENNIFER DAVENPORT \(in-degree 8, out-degree 0, weighted inbound) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 542 Tm ( indicate that the alert warrants review, not that wrongdoing occurred.  Key entities and) Tj T* ET
+BT 1 0 0 1 54 542 Tm (12625.0, weighted outbound 0.0\); KAREN HARTMAN \(in-degree 2, out-degree 0, weighted inbound) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 528 Tm (money-flow evidence: fan-in collection: in_degree=8 on node jennifer_davenport;) Tj T* ET
+BT 1 0 0 1 54 528 Tm ( 3880.0, weighted outbound 0.0\); CHRIS SCOVONE \(in-degree 0, out-degree 2, weighted inbound) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 514 Tm (weighted_inbound_amount=12625.0 on node jennifer_davenport; repeated_amount_score=0.364 at) Tj T* ET
+BT 1 0 0 1 54 514 Tm ( 0.0, weighted outbound 3783.0\); CHAD JAMESON \(in-degree 0, out-degree 2, weighted inbound) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 500 Tm (amount 1200.0  Recommended investigation steps: Review underlying transactions for) Tj T* ET
+BT 1 0 0 1 54 500 Tm (0.0, weighted outbound 2328.0\); ROBERT WHITE \(in-degree 0, out-degree 1, weighted inbound) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 486 Tm (timestamps, amounts, settlement direction, and counterparty identifiers.; Compare observed) Tj T* ET
+BT 1 0 0 1 54 486 Tm (0.0, weighted outbound 2716.0\).  AFC typology hypothesis: AFC pattern meaning: in AFC) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 472 Tm (activity against customer profile, expected behavior, and customer baseline.; Check KYC,) Tj T* ET
+BT 1 0 0 1 54 472 Tm (terms, fan-in collection means: Multiple sources converge into a central node, which is) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 458 Tm (device, IP, geography, and channel context before drawing conclusions.; Review inbound) Tj T* ET
+BT 1 0 0 1 54 458 Tm (consistent with a potential collection pattern. In this graph, the pattern is supported by) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 444 Tm (counterparties for shared attributes or common funding behavior.; Check whether funds move) Tj T* ET
+BT 1 0 0 1 54 444 Tm (in_degree=8 on node JENNIFER DAVENPORT \(jennifer_davenport\);) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 430 Tm (onward from the collection node shortly after receipt.  Limitations and missing context:) Tj T* ET
+BT 1 0 0 1 54 430 Tm (weighted_inbound_amount=12625.0 on node JENNIFER DAVENPORT \(jennifer_davenport\);) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 416 Tm (Timestamps are absent, so timing, velocity, and sequence cannot be assessed. Customer) Tj T* ET
+BT 1 0 0 1 54 416 Tm (repeated_amount_score=0.364 at amount 1200.0. Confidence is 0.714. Fan-in structure alone) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 402 Tm (profile context is absent. KYC, device, and IP context are absent. Geographic context is) Tj T* ET
+BT 1 0 0 1 54 402 Tm (is not a final suspicious activity conclusion. AFC pattern meaning: in AFC terms, funnel or) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 388 Tm (absent. Transaction channel context is absent. Customer baseline activity context is) Tj T* ET
+BT 1 0 0 1 54 388 Tm ( master-account activity means: Multiple sources consolidate into a central node, which can) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 374 Tm (absent. This output is an investigative aid and does not make a final suspicious activity) Tj T* ET
+BT 1 0 0 1 54 374 Tm ( resemble a potential funnel or master-account pattern when supported by geography, timing,) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 360 Tm (conclusion. This output does not make a SAR filing decision.) Tj T* ET
+BT 1 0 0 1 54 360 Tm ( and customer-purpose context. In this graph, the pattern is supported by) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 346 Tm  T* ET
+BT 1 0 0 1 54 346 Tm (fan_in_nodes=JENNIFER DAVENPORT \(jennifer_davenport\); inbound_hub_nodes=JENNIFER DAVENPORT) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 332 Tm (\(jennifer_davenport\). Confidence is 0.544. A funnel-account hypothesis cannot be concluded) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 318 Tm (from graph topology alone. AFC pattern meaning: in AFC terms, inbound hub concentration) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 304 Tm (means: At least one node receives funds from several counterparties, which is consistent) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 290 Tm (with a concentration pattern that may warrant review. In this graph, the pattern is) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 276 Tm (supported by inbound_hub_nodes=JENNIFER DAVENPORT \(jennifer_davenport\);) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 262 Tm (fan_in_nodes=JENNIFER DAVENPORT \(jennifer_davenport\). Confidence is 0.524. Inbound) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 248 Tm (concentration is a review signal and does not establish source-of-funds concerns without) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 234 Tm (customer and transaction context.  Why this graph should be reviewed: Medium priority,) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 220 Tm (score 40. Investigation priority is Medium with score 40. Reason codes:) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 206 Tm (typology:fan_in_collection, boost:distinct_counterparties. The review rationale is based on) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 192 Tm ( graph structure and configured AFC skills, not on a finding of wrongdoing. SAR/STR review) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 178 Tm (note: This system does not make SAR or STR filing decisions. Manual review should assess) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 164 Tm (facts, customer context, and additional indicators before any SAR or STR consideration.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 150 Tm (SAR red flag review signals: many-to-one collection or funneling review signal: The graph) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 136 Tm (contains a many-to-one concentration pattern that is a SAR/STR red flag review signal when) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 122 Tm (supported by customer, purpose, geography, timing, or counterparty context. Review) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 108 Tm (question: Do multiple counterparties appear to collect or funnel funds into one account,) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 94 Tm (wallet, profile, or beneficiary without a clear expected purpose? Many-to-one topology) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 80 Tm (alone is not suspicious activity and is not a SAR/STR filing decision.  Key entities and) Tj T* ET
+ 
+endstream
+endobj
+11 0 obj
+<<
+/Length 5686
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 738 Tm (money-flow evidence: fan-in collection: in_degree=8 on node JENNIFER DAVENPORT) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 724 Tm (\(jennifer_davenport\); weighted_inbound_amount=12625.0 on node JENNIFER DAVENPORT) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 710 Tm (\(jennifer_davenport\); repeated_amount_score=0.364 at amount 1200.0 funnel or master-account) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 696 Tm ( activity: fan_in_nodes=JENNIFER DAVENPORT \(jennifer_davenport\); inbound_hub_nodes=JENNIFER) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 682 Tm ( DAVENPORT \(jennifer_davenport\) inbound hub concentration: inbound_hub_nodes=JENNIFER) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 668 Tm (DAVENPORT \(jennifer_davenport\); fan_in_nodes=JENNIFER DAVENPORT \(jennifer_davenport\)  Next) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 654 Tm (analyst checks: Review underlying transactions for timestamps, amounts, settlement) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 640 Tm (direction, and counterparty identifiers.; Compare observed activity against customer) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 626 Tm (profile, expected behavior, and customer baseline.; Check KYC, device, IP, geography, and) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 612 Tm (channel context before drawing conclusions.; Review inbound counterparties for shared) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 598 Tm (attributes or common funding behavior.; Check whether funds move onward from the collection) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 584 Tm ( node shortly after receipt.; Review transaction geography, branch or channel information,) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 570 Tm (and expected account purpose.; Check whether consolidated funds move onward and whether) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 556 Tm (locations or counterparties are inconsistent with the customer profile.; Review whether) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 542 Tm (inbound counterparties have shared identifiers, common funding behavior, or a documented) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 528 Tm (relationship to the central node.; Compare inbound activity against the customer's expected) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 514 Tm ( profile and historical baseline.  Limitations and missing context: Timestamps are absent,) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 500 Tm (so timing, velocity, and sequence cannot be assessed. Customer profile context is absent.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 486 Tm (KYC, device, and IP context are absent. Geographic context is absent. Transaction channel) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 472 Tm (context is absent. Customer baseline activity context is absent. This output is an) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 458 Tm (investigative aid and does not make a final suspicious activity conclusion. This output) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 444 Tm (does not make a SAR filing decision.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 430 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
-BT 1 0 0 1 54 334 Tm (Graph Summary) Tj T* ET
+BT 1 0 0 1 54 418 Tm (Graph Summary) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 316 Tm (- Node count: 12) Tj T* ET
+BT 1 0 0 1 54 400 Tm (- Node count: 12) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 302 Tm (- Edge count: 11) Tj T* ET
+BT 1 0 0 1 54 386 Tm (- Edge count: 11) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 288 Tm (- Repeated amount score: 0.364) Tj T* ET
+BT 1 0 0 1 54 372 Tm (- Repeated amount score: 0.364) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 274 Tm (- Repeated amount value: 1200.0) Tj T* ET
+BT 1 0 0 1 54 358 Tm (- Repeated amount value: 1200.0) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 260 Tm (- Overall extraction confidence: 0.959) Tj T* ET
+BT 1 0 0 1 54 344 Tm (- Overall extraction confidence: 0.959) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 246 Tm  T* ET
+BT 1 0 0 1 54 330 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
-BT 1 0 0 1 54 234 Tm (Detected Typologies) Tj T* ET
+BT 1 0 0 1 54 318 Tm (Detected Typologies) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 216 Tm (- fan-in collection \(confidence 0.714\): Multiple sources converge into a central node,) Tj T* ET
+BT 1 0 0 1 54 300 Tm (- fan-in collection \(confidence 0.714\): Multiple sources converge into a central node,) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 202 Tm (which is consistent with a potential collection pattern.) Tj T* ET
+BT 1 0 0 1 54 286 Tm (which is consistent with a potential collection pattern.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 272 Tm (- funnel or master-account activity \(confidence 0.544\): Multiple sources consolidate into a) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 258 Tm ( central node, which can resemble a potential funnel or master-account pattern when) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 244 Tm (supported by geography, timing, and customer-purpose context.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 230 Tm (- inbound hub concentration \(confidence 0.524\): At least one node receives funds from) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 216 Tm (several counterparties, which is consistent with a concentration pattern that may warrant) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 202 Tm (review.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
 BT 1 0 0 1 54 188 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
@@ -139,115 +264,160 @@ BT 1 0 0 1 54 144 Tm (typology:fan_in_collection, boost:distinct_counterparties.
 BT /F1 10 Tf 12 TL ET
 BT 1 0 0 1 54 130 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
-BT 1 0 0 1 54 118 Tm (Recommended Investigation Steps) Tj T* ET
+BT 1 0 0 1 54 118 Tm (SAR Red Flag Review Signals) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 100 Tm (- Review underlying transactions for timestamps, amounts, settlement direction, and) Tj T* ET
+BT 1 0 0 1 54 100 Tm (- This system identifies graph-supported SAR/STR red flag review signals only. It does not) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 86 Tm (counterparty identifiers.) Tj T* ET
+BT 1 0 0 1 54 86 Tm (decide whether a SAR or STR should be filed.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 72 Tm (- Compare observed activity against customer profile, expected behavior, and customer) Tj T* ET
+BT 1 0 0 1 54 72 Tm (- many-to-one collection or funneling review signal: The graph contains a many-to-one) Tj T* ET
  
 endstream
 endobj
-9 0 obj
+12 0 obj
 <<
-/Length 3377
+/Length 5097
 >>
 stream
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 738 Tm (baseline.) Tj T* ET
+BT 1 0 0 1 54 738 Tm (concentration pattern that is a SAR/STR red flag review signal when supported by customer,) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 724 Tm (- Check KYC, device, IP, geography, and channel context before drawing conclusions.) Tj T* ET
+BT 1 0 0 1 54 724 Tm (purpose, geography, timing, or counterparty context. Review question: Do multiple) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 710 Tm (- Review inbound counterparties for shared attributes or common funding behavior.) Tj T* ET
+BT 1 0 0 1 54 710 Tm (counterparties appear to collect or funnel funds into one account, wallet, profile, or) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 696 Tm (- Check whether funds move onward from the collection node shortly after receipt.) Tj T* ET
+BT 1 0 0 1 54 696 Tm (beneficiary without a clear expected purpose?) Tj T* ET
 BT /F1 10 Tf 12 TL ET
 BT 1 0 0 1 54 682 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
-BT 1 0 0 1 54 670 Tm (Limitations and Missing Context) Tj T* ET
+BT 1 0 0 1 54 670 Tm (Recommended Investigation Steps) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 652 Tm (- Timestamps are absent, so timing, velocity, and sequence cannot be assessed.) Tj T* ET
+BT 1 0 0 1 54 652 Tm (- Review underlying transactions for timestamps, amounts, settlement direction, and) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 638 Tm (- Customer profile context is absent.) Tj T* ET
+BT 1 0 0 1 54 638 Tm (counterparty identifiers.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 624 Tm (- KYC, device, and IP context are absent.) Tj T* ET
+BT 1 0 0 1 54 624 Tm (- Compare observed activity against customer profile, expected behavior, and customer) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 610 Tm (- Geographic context is absent.) Tj T* ET
+BT 1 0 0 1 54 610 Tm (baseline.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 596 Tm (- Transaction channel context is absent.) Tj T* ET
+BT 1 0 0 1 54 596 Tm (- Check KYC, device, IP, geography, and channel context before drawing conclusions.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 582 Tm (- Customer baseline activity context is absent.) Tj T* ET
+BT 1 0 0 1 54 582 Tm (- Review inbound counterparties for shared attributes or common funding behavior.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 568 Tm (- This output is an investigative aid and does not make a final suspicious activity) Tj T* ET
+BT 1 0 0 1 54 568 Tm (- Check whether funds move onward from the collection node shortly after receipt.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 554 Tm (conclusion.) Tj T* ET
+BT 1 0 0 1 54 554 Tm (- Review transaction geography, branch or channel information, and expected account) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 540 Tm (- This output does not make a SAR filing decision.) Tj T* ET
+BT 1 0 0 1 54 540 Tm (purpose.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 526 Tm  T* ET
+BT 1 0 0 1 54 526 Tm (- Check whether consolidated funds move onward and whether locations or counterparties are) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 512 Tm (inconsistent with the customer profile.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 498 Tm (- Review whether inbound counterparties have shared identifiers, common funding behavior,) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 484 Tm (or a documented relationship to the central node.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 470 Tm (- Compare inbound activity against the customer's expected profile and historical baseline.) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 456 Tm  T* ET
 BT /F1 13 Tf 15.6 TL ET
-BT 1 0 0 1 54 514 Tm (Key Evidence) Tj T* ET
+BT 1 0 0 1 54 444 Tm (Limitations and Missing Context) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 496 Tm (- Visible graph image: david_thomas -> jennifer_davenport amount $1.2k) Tj T* ET
+BT 1 0 0 1 54 426 Tm (- Timestamps are absent, so timing, velocity, and sequence cannot be assessed.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 482 Tm (direction_confidence=0.97) Tj T* ET
+BT 1 0 0 1 54 412 Tm (- Customer profile context is absent.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 468 Tm (- Visible graph image: amy_jones -> jennifer_davenport amount $2.4k) Tj T* ET
+BT 1 0 0 1 54 398 Tm (- KYC, device, and IP context are absent.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 454 Tm (direction_confidence=0.97) Tj T* ET
+BT 1 0 0 1 54 384 Tm (- Geographic context is absent.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 440 Tm (- Visible graph image: kelly_morgano -> jennifer_davenport amount $1.8k) Tj T* ET
+BT 1 0 0 1 54 370 Tm (- Transaction channel context is absent.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 426 Tm (direction_confidence=0.97) Tj T* ET
+BT 1 0 0 1 54 356 Tm (- Customer baseline activity context is absent.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 412 Tm (- Visible graph image: cole_srajer -> jennifer_davenport amount $1.8k) Tj T* ET
+BT 1 0 0 1 54 342 Tm (- This output is an investigative aid and does not make a final suspicious activity) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 398 Tm (direction_confidence=0.97) Tj T* ET
+BT 1 0 0 1 54 328 Tm (conclusion.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 384 Tm (- Visible graph image: chris_scovone -> jennifer_davenport amount $1.8k) Tj T* ET
+BT 1 0 0 1 54 314 Tm (- This output does not make a SAR filing decision.) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 370 Tm (direction_confidence=0.95) Tj T* ET
+BT 1 0 0 1 54 300 Tm  T* ET
+BT /F1 13 Tf 15.6 TL ET
+BT 1 0 0 1 54 288 Tm (Key Evidence) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 356 Tm (- Visible graph image: ashley_nelson -> jennifer_davenport amount $1.2k) Tj T* ET
+BT 1 0 0 1 54 270 Tm (- Visible graph image: david_thomas -> jennifer_davenport amount $1.2k) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 342 Tm (direction_confidence=0.78) Tj T* ET
+BT 1 0 0 1 54 256 Tm (direction_confidence=0.97) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 328 Tm (- Visible graph image: deanna_kossaras -> jennifer_davenport amount $1.7k) Tj T* ET
+BT 1 0 0 1 54 242 Tm (- Visible graph image: amy_jones -> jennifer_davenport amount $2.4k) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 314 Tm (direction_confidence=0.9) Tj T* ET
+BT 1 0 0 1 54 228 Tm (direction_confidence=0.97) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 300 Tm (- Visible graph image: chad_jameson -> jennifer_davenport amount $1.2k) Tj T* ET
+BT 1 0 0 1 54 214 Tm (- Visible graph image: kelly_morgano -> jennifer_davenport amount $1.8k) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 286 Tm (direction_confidence=0.95) Tj T* ET
+BT 1 0 0 1 54 200 Tm (direction_confidence=0.97) Tj T* ET
 BT /F1 10 Tf 12 TL ET
-BT 1 0 0 1 54 272 Tm  T* ET
+BT 1 0 0 1 54 186 Tm (- Visible graph image: cole_srajer -> jennifer_davenport amount $1.8k) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 172 Tm (direction_confidence=0.97) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 158 Tm (- Visible graph image: chris_scovone -> jennifer_davenport amount $1.8k) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 144 Tm (direction_confidence=0.95) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 130 Tm (- Visible graph image: ashley_nelson -> jennifer_davenport amount $1.2k) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 116 Tm (direction_confidence=0.78) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 102 Tm (- Visible graph image: deanna_kossaras -> jennifer_davenport amount $1.7k) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 88 Tm (direction_confidence=0.9) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 74 Tm (- Visible graph image: chad_jameson -> jennifer_davenport amount $1.2k) Tj T* ET
+ 
+endstream
+endobj
+13 0 obj
+<<
+/Length 172
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 738 Tm (direction_confidence=0.95) Tj T* ET
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 54 724 Tm  T* ET
  
 endstream
 endobj
 xref
-0 10
+0 14
 0000000000 65535 f 
 0000000061 00000 n 
 0000000092 00000 n 
 0000000199 00000 n 
-0000000392 00000 n 
-0000000585 00000 n 
-0000000653 00000 n 
-0000000934 00000 n 
-0000000999 00000 n 
-0000006392 00000 n 
+0000000393 00000 n 
+0000000587 00000 n 
+0000000781 00000 n 
+0000000975 00000 n 
+0000001043 00000 n 
+0000001324 00000 n 
+0000001401 00000 n 
+0000007800 00000 n 
+0000013538 00000 n 
+0000018687 00000 n 
 trailer
 <<
 /ID 
-[<e271d771f1a0938c423a80c4cb5980f1><e271d771f1a0938c423a80c4cb5980f1>]
+[<52b1df62d62eaf983312bd90717f1d38><52b1df62d62eaf983312bd90717f1d38>]
 % ReportLab generated PDF document -- digest (opensource)
 
-/Info 6 0 R
-/Root 5 0 R
-/Size 10
+/Info 8 0 R
+/Root 7 0 R
+/Size 14
 >>
 startxref
-9820
+18910
 %%EOF

@@ -7,6 +7,12 @@ typology_points:
   scatter_gather: 45
   bipartite_many_to_many: 35
   equal_amount_coordination: 20
+  inbound_hub_concentration: 25
+  outbound_hub_concentration: 25
+  multi_hop_layering: 35
+  potential_funnel_account_activity: 25
+typology_scoring:
+  mode: max_per_risk_family
 boosts:
   repeated_amount: 10
   distinct_counterparties: 10
@@ -33,3 +39,30 @@ reason_templates:
   low_extraction_confidence: "Average extraction confidence is below policy threshold."
 explanation_template: "Investigation priority is {priority_band} with score {score}. Reason codes: {reason_codes}."
 empty_reason_codes_text: "no configured reason codes"
+sar_review_policy:
+  decision_value: "not_determined_by_system"
+  boundary_text: "This system does not make SAR or STR filing decisions."
+  review_text_by_priority_band:
+    Low: "Document the review rationale and assess whether additional facts change the risk view."
+    Medium: "Manual review should assess facts, customer context, and additional indicators before any SAR or STR consideration."
+    High: "Escalate for compliance review when corroborating facts, context, or additional indicators support suspicion."
+    Critical: "Escalate promptly for compliance review; filing decisions remain with authorized compliance personnel."
+    default: "Manual review should assess facts, context, and additional indicators before any filing decision."
+  required_context:
+    - "facts and transaction details"
+    - "customer profile and expected activity"
+    - "KYC, device, IP, and counterparty identifiers"
+    - "geography and jurisdiction exposure"
+    - "channel and product information"
+    - "timing, velocity, sequence, and account balance movement"
+    - "business purpose or lawful explanation"
+    - "prior alerts, case history, subpoenas, law-enforcement requests, or adverse media when available"
+  not_assessed_from_graph_only:
+    - "final SAR or STR filing decision"
+    - "reasonable grounds to suspect"
+    - "source of funds legitimacy"
+    - "customer intent"
+    - "sanctions evasion"
+    - "terrorist financing"
+    - "human trafficking"
+    - "structuring or reporting evasion"

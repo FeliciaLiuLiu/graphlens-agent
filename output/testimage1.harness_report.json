@@ -189,6 +189,13 @@
     {
       "typology_id": "fan_in_collection",
       "name": "fan-in collection",
+      "risk_family": "collection_concentration",
+      "scenario_type": "graph_supported",
+      "source_registry_ids": [
+        "ffiec_appendix_f_red_flags",
+        "fintrac_financial_entity_indicators"
+      ],
+      "requires_context": [],
       "confidence": 0.714,
       "afc_interpretation": "Multiple sources converge into a central node, which is consistent with a potential collection pattern.",
       "caution": "Fan-in structure alone is not a final suspicious activity conclusion.",
@@ -224,6 +231,94 @@
         "Transaction channel context is absent.",
         "Customer baseline activity context is absent."
       ]
+    },
+    {
+      "typology_id": "potential_funnel_account_activity",
+      "name": "funnel or master-account activity",
+      "risk_family": "collection_concentration",
+      "scenario_type": "graph_supported_with_context_required",
+      "source_registry_ids": [
+        "fincen_funnel_account_advisory",
+        "ffiec_appendix_f_red_flags"
+      ],
+      "requires_context": [
+        "timestamps",
+        "geography",
+        "customer_profile",
+        "channel",
+        "customer_baseline"
+      ],
+      "confidence": 0.544,
+      "afc_interpretation": "Multiple sources consolidate into a central node, which can resemble a potential funnel or master-account pattern when supported by geography, timing, and customer-purpose context.",
+      "caution": "A funnel-account hypothesis cannot be concluded from graph topology alone.",
+      "investigation_boost": "Review deposit or transfer locations, expected account purpose, transaction timing, and onward movement.",
+      "matched_evidence": [
+        {
+          "metric": "fan_in_nodes",
+          "value": [
+            "jennifer_davenport"
+          ],
+          "source_registry_id": "internal_graph_features",
+          "rule_id": "potential_funnel_account_activity"
+        },
+        {
+          "metric": "inbound_hub_nodes",
+          "value": [
+            "jennifer_davenport"
+          ],
+          "source_registry_id": "internal_graph_features",
+          "rule_id": "potential_funnel_account_activity"
+        }
+      ],
+      "limitations": [
+        "Timestamps are absent, so timing, velocity, and sequence cannot be assessed.",
+        "Customer profile context is absent.",
+        "KYC, device, and IP context are absent.",
+        "Geographic context is absent.",
+        "Transaction channel context is absent.",
+        "Customer baseline activity context is absent."
+      ]
+    },
+    {
+      "typology_id": "inbound_hub_concentration",
+      "name": "inbound hub concentration",
+      "risk_family": "collection_concentration",
+      "scenario_type": "graph_supported",
+      "source_registry_ids": [
+        "ffiec_appendix_f_red_flags",
+        "fintrac_financial_entity_indicators"
+      ],
+      "requires_context": [],
+      "confidence": 0.524,
+      "afc_interpretation": "At least one node receives funds from several counterparties, which is consistent with a concentration pattern that may warrant review.",
+      "caution": "Inbound concentration is a review signal and does not establish source-of-funds concerns without customer and transaction context.",
+      "investigation_boost": "Review whether inbound counterparties, payment purposes, and customer profile support the concentration pattern.",
+      "matched_evidence": [
+        {
+          "metric": "inbound_hub_nodes",
+          "value": [
+            "jennifer_davenport"
+          ],
+          "source_registry_id": "internal_graph_features",
+          "rule_id": "inbound_hub_concentration"
+        },
+        {
+          "metric": "fan_in_nodes",
+          "value": [
+            "jennifer_davenport"
+          ],
+          "source_registry_id": "internal_graph_features",
+          "rule_id": "inbound_hub_concentration"
+        }
+      ],
+      "limitations": [
+        "Timestamps are absent, so timing, velocity, and sequence cannot be assessed.",
+        "Customer profile context is absent.",
+        "KYC, device, and IP context are absent.",
+        "Geographic context is absent.",
+        "Transaction channel context is absent.",
+        "Customer baseline activity context is absent."
+      ]
     }
   ],
   "alert_boost": {
@@ -241,16 +336,551 @@
         "reason": "Graph contains multiple distinct counterparties."
       }
     ],
-    "explanation": "Investigation priority is Medium with score 40. Reason codes: typology:fan_in_collection, boost:distinct_counterparties."
+    "explanation": "Investigation priority is Medium with score 40. Reason codes: typology:fan_in_collection, boost:distinct_counterparties.",
+    "sar_review": {
+      "decision": "not_determined_by_system",
+      "summary": "This system does not make SAR or STR filing decisions. Manual review should assess facts, customer context, and additional indicators before any SAR or STR consideration.",
+      "required_context": [
+        "facts and transaction details",
+        "customer profile and expected activity",
+        "KYC, device, IP, and counterparty identifiers",
+        "geography and jurisdiction exposure",
+        "channel and product information",
+        "timing, velocity, sequence, and account balance movement",
+        "business purpose or lawful explanation",
+        "prior alerts, case history, subpoenas, law-enforcement requests, or adverse media when available"
+      ],
+      "not_assessed_from_graph_only": [
+        "final SAR or STR filing decision",
+        "reasonable grounds to suspect",
+        "source of funds legitimacy",
+        "customer intent",
+        "sanctions evasion",
+        "terrorist financing",
+        "human trafficking",
+        "structuring or reporting evasion"
+      ]
+    },
+    "sar_red_flags": {
+      "decision": "not_determined_by_system",
+      "summary": "This system identifies graph-supported SAR/STR red flag review signals only. It does not decide whether a SAR or STR should be filed.",
+      "matched_review_signals": [
+        {
+          "red_flag_id": "many_to_one_collection_red_flag",
+          "name": "many-to-one collection or funneling review signal",
+          "status": "present_as_review_signal",
+          "matched_text": "The graph contains a many-to-one concentration pattern that is a SAR/STR red flag review signal when supported by customer, purpose, geography, timing, or counterparty context.",
+          "review_question": "Do multiple counterparties appear to collect or funnel funds into one account, wallet, profile, or beneficiary without a clear expected purpose?",
+          "caution": "Many-to-one topology alone is not suspicious activity and is not a SAR/STR filing decision.",
+          "recommended_checks": [
+            "Review the central node's customer profile, expected activity, and relationship to inbound counterparties.",
+            "Check whether funds move onward from the central node and whether the timing is consistent with a documented purpose.",
+            "Assess geography, channel, and transaction purpose before escalation."
+          ],
+          "requires_context": [
+            "customer profile",
+            "expected activity",
+            "counterparty relationship",
+            "timestamps and velocity",
+            "geography and channel"
+          ],
+          "source_registry_ids": [
+            "ffiec_appendix_f_red_flags",
+            "fincen_funnel_account_advisory",
+            "fintrac_financial_entity_indicators"
+          ],
+          "supporting_typologies": [
+            {
+              "typology_id": "fan_in_collection",
+              "name": "fan-in collection",
+              "confidence": 0.714,
+              "matched_evidence": [
+                {
+                  "metric": "in_degree",
+                  "node_id": "jennifer_davenport",
+                  "value": 8,
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "fan_in_collection"
+                },
+                {
+                  "metric": "weighted_inbound_amount",
+                  "node_id": "jennifer_davenport",
+                  "value": 12625.0,
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "fan_in_collection"
+                },
+                {
+                  "metric": "repeated_amount_score",
+                  "value": 0.364,
+                  "amount_value": 1200.0,
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "fan_in_collection"
+                }
+              ]
+            },
+            {
+              "typology_id": "inbound_hub_concentration",
+              "name": "inbound hub concentration",
+              "confidence": 0.524,
+              "matched_evidence": [
+                {
+                  "metric": "inbound_hub_nodes",
+                  "value": [
+                    "jennifer_davenport"
+                  ],
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "inbound_hub_concentration"
+                },
+                {
+                  "metric": "fan_in_nodes",
+                  "value": [
+                    "jennifer_davenport"
+                  ],
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "inbound_hub_concentration"
+                }
+              ]
+            },
+            {
+              "typology_id": "potential_funnel_account_activity",
+              "name": "funnel or master-account activity",
+              "confidence": 0.544,
+              "matched_evidence": [
+                {
+                  "metric": "fan_in_nodes",
+                  "value": [
+                    "jennifer_davenport"
+                  ],
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "potential_funnel_account_activity"
+                },
+                {
+                  "metric": "inbound_hub_nodes",
+                  "value": [
+                    "jennifer_davenport"
+                  ],
+                  "source_registry_id": "internal_graph_features",
+                  "rule_id": "potential_funnel_account_activity"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "context_required_red_flags_not_assessed_from_graph_only": [
+        {
+          "red_flag_id": "inconsistent_with_customer_profile",
+          "name": "activity inconsistent with customer profile",
+          "status": "not_assessed_from_graph_only",
+          "description": "Transactions may be inconsistent with a customer's known profile, expected activity, or historical baseline.",
+          "required_context": [
+            "customer profile",
+            "expected activity",
+            "historical baseline",
+            "account age",
+            "customer explanation"
+          ],
+          "review_guidance": "Compare graph-supported patterns with customer purpose, expected behavior, and prior activity before escalation.",
+          "caution": "The graph alone cannot establish inconsistency with profile.",
+          "source_registry_ids": [
+            "ffiec_suspicious_activity_monitoring",
+            "fintrac_financial_entity_indicators"
+          ]
+        },
+        {
+          "red_flag_id": "no_apparent_lawful_purpose",
+          "name": "no apparent lawful or business purpose",
+          "status": "not_assessed_from_graph_only",
+          "description": "A transaction pattern may lack an apparent lawful, business, or personal purpose after review of available facts.",
+          "required_context": [
+            "transaction purpose",
+            "customer explanation",
+            "product type",
+            "source of funds",
+            "counterparty relationship"
+          ],
+          "review_guidance": "Use graph patterns as a prompt to request or review purpose information; do not conclude lack of purpose from topology alone.",
+          "caution": "Purpose cannot be determined from graph topology alone.",
+          "source_registry_ids": [
+            "fincen_sar_msb_guidance",
+            "fintrac_str_guidance"
+          ]
+        },
+        {
+          "red_flag_id": "missing_originator_or_beneficiary_information",
+          "name": "missing or incomplete originator or beneficiary information",
+          "status": "not_assessed_from_graph_only",
+          "description": "Funds transfers may lack expected originator, beneficiary, or on-behalf-of information.",
+          "required_context": [
+            "payment message fields",
+            "originator identifiers",
+            "beneficiary identifiers",
+            "product requirements",
+            "transaction channel"
+          ],
+          "review_guidance": "Check payment-message and KYC fields for completeness when graph concentration or relay signals appear.",
+          "caution": "Node labels alone do not establish missing payment information.",
+          "source_registry_ids": [
+            "ffiec_appendix_f_red_flags",
+            "fintrac_financial_entity_indicators"
+          ]
+        },
+        {
+          "red_flag_id": "structuring_or_reporting_evasion",
+          "name": "structuring or reporting-evasion concern",
+          "status": "not_assessed_from_graph_only",
+          "description": "Repeated or split transactions may require review for possible reporting or recordkeeping evasion.",
+          "required_context": [
+            "cash or monetary instrument indicator",
+            "reporting threshold proximity",
+            "timestamps",
+            "product type",
+            "customer explanation"
+          ],
+          "review_guidance": "Repeated graph amounts can support a review question, but structuring requires threshold and evasion context.",
+          "caution": "The graph alone must not be used to infer structuring.",
+          "source_registry_ids": [
+            "ffiec_structuring_appendix_g",
+            "fincen_sar_msb_guidance"
+          ]
+        },
+        {
+          "red_flag_id": "sanctions_tf_human_trafficking_sensitive_typologies",
+          "name": "sanctions, terrorist-financing, or human-trafficking context",
+          "status": "not_assessed_from_graph_only",
+          "description": "Sensitive typology concerns require explicit screening, geography, party, intelligence, behavioral, or adverse-media context.",
+          "required_context": [
+            "sanctions screening results",
+            "party identifiers",
+            "jurisdiction exposure",
+            "adverse media or law-enforcement context",
+            "typology-specific indicators"
+          ],
+          "review_guidance": "Do not infer these concerns from graph topology; use only explicit supporting context.",
+          "caution": "This system does not make sanctions, terrorist-financing, or human-trafficking conclusions from graph structure.",
+          "source_registry_ids": [
+            "fintrac_financial_entity_indicators",
+            "fintrac_str_guidance"
+          ]
+        }
+      ]
+    },
+    "scenario_coverage": {
+      "graph_supported_matches": [
+        {
+          "typology_id": "fan_in_collection",
+          "name": "fan-in collection",
+          "risk_family": "collection_concentration",
+          "scenario_type": "graph_supported"
+        },
+        {
+          "typology_id": "potential_funnel_account_activity",
+          "name": "funnel or master-account activity",
+          "risk_family": "collection_concentration",
+          "scenario_type": "graph_supported_with_context_required"
+        },
+        {
+          "typology_id": "inbound_hub_concentration",
+          "name": "inbound hub concentration",
+          "risk_family": "collection_concentration",
+          "scenario_type": "graph_supported"
+        }
+      ],
+      "context_required_scenarios_not_assessed_from_graph_only": [
+        {
+          "scenario_id": "structuring_or_reporting_evasion",
+          "name": "structuring or reporting-evasion review",
+          "required_context": [
+            "product type",
+            "cash or monetary instrument indicator",
+            "regulatory threshold proximity",
+            "timestamps",
+            "customer explanation",
+            "branch or channel information"
+          ],
+          "caution": "The graph alone does not determine structuring."
+        },
+        {
+          "scenario_id": "rapid_movement_velocity",
+          "name": "rapid movement or velocity review",
+          "required_context": [
+            "timestamps",
+            "balance movement",
+            "settlement sequence",
+            "customer profile",
+            "expected activity"
+          ],
+          "caution": "Velocity cannot be assessed when timestamps are absent."
+        },
+        {
+          "scenario_id": "shell_company_or_tbml_review",
+          "name": "shell-company or trade-based money laundering review",
+          "required_context": [
+            "beneficial ownership",
+            "business purpose",
+            "invoice or trade documentation",
+            "goods or services description",
+            "jurisdiction exposure",
+            "customer baseline"
+          ],
+          "caution": "A graph pattern alone does not identify a shell company or trade-based money laundering."
+        },
+        {
+          "scenario_id": "sanctions_or_tf_review",
+          "name": "sanctions or terrorist-financing review",
+          "required_context": [
+            "sanctions screening results",
+            "geography",
+            "party identifiers",
+            "beneficial ownership",
+            "purpose of payment",
+            "adverse media or law-enforcement context"
+          ],
+          "caution": "This system must not make sanctions or terrorist-financing conclusions without supporting contextual evidence."
+        },
+        {
+          "scenario_id": "human_trafficking_or_exploitation_review",
+          "name": "human trafficking or exploitation review",
+          "required_context": [
+            "customer behavior",
+            "merchant or category information",
+            "geography",
+            "third-party control indicators",
+            "law-enforcement or adverse media context"
+          ],
+          "caution": "The graph alone is insufficient for this conclusion."
+        },
+        {
+          "scenario_id": "fraud_or_mule_network_review",
+          "name": "fraud or mule-network review",
+          "required_context": [
+            "fraud claims or returns",
+            "device and IP data",
+            "account opening age",
+            "customer communication indicators",
+            "withdrawal or transfer timing"
+          ],
+          "caution": "Do not label a person or account as a mule unless graph structure and supporting context justify a cautious hypothesis."
+        }
+      ]
+    }
+  },
+  "sar_red_flags": {
+    "decision": "not_determined_by_system",
+    "summary": "This system identifies graph-supported SAR/STR red flag review signals only. It does not decide whether a SAR or STR should be filed.",
+    "matched_review_signals": [
+      {
+        "red_flag_id": "many_to_one_collection_red_flag",
+        "name": "many-to-one collection or funneling review signal",
+        "status": "present_as_review_signal",
+        "matched_text": "The graph contains a many-to-one concentration pattern that is a SAR/STR red flag review signal when supported by customer, purpose, geography, timing, or counterparty context.",
+        "review_question": "Do multiple counterparties appear to collect or funnel funds into one account, wallet, profile, or beneficiary without a clear expected purpose?",
+        "caution": "Many-to-one topology alone is not suspicious activity and is not a SAR/STR filing decision.",
+        "recommended_checks": [
+          "Review the central node's customer profile, expected activity, and relationship to inbound counterparties.",
+          "Check whether funds move onward from the central node and whether the timing is consistent with a documented purpose.",
+          "Assess geography, channel, and transaction purpose before escalation."
+        ],
+        "requires_context": [
+          "customer profile",
+          "expected activity",
+          "counterparty relationship",
+          "timestamps and velocity",
+          "geography and channel"
+        ],
+        "source_registry_ids": [
+          "ffiec_appendix_f_red_flags",
+          "fincen_funnel_account_advisory",
+          "fintrac_financial_entity_indicators"
+        ],
+        "supporting_typologies": [
+          {
+            "typology_id": "fan_in_collection",
+            "name": "fan-in collection",
+            "confidence": 0.714,
+            "matched_evidence": [
+              {
+                "metric": "in_degree",
+                "node_id": "jennifer_davenport",
+                "value": 8,
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "fan_in_collection"
+              },
+              {
+                "metric": "weighted_inbound_amount",
+                "node_id": "jennifer_davenport",
+                "value": 12625.0,
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "fan_in_collection"
+              },
+              {
+                "metric": "repeated_amount_score",
+                "value": 0.364,
+                "amount_value": 1200.0,
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "fan_in_collection"
+              }
+            ]
+          },
+          {
+            "typology_id": "inbound_hub_concentration",
+            "name": "inbound hub concentration",
+            "confidence": 0.524,
+            "matched_evidence": [
+              {
+                "metric": "inbound_hub_nodes",
+                "value": [
+                  "jennifer_davenport"
+                ],
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "inbound_hub_concentration"
+              },
+              {
+                "metric": "fan_in_nodes",
+                "value": [
+                  "jennifer_davenport"
+                ],
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "inbound_hub_concentration"
+              }
+            ]
+          },
+          {
+            "typology_id": "potential_funnel_account_activity",
+            "name": "funnel or master-account activity",
+            "confidence": 0.544,
+            "matched_evidence": [
+              {
+                "metric": "fan_in_nodes",
+                "value": [
+                  "jennifer_davenport"
+                ],
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "potential_funnel_account_activity"
+              },
+              {
+                "metric": "inbound_hub_nodes",
+                "value": [
+                  "jennifer_davenport"
+                ],
+                "source_registry_id": "internal_graph_features",
+                "rule_id": "potential_funnel_account_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "context_required_red_flags_not_assessed_from_graph_only": [
+      {
+        "red_flag_id": "inconsistent_with_customer_profile",
+        "name": "activity inconsistent with customer profile",
+        "status": "not_assessed_from_graph_only",
+        "description": "Transactions may be inconsistent with a customer's known profile, expected activity, or historical baseline.",
+        "required_context": [
+          "customer profile",
+          "expected activity",
+          "historical baseline",
+          "account age",
+          "customer explanation"
+        ],
+        "review_guidance": "Compare graph-supported patterns with customer purpose, expected behavior, and prior activity before escalation.",
+        "caution": "The graph alone cannot establish inconsistency with profile.",
+        "source_registry_ids": [
+          "ffiec_suspicious_activity_monitoring",
+          "fintrac_financial_entity_indicators"
+        ]
+      },
+      {
+        "red_flag_id": "no_apparent_lawful_purpose",
+        "name": "no apparent lawful or business purpose",
+        "status": "not_assessed_from_graph_only",
+        "description": "A transaction pattern may lack an apparent lawful, business, or personal purpose after review of available facts.",
+        "required_context": [
+          "transaction purpose",
+          "customer explanation",
+          "product type",
+          "source of funds",
+          "counterparty relationship"
+        ],
+        "review_guidance": "Use graph patterns as a prompt to request or review purpose information; do not conclude lack of purpose from topology alone.",
+        "caution": "Purpose cannot be determined from graph topology alone.",
+        "source_registry_ids": [
+          "fincen_sar_msb_guidance",
+          "fintrac_str_guidance"
+        ]
+      },
+      {
+        "red_flag_id": "missing_originator_or_beneficiary_information",
+        "name": "missing or incomplete originator or beneficiary information",
+        "status": "not_assessed_from_graph_only",
+        "description": "Funds transfers may lack expected originator, beneficiary, or on-behalf-of information.",
+        "required_context": [
+          "payment message fields",
+          "originator identifiers",
+          "beneficiary identifiers",
+          "product requirements",
+          "transaction channel"
+        ],
+        "review_guidance": "Check payment-message and KYC fields for completeness when graph concentration or relay signals appear.",
+        "caution": "Node labels alone do not establish missing payment information.",
+        "source_registry_ids": [
+          "ffiec_appendix_f_red_flags",
+          "fintrac_financial_entity_indicators"
+        ]
+      },
+      {
+        "red_flag_id": "structuring_or_reporting_evasion",
+        "name": "structuring or reporting-evasion concern",
+        "status": "not_assessed_from_graph_only",
+        "description": "Repeated or split transactions may require review for possible reporting or recordkeeping evasion.",
+        "required_context": [
+          "cash or monetary instrument indicator",
+          "reporting threshold proximity",
+          "timestamps",
+          "product type",
+          "customer explanation"
+        ],
+        "review_guidance": "Repeated graph amounts can support a review question, but structuring requires threshold and evasion context.",
+        "caution": "The graph alone must not be used to infer structuring.",
+        "source_registry_ids": [
+          "ffiec_structuring_appendix_g",
+          "fincen_sar_msb_guidance"
+        ]
+      },
+      {
+        "red_flag_id": "sanctions_tf_human_trafficking_sensitive_typologies",
+        "name": "sanctions, terrorist-financing, or human-trafficking context",
+        "status": "not_assessed_from_graph_only",
+        "description": "Sensitive typology concerns require explicit screening, geography, party, intelligence, behavioral, or adverse-media context.",
+        "required_context": [
+          "sanctions screening results",
+          "party identifiers",
+          "jurisdiction exposure",
+          "adverse media or law-enforcement context",
+          "typology-specific indicators"
+        ],
+        "review_guidance": "Do not infer these concerns from graph topology; use only explicit supporting context.",
+        "caution": "This system does not make sanctions, terrorist-financing, or human-trafficking conclusions from graph structure.",
+        "source_registry_ids": [
+          "fintrac_financial_entity_indicators",
+          "fintrac_str_guidance"
+        ]
+      }
+    ]
   },
   "recommended_investigation_steps": [
     "Review underlying transactions for timestamps, amounts, settlement direction, and counterparty identifiers.",
     "Compare observed activity against customer profile, expected behavior, and customer baseline.",
     "Check KYC, device, IP, geography, and channel context before drawing conclusions.",
     "Review inbound counterparties for shared attributes or common funding behavior.",
-    "Check whether funds move onward from the collection node shortly after receipt."
+    "Check whether funds move onward from the collection node shortly after receipt.",
+    "Review transaction geography, branch or channel information, and expected account purpose.",
+    "Check whether consolidated funds move onward and whether locations or counterparties are inconsistent with the customer profile.",
+    "Review whether inbound counterparties have shared identifiers, common funding behavior, or a documented relationship to the central node.",
+    "Compare inbound activity against the customer's expected profile and historical baseline."
   ],
-  "narrative": "Network observation: the validated graph contains 12 nodes and 11 directed edges. Detected motifs include fan-in nodes jennifer_davenport, fan-out nodes none, and pass-through relay candidates none.\n\nAFC typology hypothesis: the graph is consistent with a potential fan-in collection pattern (confidence 0.714) based on in_degree=8 on node jennifer_davenport; weighted_inbound_amount=12625.0 on node jennifer_davenport; repeated_amount_score=0.364 at amount 1200.0. Fan-in structure alone is not a final suspicious activity conclusion.\n\nAlert investigation boost: Medium priority, score 40. Investigation priority is Medium with score 40. Reason codes: typology:fan_in_collection, boost:distinct_counterparties. This may indicate that the alert warrants review, not that wrongdoing occurred.\n\nKey entities and money-flow evidence: fan-in collection: in_degree=8 on node jennifer_davenport; weighted_inbound_amount=12625.0 on node jennifer_davenport; repeated_amount_score=0.364 at amount 1200.0\n\nRecommended investigation steps: Review underlying transactions for timestamps, amounts, settlement direction, and counterparty identifiers.; Compare observed activity against customer profile, expected behavior, and customer baseline.; Check KYC, device, IP, geography, and channel context before drawing conclusions.; Review inbound counterparties for shared attributes or common funding behavior.; Check whether funds move onward from the collection node shortly after receipt.\n\nLimitations and missing context: Timestamps are absent, so timing, velocity, and sequence cannot be assessed. Customer profile context is absent. KYC, device, and IP context are absent. Geographic context is absent. Transaction channel context is absent. Customer baseline activity context is absent. This output is an investigative aid and does not make a final suspicious activity conclusion. This output does not make a SAR filing decision.",
+  "narrative": "Alert-review candidate assessment: This graph is a Medium alert-review candidate with score 40. Investigation priority is Medium with score 40. Reason codes: typology:fan_in_collection, boost:distinct_counterparties. The score means the graph may warrant analyst review; it is not a suspicious activity conclusion and is not a SAR/STR filing decision.\n\nWhat the graph shows: The validated graph contains 12 nodes and 11 directed edges. Detected motifs include fan-in nodes JENNIFER DAVENPORT (jennifer_davenport), fan-out nodes none, and pass-through relay candidates none. Key extracted entities include JENNIFER DAVENPORT (in-degree 8, out-degree 0, weighted inbound 12625.0, weighted outbound 0.0); KAREN HARTMAN (in-degree 2, out-degree 0, weighted inbound 3880.0, weighted outbound 0.0); CHRIS SCOVONE (in-degree 0, out-degree 2, weighted inbound 0.0, weighted outbound 3783.0); CHAD JAMESON (in-degree 0, out-degree 2, weighted inbound 0.0, weighted outbound 2328.0); ROBERT WHITE (in-degree 0, out-degree 1, weighted inbound 0.0, weighted outbound 2716.0).\n\nAFC typology hypothesis: AFC pattern meaning: in AFC terms, fan-in collection means: Multiple sources converge into a central node, which is consistent with a potential collection pattern. In this graph, the pattern is supported by in_degree=8 on node JENNIFER DAVENPORT (jennifer_davenport); weighted_inbound_amount=12625.0 on node JENNIFER DAVENPORT (jennifer_davenport); repeated_amount_score=0.364 at amount 1200.0. Confidence is 0.714. Fan-in structure alone is not a final suspicious activity conclusion. AFC pattern meaning: in AFC terms, funnel or master-account activity means: Multiple sources consolidate into a central node, which can resemble a potential funnel or master-account pattern when supported by geography, timing, and customer-purpose context. In this graph, the pattern is supported by fan_in_nodes=JENNIFER DAVENPORT (jennifer_davenport); inbound_hub_nodes=JENNIFER DAVENPORT (jennifer_davenport). Confidence is 0.544. A funnel-account hypothesis cannot be concluded from graph topology alone. AFC pattern meaning: in AFC terms, inbound hub concentration means: At least one node receives funds from several counterparties, which is consistent with a concentration pattern that may warrant review. In this graph, the pattern is supported by inbound_hub_nodes=JENNIFER DAVENPORT (jennifer_davenport); fan_in_nodes=JENNIFER DAVENPORT (jennifer_davenport). Confidence is 0.524. Inbound concentration is a review signal and does not establish source-of-funds concerns without customer and transaction context.\n\nWhy this graph should be reviewed: Medium priority, score 40. Investigation priority is Medium with score 40. Reason codes: typology:fan_in_collection, boost:distinct_counterparties. The review rationale is based on graph structure and configured AFC skills, not on a finding of wrongdoing. SAR/STR review note: This system does not make SAR or STR filing decisions. Manual review should assess facts, customer context, and additional indicators before any SAR or STR consideration.\n\nSAR red flag review signals: many-to-one collection or funneling review signal: The graph contains a many-to-one concentration pattern that is a SAR/STR red flag review signal when supported by customer, purpose, geography, timing, or counterparty context. Review question: Do multiple counterparties appear to collect or funnel funds into one account, wallet, profile, or beneficiary without a clear expected purpose? Many-to-one topology alone is not suspicious activity and is not a SAR/STR filing decision.\n\nKey entities and money-flow evidence: fan-in collection: in_degree=8 on node JENNIFER DAVENPORT (jennifer_davenport); weighted_inbound_amount=12625.0 on node JENNIFER DAVENPORT (jennifer_davenport); repeated_amount_score=0.364 at amount 1200.0 funnel or master-account activity: fan_in_nodes=JENNIFER DAVENPORT (jennifer_davenport); inbound_hub_nodes=JENNIFER DAVENPORT (jennifer_davenport) inbound hub concentration: inbound_hub_nodes=JENNIFER DAVENPORT (jennifer_davenport); fan_in_nodes=JENNIFER DAVENPORT (jennifer_davenport)\n\nNext analyst checks: Review underlying transactions for timestamps, amounts, settlement direction, and counterparty identifiers.; Compare observed activity against customer profile, expected behavior, and customer baseline.; Check KYC, device, IP, geography, and channel context before drawing conclusions.; Review inbound counterparties for shared attributes or common funding behavior.; Check whether funds move onward from the collection node shortly after receipt.; Review transaction geography, branch or channel information, and expected account purpose.; Check whether consolidated funds move onward and whether locations or counterparties are inconsistent with the customer profile.; Review whether inbound counterparties have shared identifiers, common funding behavior, or a documented relationship to the central node.; Compare inbound activity against the customer's expected profile and historical baseline.\n\nLimitations and missing context: Timestamps are absent, so timing, velocity, and sequence cannot be assessed. Customer profile context is absent. KYC, device, and IP context are absent. Geographic context is absent. Transaction channel context is absent. Customer baseline activity context is absent. This output is an investigative aid and does not make a final suspicious activity conclusion. This output does not make a SAR filing decision.",
   "limitations": [
     "Timestamps are absent, so timing, velocity, and sequence cannot be assessed.",
     "Customer profile context is absent.",
@@ -417,6 +1047,42 @@
       "amount_value": 1200.0,
       "source_registry_id": "internal_graph_features",
       "rule_id": "fan_in_collection"
+    },
+    {
+      "type": "rule_evidence",
+      "metric": "fan_in_nodes",
+      "value": [
+        "jennifer_davenport"
+      ],
+      "source_registry_id": "internal_graph_features",
+      "rule_id": "potential_funnel_account_activity"
+    },
+    {
+      "type": "rule_evidence",
+      "metric": "inbound_hub_nodes",
+      "value": [
+        "jennifer_davenport"
+      ],
+      "source_registry_id": "internal_graph_features",
+      "rule_id": "potential_funnel_account_activity"
+    },
+    {
+      "type": "rule_evidence",
+      "metric": "inbound_hub_nodes",
+      "value": [
+        "jennifer_davenport"
+      ],
+      "source_registry_id": "internal_graph_features",
+      "rule_id": "inbound_hub_concentration"
+    },
+    {
+      "type": "rule_evidence",
+      "metric": "fan_in_nodes",
+      "value": [
+        "jennifer_davenport"
+      ],
+      "source_registry_id": "internal_graph_features",
+      "rule_id": "inbound_hub_concentration"
     }
   ]
 }

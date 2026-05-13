@@ -15,20 +15,26 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "alert_candidate",
         "network_observation",
         "typology_hypothesis",
         "no_match_hypothesis",
         "alert_boost",
+        "sar_red_flag_match",
+        "sar_red_flag_no_match",
         "key_evidence_match",
         "key_evidence_fallback",
         "evidence_item",
         "evidence_item_with_amount"
       ],
       "properties": {
+        "alert_candidate": {"type": "string", "minLength": 1},
         "network_observation": {"type": "string", "minLength": 1},
         "typology_hypothesis": {"type": "string", "minLength": 1},
         "no_match_hypothesis": {"type": "string", "minLength": 1},
         "alert_boost": {"type": "string", "minLength": 1},
+        "sar_red_flag_match": {"type": "string", "minLength": 1},
+        "sar_red_flag_no_match": {"type": "string", "minLength": 1},
         "key_evidence_match": {"type": "string", "minLength": 1},
         "key_evidence_fallback": {"type": "string", "minLength": 1},
         "evidence_item": {"type": "string", "minLength": 1},
@@ -79,6 +85,7 @@
         "summary_item_templates",
         "typology_line_template",
         "alert_boost_template",
+        "sar_red_flag_line_template",
         "evidence_line_template",
         "max_evidence_items"
       ],
@@ -94,6 +101,7 @@
             "graph_summary",
             "detected_typologies",
             "alert_boost",
+            "sar_red_flags",
             "recommended_steps",
             "limitations",
             "evidence"
@@ -103,6 +111,7 @@
             "graph_summary": {"type": "string", "minLength": 1},
             "detected_typologies": {"type": "string", "minLength": 1},
             "alert_boost": {"type": "string", "minLength": 1},
+            "sar_red_flags": {"type": "string", "minLength": 1},
             "recommended_steps": {"type": "string", "minLength": 1},
             "limitations": {"type": "string", "minLength": 1},
             "evidence": {"type": "string", "minLength": 1}
@@ -128,6 +137,7 @@
         },
         "typology_line_template": {"type": "string", "minLength": 1},
         "alert_boost_template": {"type": "string", "minLength": 1},
+        "sar_red_flag_line_template": {"type": "string", "minLength": 1},
         "evidence_line_template": {"type": "string", "minLength": 1},
         "max_evidence_items": {"type": "integer", "minimum": 1}
       }

@@ -105,6 +105,12 @@
       "items": {
         "$ref": "#/$defs/typologyRule"
       }
+    },
+    "context_required_scenarios": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contextRequiredScenario"
+      }
     }
   },
   "$defs": {
@@ -148,12 +154,26 @@
               "repeated_amount_value",
               "fan_out_nodes",
               "fan_in_nodes",
+              "inbound_hub_nodes",
+              "outbound_hub_nodes",
+              "pass_through_nodes",
               "cycle_count",
-              "many_to_many_groups"
+              "many_to_many_groups",
+              "two_hop_path_count"
             ]
           }
         },
         "investigation_boost": {"type": "string", "minLength": 1},
+        "risk_family": {"type": "string", "minLength": 1},
+        "scenario_type": {"type": "string", "minLength": 1},
+        "source_registry_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "requires_context": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
         "limitations": {
           "type": "array",
           "items": {"type": "string", "minLength": 1}
@@ -237,7 +257,12 @@
           "properties": {
             "metric": {
               "type": "string",
-              "enum": ["repeated_amount_score", "repeated_amount_value"]
+              "enum": [
+                "repeated_amount_score",
+                "repeated_amount_value",
+                "distinct_counterparty_count",
+                "overall_extraction_confidence"
+              ]
             },
             "min_value": {"type": "number"},
             "max_value": {"type": "number"}
@@ -272,6 +297,36 @@
         {"$ref": "#/$defs/nodeTypologyRule"},
         {"$ref": "#/$defs/graphTypologyRule"}
       ]
+    },
+    "contextRequiredScenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "required_context",
+        "review_guidance",
+        "caution",
+        "source_registry_ids"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "required_context": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "review_guidance": {"type": "string", "minLength": 1},
+        "caution": {"type": "string", "minLength": 1},
+        "source_registry_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
     }
   }
 }

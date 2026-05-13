@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/alert_investigation_boost/sar_red_flags.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_boundary",
+    "red_flags",
+    "context_required_red_flags"
+  ],
+  "properties": {
+    "decision_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_value",
+        "summary",
+        "matched_signal_status",
+        "context_only_status"
+      ],
+      "properties": {
+        "decision_value": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
+        "matched_signal_status": {"type": "string", "minLength": 1},
+        "context_only_status": {"type": "string", "minLength": 1}
+      }
+    },
+    "red_flags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/redFlag"}
+    },
+    "context_required_red_flags": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/contextRequiredRedFlag"}
+    }
+  },
+  "$defs": {
+    "redFlag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "related_typologies",
+        "source_registry_ids",
+        "review_question",
+        "matched_text",
+        "caution",
+        "recommended_checks",
+        "requires_context"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "related_typologies": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "source_registry_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "review_question": {"type": "string", "minLength": 1},
+        "matched_text": {"type": "string", "minLength": 1},
+        "caution": {"type": "string", "minLength": 1},
+        "recommended_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "requires_context": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "contextRequiredRedFlag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "required_context",
+        "review_guidance",
+        "caution",
+        "source_registry_ids"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "required_context": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "review_guidance": {"type": "string", "minLength": 1},
+        "caution": {"type": "string", "minLength": 1},
+        "source_registry_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

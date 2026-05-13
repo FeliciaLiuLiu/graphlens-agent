@@ -10,6 +10,7 @@ from afc_network_narrative.harness.app.skill_loader import (
     load_investigation_playbooks,
     load_narrative_policy,
     load_prohibited_claims,
+    load_sar_red_flags,
     load_scoring_policy,
     load_source_registry,
     load_typology_glossary,
@@ -18,6 +19,7 @@ from afc_network_narrative.harness.app.skill_loader import (
     validate_investigation_playbooks_contract,
     validate_narrative_policy_contract,
     validate_prohibited_claims_contract,
+    validate_sar_red_flags_contract,
     validate_scoring_policy_contract,
     validate_source_registry_contract,
     validate_typology_glossary_contract,
@@ -87,6 +89,20 @@ def test_scoring_policy_contract_rejects_overlapping_bands() -> None:
     schema_path = Path(__file__).resolve().parents[1] / "skills" / "alert_investigation_boost" / "scoring_policy.schema.json"
     with pytest.raises(ValueError, match="overlaps"):
         validate_scoring_policy_contract(policy, schema_path)
+
+
+def test_sar_red_flags_contract_accepts_current_yaml() -> None:
+    red_flags = load_sar_red_flags()
+    assert red_flags["decision_boundary"]["decision_value"] == "not_determined_by_system"
+    assert red_flags["red_flags"]
+
+
+def test_sar_red_flags_contract_rejects_unknown_related_typology() -> None:
+    red_flags = copy.deepcopy(load_sar_red_flags())
+    red_flags["red_flags"][0]["related_typologies"].append("unknown_typology")
+    schema_path = Path(__file__).resolve().parents[1] / "skills" / "alert_investigation_boost" / "sar_red_flags.schema.json"
+    with pytest.raises(ValueError, match="unknown related_typologies"):
+        validate_sar_red_flags_contract(red_flags, schema_path)
 
 
 def test_narrative_policy_contract_accepts_current_yaml_and_template() -> None:

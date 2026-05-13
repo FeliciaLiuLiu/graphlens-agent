@@ -9,6 +9,7 @@ class AFCNarrativeOutput:
     graph_summary: dict[str, Any]
     detected_typologies: list[dict[str, Any]]
     alert_boost: dict[str, Any]
+    sar_red_flags: dict[str, Any]
     recommended_investigation_steps: list[str]
     narrative: str
     limitations: list[str]
@@ -19,6 +20,7 @@ class AFCNarrativeOutput:
             "graph_summary": self.graph_summary,
             "detected_typologies": self.detected_typologies,
             "alert_boost": self.alert_boost,
+            "sar_red_flags": self.sar_red_flags,
             "recommended_investigation_steps": self.recommended_investigation_steps,
             "narrative": self.narrative,
             "limitations": self.limitations,

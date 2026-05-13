@@ -1,0 +1,209 @@
+decision_boundary:
+  decision_value: "not_determined_by_system"
+  summary: "This system identifies graph-supported SAR/STR red flag review signals only. It does not decide whether a SAR or STR should be filed."
+  matched_signal_status: "present_as_review_signal"
+  context_only_status: "not_assessed_from_graph_only"
+red_flags:
+  - id: many_to_one_collection_red_flag
+    name: "many-to-one collection or funneling review signal"
+    description: "Multiple originators or counterparties send value into a central node or small concentration point."
+    related_typologies:
+      - fan_in_collection
+      - inbound_hub_concentration
+      - potential_funnel_account_activity
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fincen_funnel_account_advisory
+      - fintrac_financial_entity_indicators
+    review_question: "Do multiple counterparties appear to collect or funnel funds into one account, wallet, profile, or beneficiary without a clear expected purpose?"
+    matched_text: "The graph contains a many-to-one concentration pattern that is a SAR/STR red flag review signal when supported by customer, purpose, geography, timing, or counterparty context."
+    caution: "Many-to-one topology alone is not suspicious activity and is not a SAR/STR filing decision."
+    recommended_checks:
+      - "Review the central node's customer profile, expected activity, and relationship to inbound counterparties."
+      - "Check whether funds move onward from the central node and whether the timing is consistent with a documented purpose."
+      - "Assess geography, channel, and transaction purpose before escalation."
+    requires_context:
+      - customer profile
+      - expected activity
+      - counterparty relationship
+      - timestamps and velocity
+      - geography and channel
+  - id: one_to_many_distribution_red_flag
+    name: "one-to-many distribution review signal"
+    description: "One source sends value to several recipients or counterparties."
+    related_typologies:
+      - fan_out_distribution
+      - outbound_hub_concentration
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
+    review_question: "Does one account, wallet, or profile distribute funds to multiple recipients in a way that is inconsistent with expected activity?"
+    matched_text: "The graph contains a one-to-many distribution pattern that may warrant SAR/STR red flag review when supported by source-of-funds, recipient, timing, or purpose context."
+    caution: "One-to-many topology can be legitimate and does not establish suspicious activity without supporting facts."
+    recommended_checks:
+      - "Review source of funds into the distributing node."
+      - "Check whether recipients share identifiers, geography, devices, or payment purpose."
+      - "Compare the distribution pattern with customer baseline and expected use."
+    requires_context:
+      - source of funds
+      - recipient relationship
+      - customer baseline
+      - device and IP context
+      - payment purpose
+  - id: pass_through_or_layering_red_flag
+    name: "pass-through or layering review signal"
+    description: "Funds move through intermediate nodes, including central nodes with both inbound and outbound activity."
+    related_typologies:
+      - gather_scatter
+      - scatter_gather
+      - pass_through_relay
+      - multi_hop_layering
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_financial_entity_indicators
+      - fintrac_str_guidance
+    review_question: "Do funds appear to pass through one or more nodes without a clear purpose, retained balance, or expected customer rationale?"
+    matched_text: "The graph contains pass-through or multi-hop movement that may be a SAR/STR red flag review signal when timing, balance, and customer-purpose context support rapid or unexplained onward movement."
+    caution: "Pass-through and multi-hop activity cannot be assessed fully without timestamps, balance movement, and account-purpose context."
+    recommended_checks:
+      - "Review timestamps to determine whether inbound funds move onward quickly."
+      - "Check retained balance before and after each hop."
+      - "Confirm whether each hop has a documented business or personal purpose."
+    requires_context:
+      - timestamps
+      - retained balance
+      - customer purpose
+      - source and destination relationship
+      - historical behavior
+  - id: circular_flow_red_flag
+    name: "circular flow review signal"
+    description: "Directed funds movement appears to return through a cycle or circular path."
+    related_typologies:
+      - cycle_or_circular_flow
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
+    review_question: "Do funds return to related parties or accounts through a circular path without an apparent lawful purpose?"
+    matched_text: "The graph contains circular flow that may warrant SAR/STR red flag review when supported by party relationship, purpose, and transaction context."
+    caution: "Circular graph structure alone does not establish money laundering or suspicious activity."
+    recommended_checks:
+      - "Review whether parties in the cycle are related or share identifiers."
+      - "Check whether funds return to the originator or a related party."
+      - "Assess documented payment purpose for each edge in the cycle."
+    requires_context:
+      - party relationship
+      - payment purpose
+      - customer baseline
+      - timestamps
+  - id: many_to_many_coordination_red_flag
+    name: "many-to-many coordinated-network review signal"
+    description: "Multiple sources and multiple targets appear in a coordinated network structure."
+    related_typologies:
+      - bipartite_many_to_many
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
+    review_question: "Do both sides of the network share attributes that suggest coordinated movement rather than ordinary customer activity?"
+    matched_text: "The graph contains a many-to-many network pattern that may warrant SAR/STR red flag review when shared attributes, purpose, or historical behavior support coordination."
+    caution: "Many-to-many topology requires counterparty and business-purpose review before escalation."
+    recommended_checks:
+      - "Review shared identifiers, devices, IPs, addresses, or payment descriptions across both sides of the graph."
+      - "Compare the activity with expected customer behavior."
+      - "Check whether network participants have prior alerts or linked case history."
+    requires_context:
+      - shared identifiers
+      - device and IP data
+      - business purpose
+      - prior alerts
+  - id: repeated_equal_amount_red_flag
+    name: "repeated equal-amount review signal"
+    description: "Multiple edges use the same or highly similar visible amount."
+    related_typologies:
+      - equal_amount_coordination
+    source_registry_ids:
+      - fintrac_financial_entity_indicators
+      - fincen_sar_msb_guidance
+    review_question: "Are repeated amounts explained by normal fees, limits, invoices, payroll, or another legitimate operating pattern?"
+    matched_text: "The graph contains repeated equal amounts that may be a red flag review signal only when supported by transaction type, purpose, timing, and other facts."
+    caution: "Repeated amounts alone must not be treated as structuring, reporting evasion, or suspicious activity."
+    recommended_checks:
+      - "Check product type, payment purpose, fee schedules, limits, invoices, and customer explanation."
+      - "Review whether the repeated amount is near a relevant reporting or operational threshold."
+      - "Assess timing and whether counterparties are linked."
+    requires_context:
+      - transaction type
+      - payment purpose
+      - timestamps
+      - relevant threshold context
+      - customer explanation
+context_required_red_flags:
+  - id: inconsistent_with_customer_profile
+    name: "activity inconsistent with customer profile"
+    description: "Transactions may be inconsistent with a customer's known profile, expected activity, or historical baseline."
+    required_context:
+      - customer profile
+      - expected activity
+      - historical baseline
+      - account age
+      - customer explanation
+    review_guidance: "Compare graph-supported patterns with customer purpose, expected behavior, and prior activity before escalation."
+    caution: "The graph alone cannot establish inconsistency with profile."
+    source_registry_ids:
+      - ffiec_suspicious_activity_monitoring
+      - fintrac_financial_entity_indicators
+  - id: no_apparent_lawful_purpose
+    name: "no apparent lawful or business purpose"
+    description: "A transaction pattern may lack an apparent lawful, business, or personal purpose after review of available facts."
+    required_context:
+      - transaction purpose
+      - customer explanation
+      - product type
+      - source of funds
+      - counterparty relationship
+    review_guidance: "Use graph patterns as a prompt to request or review purpose information; do not conclude lack of purpose from topology alone."
+    caution: "Purpose cannot be determined from graph topology alone."
+    source_registry_ids:
+      - fincen_sar_msb_guidance
+      - fintrac_str_guidance
+  - id: missing_originator_or_beneficiary_information
+    name: "missing or incomplete originator or beneficiary information"
+    description: "Funds transfers may lack expected originator, beneficiary, or on-behalf-of information."
+    required_context:
+      - payment message fields
+      - originator identifiers
+      - beneficiary identifiers
+      - product requirements
+      - transaction channel
+    review_guidance: "Check payment-message and KYC fields for completeness when graph concentration or relay signals appear."
+    caution: "Node labels alone do not establish missing payment information."
+    source_registry_ids:
+      - ffiec_appendix_f_red_flags
+      - fintrac_financial_entity_indicators
+  - id: structuring_or_reporting_evasion
+    name: "structuring or reporting-evasion concern"
+    description: "Repeated or split transactions may require review for possible reporting or recordkeeping evasion."
+    required_context:
+      - cash or monetary instrument indicator
+      - reporting threshold proximity
+      - timestamps
+      - product type
+      - customer explanation
+    review_guidance: "Repeated graph amounts can support a review question, but structuring requires threshold and evasion context."
+    caution: "The graph alone must not be used to infer structuring."
+    source_registry_ids:
+      - ffiec_structuring_appendix_g
+      - fincen_sar_msb_guidance
+  - id: sanctions_tf_human_trafficking_sensitive_typologies
+    name: "sanctions, terrorist-financing, or human-trafficking context"
+    description: "Sensitive typology concerns require explicit screening, geography, party, intelligence, behavioral, or adverse-media context."
+    required_context:
+      - sanctions screening results
+      - party identifiers
+      - jurisdiction exposure
+      - adverse media or law-enforcement context
+      - typology-specific indicators
+    review_guidance: "Do not infer these concerns from graph topology; use only explicit supporting context."
+    caution: "This system does not make sanctions, terrorist-financing, or human-trafficking conclusions from graph structure."
+    source_registry_ids:
+      - fintrac_financial_entity_indicators
+      - fintrac_str_guidance

@@ -53,6 +53,14 @@ def load_scoring_policy(path: str | Path | None = None) -> dict[str, Any]:
     return data
 
 
+def load_sar_red_flags(path: str | Path | None = None) -> dict[str, Any]:
+    resolved = Path(path) if path else project_root() / "skills" / "alert_investigation_boost" / "sar_red_flags.yaml"
+    data = load_structured_file(str(resolved))
+    schema_path = project_root() / "skills" / "alert_investigation_boost" / "sar_red_flags.schema.json"
+    validate_sar_red_flags_contract(data, schema_path)
+    return data
+
+
 def load_narrative_policy(path: str | Path | None = None) -> dict[str, Any]:
     resolved = Path(path) if path else project_root() / "skills" / "narrative_generation" / "narrative_policy.yaml"
     data = load_structured_file(str(resolved))
@@ -132,6 +140,11 @@ def validate_typology_skill_contract(data: dict[str, Any], schema_path: str | Pa
 def validate_scoring_policy_contract(data: dict[str, Any], schema_path: str | Path) -> None:
     validate_json_contract(data, schema_path, "Scoring policy")
     validate_scoring_policy_semantics(data)
+
+
+def validate_sar_red_flags_contract(data: dict[str, Any], schema_path: str | Path) -> None:
+    validate_json_contract(data, schema_path, "SAR red flags")
+    validate_sar_red_flags_semantics(data)
 
 
 def validate_narrative_policy_contract(
@@ -217,8 +230,12 @@ def validate_typology_skill_semantics(data: dict[str, Any]) -> None:
         "repeated_amount_value",
         "fan_out_nodes",
         "fan_in_nodes",
+        "inbound_hub_nodes",
+        "outbound_hub_nodes",
+        "pass_through_nodes",
         "cycle_count",
         "many_to_many_groups",
+        "two_hop_path_count",
     }
 
     for rule in typologies:
@@ -241,6 +258,26 @@ def validate_typology_skill_semantics(data: dict[str, Any]) -> None:
                 )
         else:
             raise ValueError(f"Typology skill contract validation failed for {rule_id}: unsupported match_scope {scope!r}")
+
+        validate_source_references(
+            rule.get("source_registry_ids", []),
+            f"Typology skill contract validation failed for {rule_id}: source_registry_ids",
+        )
+
+    scenarios = data.get("context_required_scenarios", [])
+    scenario_ids = [str(item["id"]) for item in scenarios]
+    duplicate_scenarios = sorted({scenario_id for scenario_id in scenario_ids if scenario_ids.count(scenario_id) > 1})
+    if duplicate_scenarios:
+        raise ValueError(
+            "Typology skill contract validation failed: "
+            f"duplicate context_required_scenarios ids: {', '.join(duplicate_scenarios)}"
+        )
+    for scenario in scenarios:
+        validate_source_references(
+            scenario.get("source_registry_ids", []),
+            "Typology skill contract validation failed for "
+            f"context_required_scenarios.{scenario['id']}: source_registry_ids",
+        )
 
 
 def validate_typology_glossary_semantics(
@@ -320,6 +357,22 @@ def raw_typology_ids() -> set[str]:
     if not isinstance(typologies, list):
         raise ValueError("Unable to read typology ids from typology_rules.yaml.")
     return {str(rule["id"]) for rule in typologies}
+
+
+def raw_source_registry_ids() -> set[str]:
+    path = project_root() / "skills" / "afc_typology_mapping" / "source_registry.yaml"
+    data = load_structured_file(str(path))
+    sources = data.get("sources", [])
+    if not isinstance(sources, list):
+        raise ValueError("Unable to read source ids from source_registry.yaml.")
+    return {str(item["id"]) for item in sources if isinstance(item, dict) and "id" in item}
+
+
+def validate_source_references(source_ids: list[Any], location: str) -> None:
+    known = raw_source_registry_ids()
+    unknown = sorted({str(source_id) for source_id in source_ids} - known)
+    if unknown:
+        raise ValueError(f"{location} references unknown source ids: {', '.join(unknown)}")
 
 
 def validate_graph_extraction_schema_semantics(schema: dict[str, Any]) -> None:
@@ -415,12 +468,51 @@ def validate_scoring_policy_semantics(data: dict[str, Any]) -> None:
         seen_ranges.append((str(band_name), lower, upper))
 
 
+def validate_sar_red_flags_semantics(data: dict[str, Any]) -> None:
+    boundary = data["decision_boundary"]
+    if boundary["decision_value"] != "not_determined_by_system":
+        raise ValueError("SAR red flags contract validation failed: decision_boundary.decision_value must be not_determined_by_system")
+
+    valid_typology_ids = raw_typology_ids()
+    for section_name in ["red_flags", "context_required_red_flags"]:
+        items = data.get(section_name, [])
+        ids = [str(item["id"]) for item in items]
+        duplicates = sorted({item_id for item_id in ids if ids.count(item_id) > 1})
+        if duplicates:
+            raise ValueError(
+                "SAR red flags contract validation failed: "
+                f"duplicate {section_name} ids: {', '.join(duplicates)}"
+            )
+
+    for red_flag in data.get("red_flags", []):
+        red_flag_id = str(red_flag["id"])
+        unknown_typologies = sorted({str(item) for item in red_flag["related_typologies"]} - valid_typology_ids)
+        if unknown_typologies:
+            raise ValueError(
+                "SAR red flags contract validation failed for "
+                f"{red_flag_id}: unknown related_typologies: {', '.join(unknown_typologies)}"
+            )
+        validate_source_references(
+            red_flag.get("source_registry_ids", []),
+            f"SAR red flags contract validation failed for {red_flag_id}: source_registry_ids",
+        )
+
+    for red_flag in data.get("context_required_red_flags", []):
+        validate_source_references(
+            red_flag.get("source_registry_ids", []),
+            "SAR red flags contract validation failed for "
+            f"context_required_red_flags.{red_flag['id']}: source_registry_ids",
+        )
+
+
 def validate_narrative_policy_semantics(data: dict[str, Any]) -> None:
     section_templates = data["section_templates"]
     required_section_placeholders = {
-        "network_observation": {"node_count", "edge_count", "fan_in_nodes", "fan_out_nodes", "pass_through_nodes"},
-        "typology_hypothesis": {"typology_name", "confidence", "evidence", "caution"},
-        "alert_boost": {"priority_band", "score", "explanation"},
+        "alert_candidate": {"priority_band", "score", "explanation"},
+        "network_observation": {"node_count", "edge_count", "fan_in_nodes", "fan_out_nodes", "pass_through_nodes", "key_entities"},
+        "typology_hypothesis": {"typology_name", "afc_interpretation", "confidence", "evidence", "caution"},
+        "alert_boost": {"priority_band", "score", "explanation", "sar_review"},
+        "sar_red_flag_match": {"name", "matched_text", "review_question", "caution"},
         "key_evidence_match": {"typology_name", "evidence"},
         "evidence_item": {"metric", "value", "node_suffix"},
         "evidence_item_with_amount": {"metric", "value", "amount_value", "node_suffix"},
@@ -453,6 +545,11 @@ def validate_narrative_policy_semantics(data: dict[str, Any]) -> None:
         "Narrative policy contract validation failed: report_pdf.alert_boost_template",
     )
     require_placeholders(
+        str(report_pdf["sar_red_flag_line_template"]),
+        {"name", "matched_text", "review_question"},
+        "Narrative policy contract validation failed: report_pdf.sar_red_flag_line_template",
+    )
+    require_placeholders(
         str(report_pdf["evidence_line_template"]),
         {"label", "details"},
         "Narrative policy contract validation failed: report_pdf.evidence_line_template",
@@ -463,9 +560,11 @@ def validate_narrative_template_contract(template_text: str) -> None:
     require_placeholders(
         template_text,
         {
+            "alert_candidate",
             "network_observation",
             "typology_hypothesis",
             "alert_boost",
+            "sar_red_flags",
             "evidence",
             "recommended_steps",
             "limitations",

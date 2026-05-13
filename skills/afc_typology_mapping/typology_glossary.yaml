@@ -6,5 +6,9 @@
   "pass_through_relay": "A node appears to receive and send onward in the graph topology.",
   "cycle_or_circular_flow": "Directed edges form a closed loop.",
   "bipartite_many_to_many": "Multiple source nodes connect to multiple target nodes.",
-  "equal_amount_coordination": "A high share of visible edges carries the same parsed amount."
+  "equal_amount_coordination": "A high share of visible edges carries the same parsed amount.",
+  "inbound_hub_concentration": "At least one node receives funds from several counterparties.",
+  "outbound_hub_concentration": "At least one node sends funds to several counterparties.",
+  "multi_hop_layering": "Funds pass through at least one intermediate node.",
+  "potential_funnel_account_activity": "Multiple sources consolidate into a central node in a pattern that may warrant funnel-account review when supported by context."
 }

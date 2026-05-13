@@ -45,7 +45,7 @@ The model layer must not perform AFC interpretation, AML judgment, typology clas
 
 Path: `skills/`
 
-The skills layer contains SME-owned AFC domain knowledge and policy. It stores typology rules, motif thresholds, scoring policy, investigation playbooks, narrative templates, prohibited claims, glossary definitions, and contract files.
+The skills layer contains SME-owned AFC domain knowledge and policy. It stores typology rules, SAR/STR red flag review signals, motif thresholds, scoring policy, investigation playbooks, narrative templates, prohibited claims, glossary definitions, and contract files.
 
 This layer is intentionally non-executable. It exists so that AFC subject matter experts can update domain logic, policy wording, thresholds, and narrative behavior without changing Python code.
 
@@ -56,6 +56,7 @@ Typical skill content includes:
 - typology glossary
 - source registry
 - scoring policy
+- SAR/STR red flag review-signal policy
 - investigation playbooks
 - narrative policy
 - narrative template
@@ -112,9 +113,29 @@ image input
 
 This contract is the key architectural boundary in the project. The model layer produces structured graph facts. The skills layer defines AFC knowledge. The harness layer applies that knowledge to the extracted graph in a controlled and testable way.
 
+`AFCNarrativeOutput` includes:
+
+- `graph_summary`
+- `detected_typologies`
+- `alert_boost`
+- `sar_red_flags`
+- `recommended_investigation_steps`
+- `narrative`
+- `limitations`
+- `evidence`
+
+The human-readable narrative is structured to answer:
+
+- whether the graph is an alert-review candidate
+- which AFC pattern hypotheses matched
+- what those graph patterns may mean in AFC terms
+- why the graph should be reviewed
+- which SAR/STR red flag review signals are graph-supported
+- what the analyst should check next
+
 ### Compliance Boundary
 
-The system is designed as an investigation-support tool, not a final decision engine. It may produce cautious typology hypotheses and alert-investigation priority, but it must not make criminal conclusions or SAR filing decisions.
+The system is designed as an investigation-support tool, not a final decision engine. It may produce cautious typology hypotheses, alert-investigation priority, and graph-supported SAR/STR red flag review signals, but it must not make criminal conclusions or SAR filing decisions.
 
 ## Repository Layout
 

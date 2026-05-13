@@ -23,6 +23,22 @@
     ],
     "equal_amount_coordination": [
       "Confirm whether repeated amounts reflect fees, limits, payroll, billing, or another operational explanation."
+    ],
+    "inbound_hub_concentration": [
+      "Review whether inbound counterparties have shared identifiers, common funding behavior, or a documented relationship to the central node.",
+      "Compare inbound activity against the customer's expected profile and historical baseline."
+    ],
+    "outbound_hub_concentration": [
+      "Review whether outbound recipients share attributes, geography, devices, or payment purposes.",
+      "Check whether the source of funds and recipient pattern are consistent with the customer's expected activity."
+    ],
+    "multi_hop_layering": [
+      "Review timestamps and balances to determine whether funds move through the intermediate node quickly.",
+      "Confirm the business or personal purpose for each hop in the path."
+    ],
+    "potential_funnel_account_activity": [
+      "Review transaction geography, branch or channel information, and expected account purpose.",
+      "Check whether consolidated funds move onward and whether locations or counterparties are inconsistent with the customer profile."
     ]
   }
 }
