@@ -1,0 +1,10 @@
+{
+  "prohibited_claims": [
+    "confirmed money laundering",
+    "SAR required",
+    "criminal conclusion",
+    "sanctions conclusion",
+    "structuring conclusion from repeated amounts alone",
+    "committed money laundering"
+  ]
+}

@@ -1,0 +1,120 @@
+# Agent Guidance
+
+This repo separates visual extraction from AFC interpretation.
+
+- The model layer is adapter-based. The default backend is `ollama` with local `qwen2.5vl:3b`, implemented by `OllamaVLMAdapter`. Other local backends are `qwen` and `florence2`.
+- Every VLM backend may only extract visible graph facts from images.
+- AFC typology mapping, scoring, and narratives must come from Python features, YAML skill files, and templates.
+- Do not fine-tune visual models in this project.
+- Do not add AFC knowledge to model folders.
+- Put downloaded models under `./models/`; never commit model weights.
+- Keep `numpy==1.26.4` and Python `>=3.11,<3.12`.
+- Keep the PyTorch stack pinned together: `torch==2.8.0`, `torchvision==0.23.0`, `torchaudio==2.8.0`.
+- Do not add `flash-attn` or `xformers` to the base requirements.
+- Use cautious investigative language. Do not make criminal conclusions or SAR filing decisions.
+
+## Ownership Model
+
+This repo is organized into:
+
+1. `Model`
+2. `Skills`
+3. `Harness`
+
+### Model
+
+- Current working model backends are local Ollama `qwen2.5vl:3b`, local `Qwen2.5-VL-7B-Instruct`, and local `microsoft/Florence-2-base-ft`.
+- They are wrapped by `OllamaVLMAdapter`, `QwenVLAdapter`, and `Florence2Adapter`, which implement the generic `VLMAdapter` interface.
+- Future backend names are reserved for `approved_endpoint`, `llama`, `gemini`, `openai`, `claude`, and `granite`.
+- It is used only for visible graph extraction.
+- It is not fine-tuned here.
+- Do not move AFC policy or typology knowledge into model assets.
+- The stable model contract is: `image input -> VLMAdapter.extract_graph(...) -> GraphExtraction`.
+- Skills and harness code must not consume raw model responses or model-specific output formats.
+
+### Skills
+
+`skills/` is the SME-owned layer.
+
+Put the following kinds of changes in `skills/`:
+
+- typology rules
+- typology glossary text
+- source descriptions
+- scoring policy
+- investigation playbooks
+- narrative policy
+- narrative template text
+- prohibited claims
+- graph extraction prompt wording
+- extraction schema contracts
+
+Working rule:
+
+- If an AFC SME should be able to change it without editing Python, it belongs in `skills/`.
+
+### Harness
+
+`src/afc_network_narrative/` is the engineering-owned execution layer.
+
+Put the following kinds of changes in the harness:
+
+- new feature computation
+- new motif detection logic
+- new rule condition support
+- new evidence field support
+- new API behavior
+- new input modality support
+- new VLM backend implementation
+- orchestration changes
+- validation changes
+- retry, cache, or execution-flow changes
+
+Working rule:
+
+- If an engineer must change how the system executes, validates, computes, or orchestrates, it belongs in the harness.
+
+## Change Policy
+
+### Change Skills Only
+
+Normally do not edit Python for:
+
+- threshold changes
+- wording changes
+- scoring changes
+- new investigation steps
+- narrative copy changes
+- glossary updates
+- prohibited-claim updates
+
+### Change Harness
+
+Edit Python when:
+
+- a skill asks for a capability the current contracts do not support
+- a new computed feature is required
+- a new rule condition or evidence type is required
+- the model adapter behavior changes
+- the API contract changes
+
+## Contract Enforcement
+
+SME-facing skill files are contract-validated by the harness at load time.
+
+Do not bypass these checks.
+
+Current contract-validated skill areas:
+
+- `skills/graph_image_extraction/`
+- `skills/afc_typology_mapping/`
+- `skills/alert_investigation_boost/`
+- `skills/narrative_generation/`
+
+After changing either `skills/` or the harness, run:
+
+```bash
+python -m pytest
+```
+
+If a change is supposed to be SME-editable, prefer extending the skill contract instead of hardcoding a new default into Python.

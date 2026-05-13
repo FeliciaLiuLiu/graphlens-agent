@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/graph_image_extraction/graph_schema_contract.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "type",
+    "required",
+    "additionalProperties",
+    "properties"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://json-schema.org/draft/2020-12/schema"
+    },
+    "type": {
+      "type": "string",
+      "const": "object"
+    },
+    "required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": {
+      "const": false
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "nodes",
+        "edges",
+        "visual_signals",
+        "extraction_uncertainties"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "object"
+        },
+        "nodes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "items"
+          ],
+          "properties": {
+            "type": {
+              "const": "array"
+            },
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "required",
+                "additionalProperties",
+                "properties"
+              ],
+              "properties": {
+                "type": {
+                  "const": "object"
+                },
+                "required": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": {
+                  "const": false
+                },
+                "properties": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": [
+                    "id",
+                    "label",
+                    "visible_color",
+                    "role_hint_from_label",
+                    "confidence"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "edges": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "items"
+          ],
+          "properties": {
+            "type": {
+              "const": "array"
+            },
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "required",
+                "additionalProperties",
+                "properties"
+              ],
+              "properties": {
+                "type": {
+                  "const": "object"
+                },
+                "required": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": {
+                  "const": false
+                },
+                "properties": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": [
+                    "source",
+                    "target",
+                    "amount_text",
+                    "amount_value",
+                    "currency",
+                    "visible_color",
+                    "direction_confidence",
+                    "amount_confidence"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "visual_signals": {
+          "type": "object"
+        },
+        "extraction_uncertainties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "items"
+          ],
+          "properties": {
+            "type": {
+              "const": "array"
+            },
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "const": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

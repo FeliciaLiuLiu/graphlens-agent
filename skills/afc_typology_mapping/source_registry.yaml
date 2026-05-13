@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "id": "internal_graph_features",
+      "description": "Deterministic features computed from validated graph extraction JSON."
+    },
+    {
+      "id": "visible_graph_image",
+      "description": "Visible node labels, arrows, and amount labels extracted from the uploaded image."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+section_templates:
+  network_observation: "the validated graph contains {node_count} nodes and {edge_count} directed edges. Detected motifs include fan-in nodes {fan_in_nodes}, fan-out nodes {fan_out_nodes}, and pass-through relay candidates {pass_through_nodes}."
+  typology_hypothesis: "the graph is consistent with a potential {typology_name} pattern (confidence {confidence}) based on {evidence}. {caution}"
+  no_match_hypothesis: "no configured typology matched the graph structure."
+  alert_boost: "{priority_band} priority, score {score}. {explanation} This may indicate that the alert warrants review, not that wrongdoing occurred."
+  key_evidence_match: "{typology_name}: {evidence}"
+  key_evidence_fallback: "Validated money-flow evidence is limited to extracted edges and labels because no typology rule matched."
+  evidence_item: "{metric}={value}{node_suffix}"
+  evidence_item_with_amount: "{metric}={value} at amount {amount_value}{node_suffix}"
+rendering:
+  none_text: "none"
+  list_joiner: "; "
+  section_joiner: " "
+static_limitations:
+  - "This output is an investigative aid and does not make a final suspicious activity conclusion."
+  - "This output does not make a SAR filing decision."
+evaluation_terms:
+  missing_context_required_terms:
+    - timestamp
+    - kyc
+    - geographic
+    - channel
+    - baseline
+report_pdf:
+  title: "AFC Network Narrative Report"
+  subtitle_template: "Case ID: {case_id}"
+  input_reference_template: "Input reference: {input_name}"
+  section_titles:
+    narrative: "Human-Readable Narrative"
+    graph_summary: "Graph Summary"
+    detected_typologies: "Detected Typologies"
+    alert_boost: "Alert Investigation Boost"
+    recommended_steps: "Recommended Investigation Steps"
+    limitations: "Limitations and Missing Context"
+    evidence: "Key Evidence"
+  summary_item_templates:
+    node_count: "Node count: {value}"
+    edge_count: "Edge count: {value}"
+    repeated_amount_score: "Repeated amount score: {value}"
+    repeated_amount_value: "Repeated amount value: {value}"
+    overall_extraction_confidence: "Overall extraction confidence: {value}"
+  typology_line_template: "{name} (confidence {confidence}): {interpretation}"
+  alert_boost_template: "{priority_band} priority, score {score}. {explanation}"
+  evidence_line_template: "{label}: {details}"
+  max_evidence_items: 8

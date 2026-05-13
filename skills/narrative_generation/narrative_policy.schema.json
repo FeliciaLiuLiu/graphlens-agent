@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/narrative_generation/narrative_policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "section_templates",
+    "rendering",
+    "static_limitations",
+    "evaluation_terms",
+    "report_pdf"
+  ],
+  "properties": {
+    "section_templates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "network_observation",
+        "typology_hypothesis",
+        "no_match_hypothesis",
+        "alert_boost",
+        "key_evidence_match",
+        "key_evidence_fallback",
+        "evidence_item",
+        "evidence_item_with_amount"
+      ],
+      "properties": {
+        "network_observation": {"type": "string", "minLength": 1},
+        "typology_hypothesis": {"type": "string", "minLength": 1},
+        "no_match_hypothesis": {"type": "string", "minLength": 1},
+        "alert_boost": {"type": "string", "minLength": 1},
+        "key_evidence_match": {"type": "string", "minLength": 1},
+        "key_evidence_fallback": {"type": "string", "minLength": 1},
+        "evidence_item": {"type": "string", "minLength": 1},
+        "evidence_item_with_amount": {"type": "string", "minLength": 1}
+      }
+    },
+    "rendering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["none_text", "list_joiner", "section_joiner"],
+      "properties": {
+        "none_text": {"type": "string"},
+        "list_joiner": {"type": "string"},
+        "section_joiner": {"type": "string"}
+      }
+    },
+    "static_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evaluation_terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["missing_context_required_terms"],
+      "properties": {
+        "missing_context_required_terms": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "report_pdf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "subtitle_template",
+        "input_reference_template",
+        "section_titles",
+        "summary_item_templates",
+        "typology_line_template",
+        "alert_boost_template",
+        "evidence_line_template",
+        "max_evidence_items"
+      ],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "subtitle_template": {"type": "string", "minLength": 1},
+        "input_reference_template": {"type": "string", "minLength": 1},
+        "section_titles": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "narrative",
+            "graph_summary",
+            "detected_typologies",
+            "alert_boost",
+            "recommended_steps",
+            "limitations",
+            "evidence"
+          ],
+          "properties": {
+            "narrative": {"type": "string", "minLength": 1},
+            "graph_summary": {"type": "string", "minLength": 1},
+            "detected_typologies": {"type": "string", "minLength": 1},
+            "alert_boost": {"type": "string", "minLength": 1},
+            "recommended_steps": {"type": "string", "minLength": 1},
+            "limitations": {"type": "string", "minLength": 1},
+            "evidence": {"type": "string", "minLength": 1}
+          }
+        },
+        "summary_item_templates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "node_count",
+            "edge_count",
+            "repeated_amount_score",
+            "repeated_amount_value",
+            "overall_extraction_confidence"
+          ],
+          "properties": {
+            "node_count": {"type": "string", "minLength": 1},
+            "edge_count": {"type": "string", "minLength": 1},
+            "repeated_amount_score": {"type": "string", "minLength": 1},
+            "repeated_amount_value": {"type": "string", "minLength": 1},
+            "overall_extraction_confidence": {"type": "string", "minLength": 1}
+          }
+        },
+        "typology_line_template": {"type": "string", "minLength": 1},
+        "alert_boost_template": {"type": "string", "minLength": 1},
+        "evidence_line_template": {"type": "string", "minLength": 1},
+        "max_evidence_items": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

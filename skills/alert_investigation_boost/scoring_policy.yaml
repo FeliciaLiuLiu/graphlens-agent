@@ -1,0 +1,35 @@
+typology_points:
+  fan_in_collection: 30
+  fan_out_distribution: 30
+  gather_scatter: 45
+  pass_through_relay: 35
+  cycle_or_circular_flow: 50
+  scatter_gather: 45
+  bipartite_many_to_many: 35
+  equal_amount_coordination: 20
+boosts:
+  repeated_amount: 10
+  distinct_counterparties: 10
+  supported_role_label: 5
+supported_role_labels:
+  - mule
+  - collector
+  - distributor
+deductions:
+  low_extraction_confidence: -15
+repeated_amount_min_score: 0.8
+distinct_counterparty_threshold: 5
+low_confidence_threshold: 0.75
+priority_bands:
+  Low: [0, 39]
+  Medium: [40, 59]
+  High: [60, 79]
+  Critical: [80, 100]
+reason_templates:
+  typology_match: "Matched {typology_name} graph hypothesis."
+  repeated_amount: "Visible repeated amount pattern is present."
+  distinct_counterparties: "Graph contains multiple distinct counterparties."
+  supported_role_label: "A mule, collector, or distributor label appears on a structurally relevant node."
+  low_extraction_confidence: "Average extraction confidence is below policy threshold."
+explanation_template: "Investigation priority is {priority_band} with score {score}. Reason codes: {reason_codes}."
+empty_reason_codes_text: "no configured reason codes"

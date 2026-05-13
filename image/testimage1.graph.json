@@ -1,0 +1,222 @@
+{
+  "case_id": "testimage1_manual_proxy",
+  "nodes": [
+    {
+      "id": "david_thomas",
+      "label": "DAVID THOMAS",
+      "visible_color": "orange",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "amy_jones",
+      "label": "AMY JONES",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "kelly_morgano",
+      "label": "KELLY MORGANO",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "cole_srajer",
+      "label": "COLE SRAJER",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "jennifer_davenport",
+      "label": "JENNIFER DAVENPORT",
+      "visible_color": "orange",
+      "role_hint_from_label": null,
+      "confidence": 0.98
+    },
+    {
+      "id": "ashley_nelson",
+      "label": "ASHLEY NELSON",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.96
+    },
+    {
+      "id": "deanna_kossaras",
+      "label": "DEANNA KOSSARAS",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.96
+    },
+    {
+      "id": "chris_scovone",
+      "label": "CHRIS SCOVONE",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "nick_bradford",
+      "label": "NICK BRADFORD",
+      "visible_color": "orange",
+      "role_hint_from_label": null,
+      "confidence": 0.96
+    },
+    {
+      "id": "chad_jameson",
+      "label": "CHAD JAMESON",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "karen_hartman",
+      "label": "KAREN HARTMAN",
+      "visible_color": "red",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    },
+    {
+      "id": "robert_white",
+      "label": "ROBERT WHITE",
+      "visible_color": "blue",
+      "role_hint_from_label": null,
+      "confidence": 0.97
+    }
+  ],
+  "edges": [
+    {
+      "source": "david_thomas",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.2k",
+      "amount_value": 1200.0,
+      "currency": "USD",
+      "visible_color": "red",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "amy_jones",
+      "target": "jennifer_davenport",
+      "amount_text": "$2.4k",
+      "amount_value": 2400.0,
+      "currency": "USD",
+      "visible_color": "red",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "kelly_morgano",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.8k",
+      "amount_value": 1800.0,
+      "currency": "USD",
+      "visible_color": "red",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "cole_srajer",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.8k",
+      "amount_value": 1800.0,
+      "currency": "USD",
+      "visible_color": "red",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "chris_scovone",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.8k",
+      "amount_value": 1800.0,
+      "currency": "USD",
+      "visible_color": "gray",
+      "direction_confidence": 0.95,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "ashley_nelson",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.2k",
+      "amount_value": 1200.0,
+      "currency": "USD",
+      "visible_color": "gray",
+      "direction_confidence": 0.78,
+      "amount_confidence": 0.93
+    },
+    {
+      "source": "deanna_kossaras",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.7k",
+      "amount_value": 1700.0,
+      "currency": "USD",
+      "visible_color": "gray",
+      "direction_confidence": 0.9,
+      "amount_confidence": 0.95
+    },
+    {
+      "source": "chad_jameson",
+      "target": "jennifer_davenport",
+      "amount_text": "$1.2k",
+      "amount_value": 1200.0,
+      "currency": "USD",
+      "visible_color": "gray",
+      "direction_confidence": 0.95,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "chris_scovone",
+      "target": "nick_bradford",
+      "amount_text": "$2.1k",
+      "amount_value": 2100.0,
+      "currency": "USD",
+      "visible_color": "gray",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "chad_jameson",
+      "target": "karen_hartman",
+      "amount_text": "$1.2k",
+      "amount_value": 1200.0,
+      "currency": "USD",
+      "visible_color": "gray",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    },
+    {
+      "source": "robert_white",
+      "target": "karen_hartman",
+      "amount_text": "$2.8k",
+      "amount_value": 2800.0,
+      "currency": "USD",
+      "visible_color": "red",
+      "direction_confidence": 0.97,
+      "amount_confidence": 0.97
+    }
+  ],
+  "visual_signals": {
+    "legend_defined": false,
+    "node_color_palette": [
+      "blue",
+      "orange",
+      "red",
+      "gray"
+    ],
+    "context_available": {
+      "timestamps": false,
+      "customer_profile": false,
+      "kyc_device_ip": false,
+      "geography": false,
+      "channel": false,
+      "customer_baseline": false
+    }
+  },
+  "extraction_uncertainties": [
+    "This file is a manual GraphExtraction proxy derived from the visible image rather than Qwen output.",
+    "The Ashley Nelson to Jennifer Davenport edge direction and amount label placement are visually crowded and may require image extraction verification."
+  ]
+}

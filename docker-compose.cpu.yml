@@ -1,0 +1,13 @@
+services:
+  afc-network-narrative:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpu
+    image: afc-network-narrative:cpu
+    working_dir: /app
+    environment:
+      PYTHONPATH: /app/src
+    volumes:
+      - .:/app
+      - ./models:/app/models
+    command: python -m pytest

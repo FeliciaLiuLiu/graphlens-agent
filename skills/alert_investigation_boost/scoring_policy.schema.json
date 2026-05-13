@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/alert_investigation_boost/scoring_policy.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "typology_points",
+    "boosts",
+    "supported_role_labels",
+    "deductions",
+    "repeated_amount_min_score",
+    "distinct_counterparty_threshold",
+    "low_confidence_threshold",
+    "priority_bands",
+    "reason_templates",
+    "explanation_template",
+    "empty_reason_codes_text"
+  ],
+  "properties": {
+    "typology_points": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "boosts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repeated_amount",
+        "distinct_counterparties",
+        "supported_role_label"
+      ],
+      "properties": {
+        "repeated_amount": {"type": "integer"},
+        "distinct_counterparties": {"type": "integer"},
+        "supported_role_label": {"type": "integer"}
+      }
+    },
+    "supported_role_labels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deductions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["low_extraction_confidence"],
+      "properties": {
+        "low_extraction_confidence": {"type": "integer"}
+      }
+    },
+    "repeated_amount_min_score": {"type": "number"},
+    "distinct_counterparty_threshold": {"type": "integer", "minimum": 1},
+    "low_confidence_threshold": {"type": "number"},
+    "priority_bands": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": {"type": "integer"}
+      }
+    },
+    "reason_templates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "typology_match",
+        "repeated_amount",
+        "distinct_counterparties",
+        "supported_role_label",
+        "low_extraction_confidence"
+      ],
+      "properties": {
+        "typology_match": {"type": "string", "minLength": 1},
+        "repeated_amount": {"type": "string", "minLength": 1},
+        "distinct_counterparties": {"type": "string", "minLength": 1},
+        "supported_role_label": {"type": "string", "minLength": 1},
+        "low_extraction_confidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "explanation_template": {"type": "string", "minLength": 1},
+    "empty_reason_codes_text": {"type": "string", "minLength": 1}
+  }
+}

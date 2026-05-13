@@ -1,239 +1,402 @@
-# GraphLens Agent
+# afc-network-narrative
 
-GraphLens Agent is a backend proof of concept for converting graph-shaped data into validated graph JSON and deterministic graph analytics.
+Local Python 3.11 system for AFC network graph narrative support.
 
-The project is intentionally company-safe:
+## Architecture
 
-- It uses synthetic sample data only.
-- It does not require external model APIs.
-- It does not require external API keys.
-- It does not call OpenAI, Gemini, Anthropic, or any other hosted vision or language model.
-- Structured graph JSON is the preferred source of truth.
-- Screenshot extraction is a fallback path for demos and future local computer-vision work.
+This project is intentionally split into three layers:
 
-## Purpose
+1. `Model`
+2. `Skills`
+3. `Harness`
 
-Graph analytics and graph model outputs can be difficult for non-technical users to inspect. A graph may include nodes, edges, directions, labels, amounts, confidence scores, and risk-like patterns, but the structure often needs to be normalized before it can be analyzed or explained.
+### Model
 
-GraphLens Agent focuses on the backend foundation:
-
-1. Accept structured graph JSON.
-2. Validate nodes, edges, metadata, confidence scores, and warnings.
-3. Run deterministic graph analytics with NetworkX.
-4. Detect graph patterns such as fan-in, fan-out, hub-and-spoke, chain, cycle, and collector behavior.
-5. Generate rule-based plain-language narratives from analytics evidence.
-6. Provide a screenshot upload endpoint as a fallback extraction path.
-
-Frontend UI is not implemented yet.
-
-## Example Use Case
-
-The bundled sample uses synthetic account-like nodes and synthetic transfer-like edges. It shows several source nodes pointing into one central node.
-
-GraphLens Agent can identify:
-
-- Multiple source nodes.
-- One shared target node.
-- A collector-style central node.
-- Repeated or similar edge amounts.
-- A fan-in aggregation pattern.
-
-This does not make any real-world claim. It is a synthetic analytics demo.
-
-## Backend Layers
-
-1. **Graph Data Model**
-   - Normalizes graph data into a consistent JSON schema.
-   - Stores nodes, edges, graph metadata, confidence scores, positions, and warnings.
-
-2. **Validation**
-   - Rejects malformed graph JSON.
-   - Verifies edge endpoints reference known nodes.
-   - Preserves warnings for low-confidence extraction.
-
-3. **Graph Analytics**
-   - Computes in-degree, out-degree, central node, inbound amount, repeated amount patterns, collector behavior, and graph motif.
-
-4. **Rule-Based Narrative Generation**
-   - Converts analytics output into plain-language sections.
-   - Uses deterministic templates and graph facts only.
-   - Does not use an LLM or external model API.
-
-5. **Screenshot Extraction Fallback**
-   - `mock` provider returns bundled synthetic sample graph JSON.
-   - `local_cv` provider is a planned local OCR/OpenCV extraction path and currently returns HTTP 501.
-   - No external model API is used.
-
-6. **End-to-End Screenshot Pipeline**
-   - Accepts an uploaded graph screenshot.
-   - Runs extraction, validation, analytics, and rule-based narrative generation.
-   - Returns graph JSON, analytics, narrative, warnings, and the provider used.
-
-## Current Backend Scope
-
-The current backend includes:
-
-- Graph JSON data model
-- JSON Schema artifact
-- Graph JSON validator
-- Deterministic graph analytics
-- CLI analytics command
-- FastAPI `/health`
-- FastAPI `/analyze-graph`
-- FastAPI `/explain-graph`
-- FastAPI `/extract-graph`
-- FastAPI `/pipeline/screenshot-to-narrative`
-- Rule-based narrative generation
-- Mock screenshot extraction provider
-- Planned `local_cv` provider skeleton
-- Synthetic sample graph JSON
-- Automated tests
-
-## Project Structure
+The model layer is adapter-based. The rest of the system talks only to the generic `VLMAdapter` interface:
 
 ```text
-graphlens-agent/
-├── samples/
-│   ├── fan_in_collector.json
-│   └── fan_in_graph.png
-├── schemas/
-│   └── graph.schema.json
-├── src/
-│   └── graphlens_agent/
-│       ├── analytics.py
-│       ├── api.py
-│       ├── cli.py
-│       ├── extraction.py
-│       ├── io.py
-│       ├── narrative.py
-│       ├── schema.py
-│       └── validator.py
-├── tests/
-│   ├── test_api.py
-│   ├── test_extraction.py
-│   ├── test_narrative.py
-│   └── test_phase1.py
-├── .env.example
-├── pyproject.toml
-└── README.md
+image input -> VLMAdapter.extract_graph(...) -> GraphExtraction
 ```
 
-## Run Tests
+Current working backend:
+
+- `ollama`: local Ollama `qwen2.5vl:3b` through `OllamaVLMAdapter`; this is the default backend
+- `qwen`: local `Qwen2.5-VL-7B-Instruct` through `QwenVLAdapter`
+- `florence2`: local `microsoft/Florence-2-base-ft` through `Florence2Adapter`
+
+Future backend names reserved by the adapter factory:
+
+- `approved_endpoint`
+- `llama`
+- `gemini`
+- `openai`
+- `claude`
+- `granite`
+
+All model adapters must return the same validated `GraphExtraction` contract. Model-specific imports, prompts, request formats, response parsing, and model-loading logic must stay inside the adapter implementation.
+
+### Skills
+
+The `skills/` directory contains SME-owned AFC domain knowledge and policy.
+
+Typical skill content includes:
+
+- graph extraction prompt and extraction schema contracts
+- typology rules
+- typology glossary
+- source registry
+- scoring policy
+- investigation playbooks
+- narrative policy
+- narrative template
+- prohibited claims
+
+Working rule:
+
+- If an AFC SME should be able to change it without editing Python, it belongs in `skills/`.
+
+### Harness
+
+The `src/afc_network_narrative/` Python code is the engineering-owned execution layer.
+
+The harness is responsible for:
+
+- model loading
+- skill loading
+- skill contract validation
+- graph validation
+- deterministic feature computation
+- motif detection
+- rule execution
+- scoring execution
+- narrative rendering
+- API orchestration
+- error handling
+
+Working rule:
+
+- If an engineer must change how the system executes, validates, computes, or orchestrates, the change belongs in the harness.
+
+## Pipeline
+
+1. Select a VLM backend through `create_vlm_adapter(...)`.
+2. Input a network graph image.
+3. The selected adapter extracts visible graph facts and returns `GraphExtraction`.
+4. Python validator checks the graph JSON.
+5. Python feature builder computes fan-in, fan-out, hubs, pass-through motifs, cycles, many-to-many structure, and repeated amounts.
+6. AFC skills and YAML rules map features to cautious typology hypotheses.
+7. Alert investigation boost skill assigns priority.
+8. Narrative skill outputs a grounded AFC investigation narrative.
+
+The visual model is not fine-tuned and is not used for AFC interpretation. It only extracts visible graph facts. Everything after `GraphExtraction` is model-independent.
+
+## Change Guide
+
+Use this decision rule before editing the repo:
+
+- Change `skills/` when the change is about AFC knowledge, policy, wording, thresholds, scoring policy, or narrative style.
+- Change the harness when the change requires new computation, new execution behavior, new API behavior, or new rule-engine capability.
+
+### Change Skills Only
+
+These changes should normally not require Python edits:
+
+- update typology wording
+- adjust fan-in or fan-out thresholds
+- change confidence parameters
+- update scoring points or priority bands
+- add or revise investigation steps
+- change narrative wording or layout text
+- add prohibited claims
+- update glossary definitions
+- update source descriptions
+- revise graph extraction prompt wording
+
+### Change Harness
+
+These changes usually require Python edits:
+
+- add a new graph feature
+- add a new motif detector
+- add a new rule condition type not currently supported by the contract
+- add a new evidence field not currently supported by the rule engine
+- support a new input type such as PDF, multi-image, or video
+- change API request or response contracts
+- change model adapter behavior
+- change validation flow, retries, caching, or async execution
+
+### Practical Test
+
+Ask this question:
+
+- If an AFC SME should be able to make the change without editing Python, the change belongs in `skills/`.
+
+If the answer is no, the change belongs in the harness.
+
+## Skill Contracts
+
+Core SME-facing skill files are contract-validated by the harness at load time.
+
+That means:
+
+- invalid YAML structure fails early
+- missing required placeholders fail early
+- unknown typology keys fail early
+- missing required source ids fail early
+- prohibited-claims regressions fail early
+
+Contract validation currently covers:
+
+- `skills/graph_image_extraction/`
+- `skills/afc_typology_mapping/`
+- `skills/alert_investigation_boost/`
+- `skills/narrative_generation/`
+
+Run tests after any skill or harness change:
 
 ```bash
-python -m pytest -q
+python -m pytest
 ```
 
-## Run CLI
+## Requirements
+
+- Python `>=3.11,<3.12`
+- `numpy==1.26.4`
+- Local deployment
+- VLM backend selected by `VLM_BACKEND`
+- Ollama `qwen2.5vl:3b` pulled locally for the default `ollama` backend
+- Qwen2.5-VL-7B model files under `./models/` for the `qwen` backend
+- Florence-2 model files under `./models/` for the lightweight CPU-oriented `florence2` backend
+
+For the current Qwen backend, Torch must be installed as one compatible PyTorch 2.8.0 stack:
+
+- `torch==2.8.0`
+- `torchvision==0.23.0`
+- `torchaudio==2.8.0`
+
+Pick exactly one torch requirements file for your local CUDA or CPU setup. Do not add `flash-attn` or `xformers` to the base requirements.
+
+## Setup
 
 ```bash
-PYTHONPATH=src python -m graphlens_agent.cli samples/fan_in_collector.json
+python3.11 -m venv .venv
+. .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-## Run API
+For Qwen2.5-VL-7B, install exactly one torch requirements file before `requirements.txt`. Use `requirements-torch-cu128.txt` for CUDA 12.8, `requirements-torch-cu126.txt` for CUDA 12.6, or `requirements-torch-cpu.txt` for CPU.
+
+Florence-2 also requires a local PyTorch installation, plus the base packages `transformers`, `pillow`, `timm`, and `einops`. The adapter loads the model locally with `trust_remote_code=True`, so company environments should approve the model artifact before use.
+
+On Intel macOS, PyTorch 2.8.0 CPU wheels are not available for native `osx-64` Python. Use the Linux CPU Docker path instead:
 
 ```bash
-PYTHONPATH=src uvicorn graphlens_agent.api:app --reload
+docker compose -f docker-compose.cpu.yml build
+docker compose -f docker-compose.cpu.yml run --rm afc-network-narrative python scripts/check_torch_stack.py
+docker compose -f docker-compose.cpu.yml run --rm afc-network-narrative python -m pytest
 ```
 
-Health check:
+## Download Models
+
+### Default backend: Ollama qwen2.5vl:3b
+
+Install Ollama separately if it is not already installed, then pull the model:
 
 ```bash
-curl http://127.0.0.1:8000/health
+python scripts/download_ollama_model.py --model qwen2.5vl:3b
 ```
 
-Analyze graph JSON:
+The Ollama adapter uses the local Ollama service at `http://127.0.0.1:11434` by default. It does not send AFC interpretation to the model; it only asks for visible graph extraction JSON.
+
+### Optional backend: Qwen2.5-VL-7B
+
+Do not commit downloaded model files. `./models/` is ignored by git.
 
 ```bash
-curl -X POST http://127.0.0.1:8000/analyze-graph \
+python scripts/download_qwen.py \
+  --model-id Qwen/Qwen2.5-VL-7B-Instruct \
+  --local-dir ./models/Qwen2.5-VL-7B-Instruct
+```
+
+### Lightweight CPU-oriented backend: Florence-2
+
+```bash
+python scripts/download_florence.py \
+  --model-id microsoft/Florence-2-base-ft \
+  --local-dir ./models/Florence-2-base-ft
+```
+
+## Run the Project
+
+This project supports both CLI and API execution.
+
+Use these paths in the examples below:
+
+- input image: `image/testimage1.png`
+- output JSON: `output/report.json`
+- output PDF: `output/report.pdf`
+
+Create the output folder first:
+
+```bash
+mkdir -p output
+```
+
+### Run via CLI
+
+Run the full pipeline from the command line and generate both JSON and PDF in one command. This uses the configured VLM backend. By default, `VLM_BACKEND=ollama` and `OLLAMA_MODEL=qwen2.5vl:3b`:
+
+```bash
+python scripts/analyze_image.py image/testimage1.png \
+  --pretty \
+  --json-out output/report.json \
+  --pdf-out output/report.pdf
+```
+
+Select Ollama explicitly:
+
+```bash
+python scripts/analyze_image.py image/testimage1.png \
+  --backend ollama \
+  --ollama-model qwen2.5vl:3b \
+  --pretty \
+  --json-out output/report.json \
+  --pdf-out output/report.pdf
+```
+
+Select Qwen explicitly:
+
+```bash
+python scripts/analyze_image.py image/testimage1.png \
+  --backend qwen \
+  --qwen-model-path ./models/Qwen2.5-VL-7B-Instruct \
+  --pretty \
+  --json-out output/report.json \
+  --pdf-out output/report.pdf
+```
+
+Select Florence-2 explicitly:
+
+```bash
+python scripts/analyze_image.py image/testimage1.png \
+  --backend florence2 \
+  --florence-model-path ./models/Florence-2-base-ft \
+  --pretty \
+  --json-out output/report.json \
+  --pdf-out output/report.pdf
+```
+
+If you want to test the AFC pipeline without calling any VLM, run the JSON entrypoint instead:
+
+```bash
+python scripts/analyze_graph_json.py image/testimage1.graph.json \
+  --pretty \
+  --json-out output/report.json \
+  --pdf-out output/report.pdf
+```
+
+### Run via API
+
+Start the API server:
+
+```bash
+uvicorn afc_network_narrative.app.main:app --host 127.0.0.1 --port 8000
+```
+
+Write the JSON result to `output/report.json`:
+
+```bash
+curl -s -X POST http://127.0.0.1:8000/analyze-image \
+  -F "image=@image/testimage1.png" \
+  -o output/report.json
+```
+
+Write the PDF report to `output/report.pdf`:
+
+```bash
+curl -s -X POST http://127.0.0.1:8000/analyze-image-report \
+  -F "image=@image/testimage1.png" \
+  -o output/report.pdf
+```
+
+The API uses two endpoints because JSON and PDF are different response types:
+
+- `POST /analyze-image` returns JSON
+- `POST /analyze-image-report` returns PDF
+
+Select Qwen explicitly through query parameters:
+
+```bash
+curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=qwen&qwen_model_path=./models/Qwen2.5-VL-7B-Instruct" \
+  -F "image=@image/testimage1.png" \
+  -o output/report.json
+```
+
+Select Ollama explicitly through query parameters:
+
+```bash
+curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=ollama&ollama_model=qwen2.5vl:3b" \
+  -F "image=@image/testimage1.png" \
+  -o output/report.json
+```
+
+Select Florence-2 explicitly through query parameters:
+
+```bash
+curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=florence2&florence_model_path=./models/Florence-2-base-ft" \
+  -F "image=@image/testimage1.png" \
+  -o output/report.json
+```
+
+You can also test the non-VLM API path with pre-extracted graph JSON:
+
+```bash
+curl -s -X POST http://127.0.0.1:8000/analyze-graph-json \
   -H "Content-Type: application/json" \
-  --data @samples/fan_in_collector.json
+  -d @image/testimage1.graph.json \
+  -o output/report.json
 ```
 
-Explain graph JSON with analytics and a rule-based narrative:
-
 ```bash
-curl -X POST http://127.0.0.1:8000/explain-graph \
+curl -s -X POST http://127.0.0.1:8000/analyze-graph-json-report \
   -H "Content-Type: application/json" \
-  --data @samples/fan_in_collector.json
+  -d @image/testimage1.graph.json \
+  -o output/report.pdf
 ```
 
-Extract graph JSON from an uploaded image in mock mode:
+Set model environment variables if needed:
 
 ```bash
-curl -X POST http://127.0.0.1:8000/extract-graph \
-  -F "file=@samples/fan_in_graph.png"
+export VLM_BACKEND=ollama
+export OLLAMA_MODEL=qwen2.5vl:3b
+export OLLAMA_HOST=http://127.0.0.1:11434
+export OLLAMA_TIMEOUT_SECONDS=600
+export QWEN_MODEL_PATH=./models/Qwen2.5-VL-7B-Instruct
+export FLORENCE_MODEL_PATH=./models/Florence-2-base-ft
+export GRAPH_EXTRACTION_PROMPT_PATH=./skills/graph_image_extraction/extraction_prompt.md
+export VLM_MAX_NEW_TOKENS=2048
+export APPROVED_VLM_ENDPOINT_URL=
+export VLM_ENDPOINT_URL=
+export VLM_API_KEY_ENV=
 ```
 
-Run the end-to-end screenshot-to-narrative pipeline:
+## Safety Boundaries
 
-```bash
-curl -X POST http://127.0.0.1:8000/pipeline/screenshot-to-narrative \
-  -F "file=@samples/fan_in_graph.png"
-```
+- Never state that a person committed money laundering.
+- Never make a SAR filing decision.
+- Never infer sanctions, terrorist financing, human trafficking, or structuring without explicit supporting context.
+- Use cautious language such as “potential”, “consistent with”, “may indicate”, and “warrants review”.
+- Do not treat color as risk unless a configured legend defines it.
 
-The pipeline response includes:
+## Maintainer Summary
 
-- `graph`
-- `analytics`
-- `narrative`
-- `warnings`
-- `provider_used`
+This repo is not designed around a fine-tuned AFC model.
 
-## Extraction Provider Configuration
+It is designed around:
 
-`POST /extract-graph` selects an extraction provider with `GRAPH_EXTRACTION_PROVIDER`.
+- an adapter-based visual model layer for extraction only
+- SME-owned skills for AFC knowledge
+- a stable harness for execution
 
-Allowed values:
-
-- `mock`
-- `local_cv`
-
-Mock mode is the default portfolio-demo mode. It does not inspect the uploaded image; it returns the bundled synthetic sample graph JSON with a warning.
-
-```bash
-GRAPH_EXTRACTION_PROVIDER=mock \
-PYTHONPATH=src uvicorn graphlens_agent.api:app --reload
-```
-
-`local_cv` mode is reserved for future local OCR/OpenCV screenshot extraction. It is intentionally not implemented yet and returns HTTP 501.
-
-```bash
-GRAPH_EXTRACTION_PROVIDER=local_cv \
-PYTHONPATH=src uvicorn graphlens_agent.api:app --reload
-```
-
-`.env.example` contains only:
-
-```bash
-GRAPH_EXTRACTION_PROVIDER=mock
-```
-
-No external API keys are needed.
-
-## Rule-Based Narrative Design
-
-`POST /explain-graph` validates graph JSON, runs deterministic analytics, and returns both analytics and narrative sections.
-
-Narrative sections:
-
-- Plain-Language Summary
-- What Is Happening
-- Why This Pattern Matters
-- Evidence From the Graph
-- Suggested Next Review Steps
-- Caveats
-
-Currently supported motif narratives:
-
-- `fan_in_aggregation`
-- `fan_out_distribution`
-- `unknown`
-
-The narrative layer uses rules, analytics output, graph labels, graph metrics, evidence lines, and validation warnings. It does not call an LLM or any external model API.
-
-## Screenshot Extraction Notes
-
-Structured graph JSON should be used whenever available. It is the most reliable input for validation and analytics.
-
-Screenshot extraction is a fallback workflow. The end-to-end pipeline still uses the configured local provider and deterministic rules only; no external model API is used. Even when local OCR/OpenCV extraction is added later, extracted graph JSON should be treated as a draft that may require human validation, especially when labels, arrows, edge values, or node positions are unclear.
+Keep that boundary intact.

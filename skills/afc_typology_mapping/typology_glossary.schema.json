@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/afc_typology_mapping/typology_glossary.schema.json",
+  "type": "object",
+  "minProperties": 1,
+  "additionalProperties": {
+    "type": "string",
+    "minLength": 1
+  }
+}

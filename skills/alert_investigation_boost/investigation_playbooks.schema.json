@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/alert_investigation_boost/investigation_playbooks.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "default_steps",
+    "typology_steps"
+  ],
+  "properties": {
+    "default_steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "typology_steps": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/afc-network-narrative/skills/afc_typology_mapping/typology_rules.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "role_hint_tokens",
+    "motif_detection_policy",
+    "confidence_policy",
+    "context_limitations",
+    "typologies"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_hint_tokens": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "motif_detection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["thresholds"],
+      "properties": {
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fan_in",
+            "fan_out",
+            "inbound_hub",
+            "outbound_hub",
+            "pass_through_in_degree",
+            "pass_through_out_degree",
+            "max_cycle_length",
+            "bipartite_min_sources",
+            "bipartite_min_targets",
+            "bipartite_min_edges"
+          ],
+          "properties": {
+            "fan_in": {"type": "integer", "minimum": 1},
+            "fan_out": {"type": "integer", "minimum": 1},
+            "inbound_hub": {"type": "integer", "minimum": 1},
+            "outbound_hub": {"type": "integer", "minimum": 1},
+            "pass_through_in_degree": {"type": "integer", "minimum": 1},
+            "pass_through_out_degree": {"type": "integer", "minimum": 1},
+            "max_cycle_length": {"type": "integer", "minimum": 3},
+            "bipartite_min_sources": {"type": "integer", "minimum": 1},
+            "bipartite_min_targets": {"type": "integer", "minimum": 1},
+            "bipartite_min_edges": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    },
+    "confidence_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min_confidence",
+        "max_confidence",
+        "node_degree_weight",
+        "node_degree_cap",
+        "repeated_amount_weight",
+        "repeated_amount_cap"
+      ],
+      "properties": {
+        "min_confidence": {"type": "number"},
+        "max_confidence": {"type": "number"},
+        "node_degree_weight": {"type": "number"},
+        "node_degree_cap": {"type": "number"},
+        "repeated_amount_weight": {"type": "number"},
+        "repeated_amount_cap": {"type": "number"}
+      }
+    },
+    "context_limitations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timestamps_absent",
+        "customer_profile_absent",
+        "kyc_device_ip_absent",
+        "geography_absent",
+        "channel_absent",
+        "customer_baseline_absent"
+      ],
+      "properties": {
+        "timestamps_absent": {"type": "string", "minLength": 1},
+        "customer_profile_absent": {"type": "string", "minLength": 1},
+        "kyc_device_ip_absent": {"type": "string", "minLength": 1},
+        "geography_absent": {"type": "string", "minLength": 1},
+        "channel_absent": {"type": "string", "minLength": 1},
+        "customer_baseline_absent": {"type": "string", "minLength": 1}
+      }
+    },
+    "typologies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/typologyRule"
+      }
+    }
+  },
+  "$defs": {
+    "commonTypologyRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "match_scope",
+        "base_confidence",
+        "conditions",
+        "afc_interpretation",
+        "caution",
+        "evidence_fields",
+        "investigation_boost"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "match_scope": {
+          "type": "string",
+          "enum": ["node", "graph"]
+        },
+        "base_confidence": {"type": "number"},
+        "conditions": {"type": "object"},
+        "afc_interpretation": {"type": "string", "minLength": 1},
+        "caution": {"type": "string", "minLength": 1},
+        "evidence_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "in_degree",
+              "out_degree",
+              "weighted_inbound_amount",
+              "weighted_outbound_amount",
+              "weighted_flow_amount",
+              "repeated_amount_score",
+              "repeated_amount_value",
+              "fan_out_nodes",
+              "fan_in_nodes",
+              "cycle_count",
+              "many_to_many_groups"
+            ]
+          }
+        },
+        "investigation_boost": {"type": "string", "minLength": 1},
+        "limitations": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "nodeConditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["motif"],
+      "properties": {
+        "motif": {
+          "type": "string",
+          "enum": [
+            "fan_in",
+            "fan_out",
+            "inbound_hub",
+            "outbound_hub",
+            "pass_through_relay"
+          ]
+        },
+        "min_in_degree": {"type": "integer", "minimum": 0},
+        "min_out_degree": {"type": "integer", "minimum": 0}
+      }
+    },
+    "graphConditions": {
+      "type": "object",
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required_motifs"],
+          "properties": {
+            "required_motifs": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "propertyNames": {
+                "enum": [
+                  "fan_in",
+                  "fan_out",
+                  "inbound_hub",
+                  "outbound_hub",
+                  "pass_through_relay",
+                  "cycle_or_circular_flow",
+                  "bipartite_many_to_many",
+                  "two_hop_paths"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["motif", "min_count"],
+          "properties": {
+            "motif": {
+              "type": "string",
+              "enum": [
+                "fan_in",
+                "fan_out",
+                "inbound_hub",
+                "outbound_hub",
+                "pass_through_relay",
+                "cycle_or_circular_flow",
+                "bipartite_many_to_many",
+                "two_hop_paths"
+              ]
+            },
+            "min_count": {"type": "integer", "minimum": 1}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["metric", "min_value"],
+          "properties": {
+            "metric": {
+              "type": "string",
+              "enum": ["repeated_amount_score", "repeated_amount_value"]
+            },
+            "min_value": {"type": "number"},
+            "max_value": {"type": "number"}
+          }
+        }
+      ]
+    },
+    "nodeTypologyRule": {
+      "allOf": [
+        {"$ref": "#/$defs/commonTypologyRule"},
+        {
+          "properties": {
+            "match_scope": {"const": "node"},
+            "conditions": {"$ref": "#/$defs/nodeConditions"}
+          }
+        }
+      ]
+    },
+    "graphTypologyRule": {
+      "allOf": [
+        {"$ref": "#/$defs/commonTypologyRule"},
+        {
+          "properties": {
+            "match_scope": {"const": "graph"},
+            "conditions": {"$ref": "#/$defs/graphConditions"}
+          }
+        }
+      ]
+    },
+    "typologyRule": {
+      "oneOf": [
+        {"$ref": "#/$defs/nodeTypologyRule"},
+        {"$ref": "#/$defs/graphTypologyRule"}
+      ]
+    }
+  }
+}

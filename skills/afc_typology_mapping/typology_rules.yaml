@@ -1,0 +1,142 @@
+version: "0.2.0"
+role_hint_tokens:
+  - mule
+  - collector
+  - distributor
+  - relay
+motif_detection_policy:
+  thresholds:
+    fan_in: 5
+    fan_out: 4
+    inbound_hub: 4
+    outbound_hub: 4
+    pass_through_in_degree: 2
+    pass_through_out_degree: 2
+    max_cycle_length: 5
+    bipartite_min_sources: 2
+    bipartite_min_targets: 2
+    bipartite_min_edges: 4
+confidence_policy:
+  min_confidence: 0.0
+  max_confidence: 0.95
+  node_degree_weight: 0.015
+  node_degree_cap: 0.16
+  repeated_amount_weight: 0.12
+  repeated_amount_cap: 0.12
+context_limitations:
+  timestamps_absent: "Timestamps are absent, so timing, velocity, and sequence cannot be assessed."
+  customer_profile_absent: "Customer profile context is absent."
+  kyc_device_ip_absent: "KYC, device, and IP context are absent."
+  geography_absent: "Geographic context is absent."
+  channel_absent: "Transaction channel context is absent."
+  customer_baseline_absent: "Customer baseline activity context is absent."
+typologies:
+  - id: fan_in_collection
+    name: fan-in collection
+    match_scope: node
+    base_confidence: 0.55
+    conditions:
+      motif: fan_in
+      min_in_degree: 5
+    afc_interpretation: "Multiple sources converge into a central node, which is consistent with a potential collection pattern."
+    caution: "Fan-in structure alone is not a final suspicious activity conclusion."
+    evidence_fields:
+      - in_degree
+      - weighted_inbound_amount
+      - repeated_amount_score
+    investigation_boost: "Review central collection node and inbound counterparties."
+  - id: fan_out_distribution
+    name: fan-out distribution
+    match_scope: node
+    base_confidence: 0.53
+    conditions:
+      motif: fan_out
+      min_out_degree: 4
+    afc_interpretation: "One source distributes funds to multiple recipients, which may indicate a distribution pattern that warrants review."
+    caution: "Fan-out structure alone is not a final suspicious activity conclusion."
+    evidence_fields:
+      - out_degree
+      - weighted_outbound_amount
+      - repeated_amount_score
+    investigation_boost: "Review distributor node and outbound counterparties."
+  - id: gather_scatter
+    name: gather-scatter
+    match_scope: node
+    base_confidence: 0.6
+    conditions:
+      motif: pass_through_relay
+      min_in_degree: 2
+      min_out_degree: 2
+    afc_interpretation: "A node receives from multiple sources and sends to multiple recipients, consistent with a potential gather-scatter flow."
+    caution: "Timing and account-purpose context are required before escalation decisions."
+    evidence_fields:
+      - in_degree
+      - out_degree
+      - weighted_flow_amount
+    investigation_boost: "Review timing between inbound and outbound movement."
+  - id: scatter_gather
+    name: scatter-gather
+    match_scope: graph
+    base_confidence: 0.58
+    conditions:
+      required_motifs:
+        fan_out: 1
+        fan_in: 1
+    afc_interpretation: "A distribution pattern and collection pattern both appear in the graph, which may indicate staged movement that warrants review."
+    caution: "The graph image alone cannot establish intent or suspicious activity."
+    evidence_fields:
+      - fan_out_nodes
+      - fan_in_nodes
+    investigation_boost: "Review linked hubs and whether flows connect in time."
+  - id: pass_through_relay
+    name: pass-through relay
+    match_scope: node
+    base_confidence: 0.56
+    conditions:
+      motif: pass_through_relay
+      min_in_degree: 2
+      min_out_degree: 2
+    afc_interpretation: "A central node has both inbound and outbound concentration, consistent with a potential relay pattern."
+    caution: "Pass-through interpretation requires balance, timing, and account-purpose context."
+    evidence_fields:
+      - in_degree
+      - out_degree
+      - weighted_flow_amount
+    investigation_boost: "Review retained balance and timing of onward transfers."
+  - id: cycle_or_circular_flow
+    name: cycle or circular flow
+    match_scope: graph
+    base_confidence: 0.62
+    conditions:
+      motif: cycle_or_circular_flow
+      min_count: 1
+    afc_interpretation: "Directed edges form a cycle, which is consistent with a potential circular flow that warrants review."
+    caution: "Circular graph structure alone does not establish wrongdoing."
+    evidence_fields:
+      - cycle_count
+    investigation_boost: "Review whether funds return to related parties or accounts."
+  - id: bipartite_many_to_many
+    name: bipartite many-to-many
+    match_scope: graph
+    base_confidence: 0.57
+    conditions:
+      motif: bipartite_many_to_many
+      min_count: 1
+    afc_interpretation: "Multiple sources connect to multiple targets, consistent with a potential coordinated many-to-many network."
+    caution: "Many-to-many topology requires counterparty and business-purpose context."
+    evidence_fields:
+      - many_to_many_groups
+    investigation_boost: "Review shared attributes across both sides of the network."
+  - id: equal_amount_coordination
+    name: equal-amount coordination
+    match_scope: graph
+    base_confidence: 0.5
+    conditions:
+      metric: repeated_amount_score
+      min_value: 0.8
+    afc_interpretation: "Repeated visible amounts across edges may indicate coordinated activity when supported by graph structure."
+    caution: "Repeated amounts alone must not be treated as a structuring conclusion."
+    evidence_fields:
+      - repeated_amount_score
+      - repeated_amount_value
+    investigation_boost: "Review whether repeated amounts have a documented operational explanation."

@@ -1,0 +1,28 @@
+{
+  "default_steps": [
+    "Review underlying transactions for timestamps, amounts, settlement direction, and counterparty identifiers.",
+    "Compare observed activity against customer profile, expected behavior, and customer baseline.",
+    "Check KYC, device, IP, geography, and channel context before drawing conclusions."
+  ],
+  "typology_steps": {
+    "fan_in_collection": [
+      "Review inbound counterparties for shared attributes or common funding behavior.",
+      "Check whether funds move onward from the collection node shortly after receipt."
+    ],
+    "fan_out_distribution": [
+      "Review outbound recipients for shared attributes or unusual clustering.",
+      "Check source of funds into the distributor node before outbound movement."
+    ],
+    "gather_scatter": [
+      "Compare inbound and outbound timing to assess whether the central node acts as a relay.",
+      "Review whether inbound and outbound amounts have a documented business purpose."
+    ],
+    "pass_through_relay": [
+      "Review retained balances and timing of onward transfers.",
+      "Confirm whether the relay node has a documented account purpose."
+    ],
+    "equal_amount_coordination": [
+      "Confirm whether repeated amounts reflect fees, limits, payroll, billing, or another operational explanation."
+    ]
+  }
+}
