@@ -22,20 +22,9 @@ This layer is adapter-based. The rest of the system talks only to the generic `V
 image input -> VLMAdapter.extract_graph(...) -> GraphExtraction
 ```
 
-Current working backends:
+Current working backend:
 
-- `ollama`: local Ollama `qwen2.5vl:3b` through `OllamaVLMAdapter`; this is the default backend
-- `qwen`: local `Qwen2.5-VL-7B-Instruct` through `QwenVLAdapter`
-- `florence2`: local `microsoft/Florence-2-base-ft` through `Florence2Adapter`
-
-Future backend names reserved by the adapter factory:
-
-- `approved_endpoint`
-- `llama`
-- `gemini`
-- `openai`
-- `claude`
-- `granite`
+- `pixtral`: local `mistral-community/pixtral-12b` through `Pixtral12BAdapter`; this is the only supported backend
 
 All model adapters must return the same validated `GraphExtraction` contract. Model-specific imports, prompts, request formats, response parsing, and model-loading logic must stay inside the adapter implementation.
 
@@ -141,7 +130,7 @@ The system is designed as an investigation-support tool, not a final decision en
 
 ```text
 src/afc_network_narrative/
-  model/       # Model layer: VLMAdapter, backend factory, Ollama/Qwen/Florence adapters.
+  model/       # Model layer: VLMAdapter, backend factory, and the Pixtral 12B adapter.
   harness/     # Harness engineering: API, pipeline, schemas, features, rules, narrative, reporting, evaluation.
 skills/        # Skills layer: AFC rules, policies, prompts, playbooks, templates, and contracts.
 scripts/       # CLI utilities for downloads, image analysis, graph JSON analysis, and smoke tests.
@@ -178,7 +167,7 @@ These changes belong in `src/afc_network_narrative/model/`:
 - change an adapter prompt transport or request format
 - parse a model-specific raw response
 - normalize model output into `GraphExtraction`
-- isolate model-specific dependencies such as Ollama, Transformers, Qwen utilities, or future endpoint clients
+- isolate model-specific dependencies such as Transformers or Pixtral-specific loading code
 
 ### Change Skills Only
 
@@ -247,11 +236,9 @@ python -m pytest
 - `numpy==1.26.4`
 - Local deployment
 - VLM backend selected by `VLM_BACKEND`
-- Ollama `qwen2.5vl:3b` pulled locally for the default `ollama` backend
-- Qwen2.5-VL-7B model files under `./models/` for the `qwen` backend
-- Florence-2 model files under `./models/` for the lightweight CPU-oriented `florence2` backend
+- local `mistral-community/pixtral-12b` model files under `./models/` for the `pixtral` backend
 
-For the current Qwen backend, Torch must be installed as one compatible PyTorch 2.8.0 stack:
+For the current Pixtral backend, Torch must be installed as one compatible PyTorch 2.8.0 stack:
 
 - `torch==2.8.0`
 - `torchvision==0.23.0`
@@ -268,9 +255,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-For Qwen2.5-VL-7B, install exactly one torch requirements file before `requirements.txt`. Use `requirements-torch-cu128.txt` for CUDA 12.8, `requirements-torch-cu126.txt` for CUDA 12.6, or `requirements-torch-cpu.txt` for CPU.
-
-Florence-2 also requires a local PyTorch installation, plus the base packages `transformers`, `pillow`, `timm`, and `einops`. The adapter loads the model locally with `trust_remote_code=True`, so company environments should approve the model artifact before use.
+For Pixtral 12B, install exactly one torch requirements file before `requirements.txt`. Use `requirements-torch-cu128.txt` for CUDA 12.8, `requirements-torch-cu126.txt` for CUDA 12.6, or `requirements-torch-cpu.txt` for CPU.
 
 On Intel macOS, PyTorch 2.8.0 CPU wheels are not available for native `osx-64` Python. Use the Linux CPU Docker path instead:
 
@@ -282,32 +267,14 @@ docker compose -f docker-compose.cpu.yml run --rm afc-network-narrative python -
 
 ## Download Models
 
-### Default backend: Ollama qwen2.5vl:3b
-
-Install Ollama separately if it is not already installed, then pull the model:
-
-```bash
-python scripts/download_ollama_model.py --model qwen2.5vl:3b
-```
-
-The Ollama adapter uses the local Ollama service at `http://127.0.0.1:11434` by default. It does not send AFC interpretation to the model; it only asks for visible graph extraction JSON.
-
-### Optional backend: Qwen2.5-VL-7B
+### Pixtral 12B
 
 Do not commit downloaded model files. `./models/` is ignored by git.
 
 ```bash
-python scripts/download_qwen.py \
-  --model-id Qwen/Qwen2.5-VL-7B-Instruct \
-  --local-dir ./models/Qwen2.5-VL-7B-Instruct
-```
-
-### Lightweight CPU-oriented backend: Florence-2
-
-```bash
-python scripts/download_florence.py \
-  --model-id microsoft/Florence-2-base-ft \
-  --local-dir ./models/Florence-2-base-ft
+python scripts/download_pixtral.py \
+  --model-id mistral-community/pixtral-12b \
+  --local-dir ./models/mistral-community-pixtral-12b
 ```
 
 ## Run the Project
@@ -328,7 +295,7 @@ mkdir -p output
 
 ### Run via CLI
 
-Run the full pipeline from the command line and generate both JSON and PDF in one command. This uses the configured VLM backend. By default, `VLM_BACKEND=ollama` and `OLLAMA_MODEL=qwen2.5vl:3b`:
+Run the full pipeline from the command line and generate both JSON and PDF in one command. This uses the configured VLM backend. By default, `VLM_BACKEND=pixtral`:
 
 ```bash
 python scripts/analyze_image.py image/testimage1.png \
@@ -337,34 +304,12 @@ python scripts/analyze_image.py image/testimage1.png \
   --pdf-out output/report.pdf
 ```
 
-Select Ollama explicitly:
+Select Pixtral explicitly:
 
 ```bash
 python scripts/analyze_image.py image/testimage1.png \
-  --backend ollama \
-  --ollama-model qwen2.5vl:3b \
-  --pretty \
-  --json-out output/report.json \
-  --pdf-out output/report.pdf
-```
-
-Select Qwen explicitly:
-
-```bash
-python scripts/analyze_image.py image/testimage1.png \
-  --backend qwen \
-  --qwen-model-path ./models/Qwen2.5-VL-7B-Instruct \
-  --pretty \
-  --json-out output/report.json \
-  --pdf-out output/report.pdf
-```
-
-Select Florence-2 explicitly:
-
-```bash
-python scripts/analyze_image.py image/testimage1.png \
-  --backend florence2 \
-  --florence-model-path ./models/Florence-2-base-ft \
+  --backend pixtral \
+  --pixtral-model-path ./models/mistral-community-pixtral-12b \
   --pretty \
   --json-out output/report.json \
   --pdf-out output/report.pdf
@@ -408,26 +353,10 @@ The API uses two endpoints because JSON and PDF are different response types:
 - `POST /analyze-image` returns JSON
 - `POST /analyze-image-report` returns PDF
 
-Select Qwen explicitly through query parameters:
+Select Pixtral explicitly through query parameters:
 
 ```bash
-curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=qwen&qwen_model_path=./models/Qwen2.5-VL-7B-Instruct" \
-  -F "image=@image/testimage1.png" \
-  -o output/report.json
-```
-
-Select Ollama explicitly through query parameters:
-
-```bash
-curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=ollama&ollama_model=qwen2.5vl:3b" \
-  -F "image=@image/testimage1.png" \
-  -o output/report.json
-```
-
-Select Florence-2 explicitly through query parameters:
-
-```bash
-curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=florence2&florence_model_path=./models/Florence-2-base-ft" \
+curl -s -X POST "http://127.0.0.1:8000/analyze-image?backend=pixtral&pixtral_model_path=./models/mistral-community-pixtral-12b" \
   -F "image=@image/testimage1.png" \
   -o output/report.json
 ```
@@ -451,17 +380,10 @@ curl -s -X POST http://127.0.0.1:8000/analyze-graph-json-report \
 Set model environment variables if needed:
 
 ```bash
-export VLM_BACKEND=ollama
-export OLLAMA_MODEL=qwen2.5vl:3b
-export OLLAMA_HOST=http://127.0.0.1:11434
-export OLLAMA_TIMEOUT_SECONDS=600
-export QWEN_MODEL_PATH=./models/Qwen2.5-VL-7B-Instruct
-export FLORENCE_MODEL_PATH=./models/Florence-2-base-ft
+export VLM_BACKEND=pixtral
+export PIXTRAL_MODEL_PATH=./models/mistral-community-pixtral-12b
 export GRAPH_EXTRACTION_PROMPT_PATH=./skills/graph_image_extraction/extraction_prompt.md
 export VLM_MAX_NEW_TOKENS=2048
-export APPROVED_VLM_ENDPOINT_URL=
-export VLM_ENDPOINT_URL=
-export VLM_API_KEY_ENV=
 ```
 
 ## Safety Boundaries

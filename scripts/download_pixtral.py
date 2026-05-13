@@ -7,9 +7,9 @@ from huggingface_hub import snapshot_download
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Download Qwen2.5-VL locally under ./models/.")
-    parser.add_argument("--model-id", default="Qwen/Qwen2.5-VL-7B-Instruct")
-    parser.add_argument("--local-dir", default="./models/Qwen2.5-VL-7B-Instruct")
+    parser = argparse.ArgumentParser(description="Download Pixtral 12B locally under ./models/.")
+    parser.add_argument("--model-id", default="mistral-community/pixtral-12b")
+    parser.add_argument("--local-dir", default="./models/mistral-community-pixtral-12b")
     parser.add_argument("--revision", default=None)
     return parser.parse_args()
 

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920">
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .section { font: 700 24px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 18px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 15px Arial, sans-serif; fill: #334155; }
+      .model { fill: #eff6ff; stroke: #1d4ed8; stroke-width: 2; rx: 16; ry: 16; }
+      .skill { fill: #ecfeff; stroke: #0f766e; stroke-width: 2; rx: 16; ry: 16; }
+      .harness { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 16; ry: 16; }
+      .out { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 16; ry: 16; }
+      .arrow { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+    </marker>
+  </defs>
+
+  <text x="60" y="60" class="title">Model / Skills / Harness Boundary</text>
+
+  <rect x="60" y="110" width="410" height="700" class="model" />
+  <text x="265" y="155" text-anchor="middle" class="section">Model Layer</text>
+
+  <rect x="105" y="200" width="320" height="72" class="model" />
+  <text x="265" y="244" text-anchor="middle" class="label">VLMAdapter Interface</text>
+
+  <rect x="105" y="300" width="320" height="72" class="model" />
+  <text x="265" y="344" text-anchor="middle" class="small">Pixtral12BAdapter</text>
+
+  <rect x="105" y="400" width="320" height="72" class="model" />
+  <text x="265" y="444" text-anchor="middle" class="small">Local Pixtral model</text>
+
+  <rect x="105" y="500" width="320" height="72" class="model" />
+  <text x="265" y="544" text-anchor="middle" class="small">Future Approved Endpoint Adapter</text>
+
+  <text x="265" y="640" text-anchor="middle" class="small">Output contract:</text>
+  <text x="265" y="670" text-anchor="middle" class="label">GraphExtraction</text>
+
+  <rect x="595" y="110" width="410" height="700" class="skill" />
+  <text x="800" y="155" text-anchor="middle" class="section">Skills Layer</text>
+
+  <rect x="640" y="190" width="320" height="58" class="skill" />
+  <text x="800" y="226" text-anchor="middle" class="small">Graph Extraction Prompt</text>
+
+  <rect x="640" y="270" width="320" height="58" class="skill" />
+  <text x="800" y="306" text-anchor="middle" class="small">AFC Typology Rules</text>
+
+  <rect x="640" y="350" width="320" height="58" class="skill" />
+  <text x="800" y="386" text-anchor="middle" class="small">SAR Red Flag Rules</text>
+
+  <rect x="640" y="430" width="320" height="58" class="skill" />
+  <text x="800" y="466" text-anchor="middle" class="small">Scoring Policy</text>
+
+  <rect x="640" y="510" width="320" height="58" class="skill" />
+  <text x="800" y="546" text-anchor="middle" class="small">Investigation Playbooks</text>
+
+  <rect x="640" y="590" width="320" height="58" class="skill" />
+  <text x="800" y="626" text-anchor="middle" class="small">Narrative Templates / Prohibited Claims</text>
+
+  <rect x="640" y="670" width="320" height="58" class="skill" />
+  <text x="800" y="706" text-anchor="middle" class="small">Source Registry / Contracts</text>
+
+  <rect x="1130" y="110" width="410" height="700" class="harness" />
+  <text x="1335" y="155" text-anchor="middle" class="section">Harness Engineering Layer</text>
+
+  <rect x="1175" y="190" width="320" height="58" class="harness" />
+  <text x="1335" y="226" text-anchor="middle" class="small">API / CLI</text>
+
+  <rect x="1175" y="270" width="320" height="58" class="harness" />
+  <text x="1335" y="306" text-anchor="middle" class="small">Pipeline</text>
+
+  <rect x="1175" y="350" width="320" height="58" class="harness" />
+  <text x="1335" y="386" text-anchor="middle" class="small">Graph Validator</text>
+
+  <rect x="1175" y="430" width="320" height="58" class="harness" />
+  <text x="1335" y="466" text-anchor="middle" class="small">Feature Builder / Motif Detector</text>
+
+  <rect x="1175" y="510" width="320" height="58" class="harness" />
+  <text x="1335" y="546" text-anchor="middle" class="small">Rule Engine / Scoring / SAR Red Flags</text>
+
+  <rect x="1175" y="590" width="320" height="58" class="harness" />
+  <text x="1335" y="626" text-anchor="middle" class="small">Narrative Builder / PDF Reporter</text>
+
+  <rect x="1220" y="700" width="230" height="72" class="out" />
+  <text x="1335" y="744" text-anchor="middle" class="label">JSON + PDF Output</text>
+
+  <path d="M470 670 L1130 670 L1130 299 L1175 299" class="arrow" />
+  <path d="M1005 520 L1130 520 L1130 539 L1175 539" class="arrow" />
+  <path d="M1005 620 L1130 620 L1130 619 L1175 619" class="arrow" />
+</svg>

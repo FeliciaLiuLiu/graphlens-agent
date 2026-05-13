@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 18px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 15px Arial, sans-serif; fill: #334155; }
+      .box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; rx: 14; ry: 14; }
+      .skill { fill: #ecfeff; stroke: #0f766e; stroke-width: 2; rx: 14; ry: 14; }
+      .out { fill: #fefce8; stroke: #a16207; stroke-width: 2; rx: 14; ry: 14; }
+      .arrow { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .dash { stroke-dasharray: 8 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+    </marker>
+  </defs>
+
+  <text x="60" y="60" class="title">AFC Network Narrative: Overall Architecture</text>
+
+  <rect x="70" y="140" width="220" height="84" class="box" />
+  <text x="180" y="188" text-anchor="middle" class="label">Input Image</text>
+
+  <rect x="70" y="300" width="220" height="84" class="box" />
+  <text x="180" y="348" text-anchor="middle" class="label">Input GraphExtraction JSON</text>
+
+  <rect x="390" y="140" width="250" height="84" class="box" />
+  <text x="515" y="177" text-anchor="middle" class="label">Model Layer</text>
+  <text x="515" y="202" text-anchor="middle" class="small">VLMAdapter</text>
+
+  <rect x="760" y="140" width="260" height="84" class="box" />
+  <text x="890" y="177" text-anchor="middle" class="label">GraphExtraction JSON</text>
+  <text x="890" y="202" text-anchor="middle" class="small">Stable model-output contract</text>
+
+  <rect x="1110" y="120" width="370" height="420" class="box" />
+  <text x="1295" y="165" text-anchor="middle" class="label">Harness Pipeline</text>
+
+  <rect x="1160" y="200" width="270" height="58" class="box" />
+  <text x="1295" y="236" text-anchor="middle" class="small">Schema Validation</text>
+
+  <rect x="1160" y="280" width="270" height="58" class="box" />
+  <text x="1295" y="316" text-anchor="middle" class="small">Graph Feature Builder</text>
+
+  <rect x="1160" y="360" width="270" height="58" class="box" />
+  <text x="1295" y="396" text-anchor="middle" class="small">Motif Detector</text>
+
+  <rect x="1160" y="440" width="270" height="58" class="box" />
+  <text x="1295" y="476" text-anchor="middle" class="small">Rule Engine / Scoring / Narrative</text>
+
+  <rect x="360" y="500" width="520" height="220" class="skill" />
+  <text x="620" y="545" text-anchor="middle" class="label">Skills Layer</text>
+  <text x="620" y="585" text-anchor="middle" class="small">AFC Typology Rules YAML</text>
+  <text x="620" y="615" text-anchor="middle" class="small">SAR Red Flag Rules YAML</text>
+  <text x="620" y="645" text-anchor="middle" class="small">Scoring Policy / Investigation Playbooks</text>
+  <text x="620" y="675" text-anchor="middle" class="small">Narrative Templates / Prohibited Claims / Contracts</text>
+
+  <rect x="1110" y="630" width="170" height="84" class="out" />
+  <text x="1195" y="678" text-anchor="middle" class="label">JSON Output</text>
+
+  <rect x="1310" y="630" width="170" height="84" class="out" />
+  <text x="1395" y="678" text-anchor="middle" class="label">PDF Output</text>
+
+  <rect x="1175" y="770" width="240" height="80" class="out" />
+  <text x="1295" y="818" text-anchor="middle" class="label">SME / Analyst Review</text>
+
+  <path d="M290 182 L390 182" class="arrow" />
+  <path d="M640 182 L760 182" class="arrow" />
+  <path d="M1020 182 L1110 182 L1110 229 L1160 229" class="arrow" />
+  <path d="M290 342 L1110 342 L1110 229 L1160 229" class="arrow" />
+  <path d="M1295 258 L1295 280" class="arrow" />
+  <path d="M1295 338 L1295 360" class="arrow" />
+  <path d="M1295 418 L1295 440" class="arrow" />
+  <path d="M880 610 L1110 610 L1110 470 L1160 470" class="arrow dash" />
+  <path d="M1295 498 L1295 630" class="arrow" />
+  <path d="M1295 714 L1295 770" class="arrow" />
+</svg>

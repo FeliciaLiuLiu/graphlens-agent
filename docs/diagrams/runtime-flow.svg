@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1040" viewBox="0 0 1800 1040">
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .lane { stroke: #cbd5e1; stroke-width: 2; }
+      .head { font: 700 18px Arial, sans-serif; fill: #0f172a; }
+      .msg { font: 500 15px Arial, sans-serif; fill: #1e293b; }
+      .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; ry: 12; }
+      .alt { fill: #eef2ff; stroke: #6366f1; stroke-width: 2; rx: 12; ry: 12; }
+      .arrow { stroke: #475569; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+    </marker>
+  </defs>
+
+  <text x="60" y="60" class="title">Detailed Runtime Flow</text>
+
+  <g>
+    <text x="110" y="110" text-anchor="middle" class="head">User</text>
+    <text x="320" y="110" text-anchor="middle" class="head">API / CLI</text>
+    <text x="540" y="110" text-anchor="middle" class="head">VLMAdapter</text>
+    <text x="760" y="110" text-anchor="middle" class="head">Validator</text>
+    <text x="980" y="110" text-anchor="middle" class="head">Features</text>
+    <text x="1200" y="110" text-anchor="middle" class="head">Motifs</text>
+    <text x="1420" y="110" text-anchor="middle" class="head">Rules / Scoring</text>
+    <text x="1640" y="110" text-anchor="middle" class="head">Narrative / Output</text>
+
+    <line x1="110" y1="130" x2="110" y2="980" class="lane" />
+    <line x1="320" y1="130" x2="320" y2="980" class="lane" />
+    <line x1="540" y1="130" x2="540" y2="980" class="lane" />
+    <line x1="760" y1="130" x2="760" y2="980" class="lane" />
+    <line x1="980" y1="130" x2="980" y2="980" class="lane" />
+    <line x1="1200" y1="130" x2="1200" y2="980" class="lane" />
+    <line x1="1420" y1="130" x2="1420" y2="980" class="lane" />
+    <line x1="1640" y1="130" x2="1640" y2="980" class="lane" />
+  </g>
+
+  <rect x="170" y="160" width="300" height="60" class="box" />
+  <text x="320" y="197" text-anchor="middle" class="msg">Submit image or graph JSON</text>
+  <path d="M110 190 L320 190" class="arrow" />
+
+  <rect x="250" y="260" width="380" height="110" class="alt" />
+  <text x="440" y="295" text-anchor="middle" class="head">Image path</text>
+  <text x="440" y="330" text-anchor="middle" class="msg">API / CLI calls</text>
+  <text x="440" y="355" text-anchor="middle" class="msg">adapter.extract_graph(image_path)</text>
+  <path d="M320 315 L540 315" class="arrow" />
+
+  <rect x="430" y="420" width="220" height="60" class="box" />
+  <text x="540" y="457" text-anchor="middle" class="msg">GraphExtraction JSON</text>
+  <path d="M540 375 L540 420" class="arrow" />
+  <path d="M540 450 L760 450" class="arrow" />
+
+  <rect x="650" y="520" width="220" height="60" class="box" />
+  <text x="760" y="557" text-anchor="middle" class="msg">validate GraphExtraction</text>
+  <path d="M760 480 L760 520" class="arrow" />
+  <path d="M760 550 L980 550" class="arrow" />
+
+  <rect x="870" y="620" width="220" height="60" class="box" />
+  <text x="980" y="657" text-anchor="middle" class="msg">build_graph_features</text>
+  <path d="M980 580 L980 620" class="arrow" />
+  <path d="M980 650 L1200 650" class="arrow" />
+
+  <rect x="1090" y="720" width="220" height="60" class="box" />
+  <text x="1200" y="757" text-anchor="middle" class="msg">detect motifs</text>
+  <path d="M1200 680 L1200 720" class="arrow" />
+  <path d="M1200 750 L1420 750" class="arrow" />
+
+  <rect x="1290" y="820" width="260" height="90" class="box" />
+  <text x="1420" y="855" text-anchor="middle" class="msg">Rule engine matches typologies</text>
+  <text x="1420" y="880" text-anchor="middle" class="msg">Scoring computes priority</text>
+  <text x="1420" y="905" text-anchor="middle" class="msg">SAR red flags are derived</text>
+  <path d="M1420 780 L1420 820" class="arrow" />
+  <path d="M1420 865 L1640 865" class="arrow" />
+
+  <rect x="1510" y="930" width="260" height="60" class="box" />
+  <text x="1640" y="967" text-anchor="middle" class="msg">Narrative + JSON + PDF</text>
+  <path d="M1640 910 L1640 930" class="arrow" />
+</svg>

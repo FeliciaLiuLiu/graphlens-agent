@@ -32,15 +32,9 @@ def analyze_graph_json(payload: dict[str, Any]) -> dict[str, Any]:
 @app.post("/analyze-image")
 async def analyze_image(
     image: UploadFile = File(...),
-    backend: str | None = Query(default=None, description="Default comes from VLM_BACKEND or ollama."),
-    ollama_model: str | None = Query(default=None, description="Local Ollama model name."),
-    ollama_host: str | None = Query(default=None, description="Local Ollama host."),
-    ollama_timeout_seconds: int | None = Query(default=None, description="Ollama request timeout in seconds."),
-    qwen_model_path: str | None = Query(default=None, description="Local Qwen2.5-VL model path."),
-    florence_model_path: str | None = Query(default=None, description="Local Florence-2 model path."),
+    backend: str | None = Query(default=None, description="Only the pixtral backend is supported."),
+    pixtral_model_path: str | None = Query(default=None, description="Local Pixtral 12B model path."),
     model_path: str | None = Query(default=None, description="Alias for the selected local model path."),
-    endpoint_url: str | None = Query(default=None, description="Optional future endpoint-backed VLM URL."),
-    api_key_env_var: str | None = Query(default=None, description="Optional API key environment variable name."),
     max_new_tokens: int | None = Query(default=None, description="Maximum graph-extraction generation tokens."),
     extraction_prompt_path: str | None = Query(default=None, description="Graph extraction prompt path."),
 ) -> dict[str, Any]:
@@ -57,13 +51,7 @@ async def analyze_image(
             str(tmp_path),
             get_adapter(
                 backend=backend,
-                ollama_model=ollama_model,
-                ollama_host=ollama_host,
-                ollama_timeout_seconds=ollama_timeout_seconds,
-                qwen_model_path=qwen_model_path or model_path,
-                florence_model_path=florence_model_path or model_path,
-                endpoint_url=endpoint_url,
-                api_key_env_var=api_key_env_var,
+                pixtral_model_path=pixtral_model_path or model_path,
                 max_new_tokens=max_new_tokens,
                 extraction_prompt_path=extraction_prompt_path,
             ),
@@ -93,15 +81,9 @@ def analyze_graph_json_report(payload: dict[str, Any]) -> Response:
 @app.post("/analyze-image-report")
 async def analyze_image_report(
     image: UploadFile = File(...),
-    backend: str | None = Query(default=None, description="Default comes from VLM_BACKEND or ollama."),
-    ollama_model: str | None = Query(default=None, description="Local Ollama model name."),
-    ollama_host: str | None = Query(default=None, description="Local Ollama host."),
-    ollama_timeout_seconds: int | None = Query(default=None, description="Ollama request timeout in seconds."),
-    qwen_model_path: str | None = Query(default=None, description="Local Qwen2.5-VL model path."),
-    florence_model_path: str | None = Query(default=None, description="Local Florence-2 model path."),
+    backend: str | None = Query(default=None, description="Only the pixtral backend is supported."),
+    pixtral_model_path: str | None = Query(default=None, description="Local Pixtral 12B model path."),
     model_path: str | None = Query(default=None, description="Alias for the selected local model path."),
-    endpoint_url: str | None = Query(default=None, description="Optional future endpoint-backed VLM URL."),
-    api_key_env_var: str | None = Query(default=None, description="Optional API key environment variable name."),
     max_new_tokens: int | None = Query(default=None, description="Maximum graph-extraction generation tokens."),
     extraction_prompt_path: str | None = Query(default=None, description="Graph extraction prompt path."),
 ) -> Response:
@@ -118,13 +100,7 @@ async def analyze_image_report(
             str(tmp_path),
             get_adapter(
                 backend=backend,
-                ollama_model=ollama_model,
-                ollama_host=ollama_host,
-                ollama_timeout_seconds=ollama_timeout_seconds,
-                qwen_model_path=qwen_model_path or model_path,
-                florence_model_path=florence_model_path or model_path,
-                endpoint_url=endpoint_url,
-                api_key_env_var=api_key_env_var,
+                pixtral_model_path=pixtral_model_path or model_path,
                 max_new_tokens=max_new_tokens,
                 extraction_prompt_path=extraction_prompt_path,
             ),
@@ -144,26 +120,14 @@ async def analyze_image_report(
 
 def get_adapter(
     backend: str | None,
-    ollama_model: str | None,
-    ollama_host: str | None,
-    ollama_timeout_seconds: int | None,
-    qwen_model_path: str | None,
-    florence_model_path: str | None,
-    endpoint_url: str | None,
-    api_key_env_var: str | None,
+    pixtral_model_path: str | None,
     max_new_tokens: int | None,
     extraction_prompt_path: str | None,
 ) -> VLMAdapter:
     config = VLMConfig.from_mapping(
         {
             "backend": backend,
-            "ollama_model": ollama_model,
-            "ollama_host": ollama_host,
-            "ollama_timeout_seconds": ollama_timeout_seconds,
-            "qwen_model_path": qwen_model_path,
-            "florence_model_path": florence_model_path,
-            "endpoint_url": endpoint_url,
-            "api_key_env_var": api_key_env_var,
+            "pixtral_model_path": pixtral_model_path,
             "max_new_tokens": max_new_tokens,
             "extraction_prompt_path": extraction_prompt_path,
         }

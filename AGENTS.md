@@ -2,7 +2,7 @@
 
 This repo separates visual extraction from AFC interpretation.
 
-- The model layer is adapter-based. The default backend is `ollama` with local `qwen2.5vl:3b`, implemented by `OllamaVLMAdapter`. Other local backends are `qwen` and `florence2`.
+- The model layer is adapter-based. The only supported backend is `pixtral` with local `mistral-community/pixtral-12b`, implemented by `Pixtral12BAdapter`.
 - Every VLM backend may only extract visible graph facts from images.
 - AFC typology mapping, scoring, and narratives must come from Python features, YAML skill files, and templates.
 - Do not fine-tune visual models in this project.
@@ -24,9 +24,8 @@ This repo is organized into:
 ### Model
 
 - Model code lives in `src/afc_network_narrative/model/`.
-- Current working model backends are local Ollama `qwen2.5vl:3b`, local `Qwen2.5-VL-7B-Instruct`, and local `microsoft/Florence-2-base-ft`.
-- They are wrapped by `OllamaVLMAdapter`, `QwenVLAdapter`, and `Florence2Adapter`, which implement the generic `VLMAdapter` interface.
-- Future backend names are reserved for `approved_endpoint`, `llama`, `gemini`, `openai`, `claude`, and `granite`.
+- The current working model backend is local `mistral-community/pixtral-12b`.
+- It is wrapped by `Pixtral12BAdapter`, which implements the generic `VLMAdapter` interface.
 - It is used only for visible graph extraction.
 - It is not fine-tuned here.
 - Do not move AFC policy or typology knowledge into model assets.
@@ -105,7 +104,7 @@ Edit `src/afc_network_narrative/model/` when:
 - a new VLM backend is required
 - adapter selection logic changes
 - model-specific request, response parsing, or local loading changes
-- a backend dependency such as Ollama, Transformers, Qwen utilities, or a future endpoint client changes
+- a backend dependency such as Transformers or Pixtral-specific loading code changes
 
 ## Contract Enforcement
 

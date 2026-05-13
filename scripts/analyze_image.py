@@ -21,49 +21,18 @@ def main() -> None:
     parser.add_argument(
         "--backend",
         default=None,
-        choices=["ollama", "qwen", "florence2", "approved_endpoint", "llama", "gemini", "openai", "claude", "granite"],
-        help="VLM backend. Default comes from VLM_BACKEND or ollama.",
+        choices=["pixtral"],
+        help="VLM backend. Only pixtral is supported.",
     )
     parser.add_argument(
-        "--ollama-model",
+        "--pixtral-model-path",
         default=None,
-        help="Local Ollama model name. Defaults to OLLAMA_MODEL or qwen2.5vl:3b.",
-    )
-    parser.add_argument(
-        "--ollama-host",
-        default=None,
-        help="Local Ollama host. Defaults to OLLAMA_HOST or http://127.0.0.1:11434.",
-    )
-    parser.add_argument(
-        "--ollama-timeout-seconds",
-        type=int,
-        default=None,
-        help="Ollama request timeout in seconds.",
-    )
-    parser.add_argument(
-        "--qwen-model-path",
-        default=None,
-        help="Local Qwen2.5-VL model directory. Defaults to QWEN_MODEL_PATH.",
+        help="Local Pixtral 12B model directory. Defaults to PIXTRAL_MODEL_PATH.",
     )
     parser.add_argument(
         "--model-path",
         default=None,
         help="Alias for the selected local model path.",
-    )
-    parser.add_argument(
-        "--florence-model-path",
-        default=None,
-        help="Local Florence-2 model directory. Defaults to FLORENCE_MODEL_PATH.",
-    )
-    parser.add_argument(
-        "--endpoint-url",
-        default=None,
-        help="Optional endpoint URL for future endpoint-backed VLM adapters.",
-    )
-    parser.add_argument(
-        "--api-key-env-var",
-        default=None,
-        help="Optional API key environment variable name for future cloud VLM adapters.",
     )
     parser.add_argument(
         "--max-new-tokens",
@@ -88,13 +57,7 @@ def main() -> None:
     adapter = create_vlm_adapter(
         backend=args.backend,
         config={
-            "ollama_model": args.ollama_model,
-            "ollama_host": args.ollama_host,
-            "ollama_timeout_seconds": args.ollama_timeout_seconds,
-            "qwen_model_path": args.qwen_model_path or args.model_path,
-            "florence_model_path": args.florence_model_path or args.model_path,
-            "endpoint_url": args.endpoint_url,
-            "api_key_env_var": args.api_key_env_var,
+            "pixtral_model_path": args.pixtral_model_path or args.model_path,
             "max_new_tokens": args.max_new_tokens,
             "extraction_prompt_path": args.extraction_prompt_path,
         },

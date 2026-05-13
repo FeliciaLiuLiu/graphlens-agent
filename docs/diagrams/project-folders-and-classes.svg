@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1280" viewBox="0 0 1800 1280">
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f172a; }
+      .section { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 17px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 14px Arial, sans-serif; fill: #334155; }
+      .model { fill: #eff6ff; stroke: #1d4ed8; stroke-width: 2; rx: 14; ry: 14; }
+      .skill { fill: #ecfeff; stroke: #0f766e; stroke-width: 2; rx: 14; ry: 14; }
+      .harness { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; rx: 14; ry: 14; }
+      .sub { fill: #f8fafc; stroke: #475569; stroke-width: 1.5; rx: 10; ry: 10; }
+    </style>
+  </defs>
+
+  <text x="60" y="60" class="title">Project Folders and Key Classes</text>
+
+  <rect x="60" y="110" width="520" height="470" class="model" />
+  <text x="320" y="150" text-anchor="middle" class="section">src/afc_network_narrative/model/</text>
+
+  <rect x="90" y="190" width="460" height="70" class="sub" />
+  <text x="110" y="225" class="label">base.py</text>
+  <text x="110" y="248" class="small">VLMAdapter, VLMAdapterError</text>
+
+  <rect x="90" y="280" width="460" height="70" class="sub" />
+  <text x="110" y="315" class="label">config.py</text>
+  <text x="110" y="338" class="small">VLMConfig</text>
+
+  <rect x="90" y="370" width="460" height="70" class="sub" />
+  <text x="110" y="405" class="label">pixtral.py</text>
+  <text x="110" y="428" class="small">Pixtral12BAdapter</text>
+
+  <rect x="90" y="460" width="460" height="70" class="sub" />
+  <text x="110" y="495" class="label">placeholders.py</text>
+  <text x="110" y="518" class="small">ApprovedEndpointVLMAdapter, LlamaVisionAdapter, GeminiVLMAdapter, OpenAIVLMAdapter, ClaudeVLMAdapter, GraniteVisionAdapter</text>
+
+  <rect x="90" y="550" width="460" height="70" class="sub" />
+  <text x="110" y="585" class="label">factory.py / prompt_loader.py / json_utils.py</text>
+  <text x="110" y="608" class="small">Adapter factory, prompt loading, raw JSON extraction helpers</text>
+
+  <rect x="640" y="110" width="520" height="470" class="skill" />
+  <text x="900" y="150" text-anchor="middle" class="section">skills/</text>
+
+  <rect x="670" y="190" width="460" height="70" class="sub" />
+  <text x="690" y="225" class="label">graph_image_extraction/</text>
+  <text x="690" y="248" class="small">Prompt, graph_schema.json, extraction contracts</text>
+
+  <rect x="670" y="280" width="460" height="70" class="sub" />
+  <text x="690" y="315" class="label">afc_typology_mapping/</text>
+  <text x="690" y="338" class="small">typology_rules.yaml, typology_glossary.yaml, source_registry.yaml</text>
+
+  <rect x="670" y="370" width="460" height="70" class="sub" />
+  <text x="690" y="405" class="label">alert_investigation_boost/</text>
+  <text x="690" y="428" class="small">scoring_policy.yaml, sar_red_flags.yaml, investigation_playbooks.yaml</text>
+
+  <rect x="670" y="460" width="460" height="70" class="sub" />
+  <text x="690" y="495" class="label">narrative_generation/</text>
+  <text x="690" y="518" class="small">narrative_policy.yaml, narrative_template.md, prohibited_claims.yaml</text>
+
+  <rect x="1220" y="110" width="520" height="1080" class="harness" />
+  <text x="1480" y="150" text-anchor="middle" class="section">src/afc_network_narrative/harness/</text>
+
+  <rect x="1250" y="190" width="460" height="90" class="sub" />
+  <text x="1270" y="225" class="label">app/</text>
+  <text x="1270" y="248" class="small">main.py: FastAPI routes</text>
+  <text x="1270" y="270" class="small">pipeline.py: analyze_graph(), analyze_image_file()</text>
+
+  <rect x="1250" y="300" width="460" height="100" class="sub" />
+  <text x="1270" y="335" class="label">schemas/</text>
+  <text x="1270" y="358" class="small">graph_extraction_schema.py: GraphValidationError, Node, Edge, GraphExtraction</text>
+  <text x="1270" y="380" class="small">afc_output_schema.py: AFCNarrativeOutput</text>
+
+  <rect x="1250" y="420" width="460" height="110" class="sub" />
+  <text x="1270" y="455" class="label">features/</text>
+  <text x="1270" y="478" class="small">amount_parser.py: amount parsing helpers</text>
+  <text x="1270" y="500" class="small">graph_features.py: NodeFeature, GraphFeatures</text>
+  <text x="1270" y="522" class="small">motif_detector.py: MotifResult</text>
+
+  <rect x="1250" y="550" width="460" height="100" class="sub" />
+  <text x="1270" y="585" class="label">rules/</text>
+  <text x="1270" y="608" class="small">rule_engine.py: TypologyMatch, RuleEngine</text>
+  <text x="1270" y="630" class="small">scoring.py: alert score + SAR red flag review signal logic</text>
+
+  <rect x="1250" y="670" width="460" height="110" class="sub" />
+  <text x="1270" y="705" class="label">narrative/</text>
+  <text x="1270" y="728" class="small">grounding.py: evidence build + prohibited-claim check</text>
+  <text x="1270" y="750" class="small">narrative_builder.py: final English narrative assembly</text>
+
+  <rect x="1250" y="800" width="460" height="90" class="sub" />
+  <text x="1270" y="835" class="label">reporting/</text>
+  <text x="1270" y="858" class="small">pdf_report.py: ReportLine + PDF rendering</text>
+
+  <rect x="1250" y="910" width="460" height="110" class="sub" />
+  <text x="1270" y="945" class="label">evaluation/</text>
+  <text x="1270" y="968" class="small">metrics.py: precision/recall/grounding metrics</text>
+  <text x="1270" y="990" class="small">golden_set_runner.py: offline evaluation runner</text>
+
+  <rect x="1250" y="1040" width="460" height="120" class="sub" />
+  <text x="1270" y="1075" class="label">skill_loader.py</text>
+  <text x="1270" y="1098" class="small">Loads all YAML/text skills and validates their contracts</text>
+  <text x="1270" y="1120" class="small">Boundary point between SME-owned skills and harness execution</text>
+
+  <rect x="60" y="660" width="1100" height="270" class="sub" />
+  <text x="610" y="705" text-anchor="middle" class="section">Repository Entry Points</text>
+  <text x="95" y="755" class="label">scripts/</text>
+  <text x="95" y="780" class="small">download_pixtral.py, smoke_test_pixtral_extraction.py, analyze_graph_json.py, analyze_image.py</text>
+  <text x="95" y="825" class="label">tests/</text>
+  <text x="95" y="850" class="small">Unit tests for adapters, rules, narratives, contracts, and graph logic</text>
+  <text x="95" y="895" class="label">output/</text>
+  <text x="95" y="920" class="small">Generated JSON/PDF analyst-facing reports</text>
+</svg>
