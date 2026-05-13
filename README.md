@@ -4,7 +4,7 @@ Local Python 3.11 system for AFC network graph narrative support.
 
 ## Architecture
 
-This project is intentionally split into three layers:
+The system is intentionally organized into three layers:
 
 1. `Model`
 2. `Skills`
@@ -12,13 +12,17 @@ This project is intentionally split into three layers:
 
 ### Model
 
-The model layer lives in `src/afc_network_narrative/model/`. It is adapter-based. The rest of the system talks only to the generic `VLMAdapter` interface:
+Path: `src/afc_network_narrative/model/`
+
+The model layer is responsible only for visual extraction. It takes a network graph image as input and returns a normalized `GraphExtraction` object containing visible graph facts such as nodes, directed edges, labels, amounts, colors, and extraction confidence.
+
+This layer is adapter-based. The rest of the system talks only to the generic `VLMAdapter` interface:
 
 ```text
 image input -> VLMAdapter.extract_graph(...) -> GraphExtraction
 ```
 
-Current working backend:
+Current working backends:
 
 - `ollama`: local Ollama `qwen2.5vl:3b` through `OllamaVLMAdapter`; this is the default backend
 - `qwen`: local `Qwen2.5-VL-7B-Instruct` through `QwenVLAdapter`
@@ -35,9 +39,15 @@ Future backend names reserved by the adapter factory:
 
 All model adapters must return the same validated `GraphExtraction` contract. Model-specific imports, prompts, request formats, response parsing, and model-loading logic must stay inside the adapter implementation.
 
+The model layer must not perform AFC interpretation, AML judgment, typology classification, alert scoring, or narrative generation.
+
 ### Skills
 
-The `skills/` directory contains SME-owned AFC domain knowledge and policy. SMEs should be able to change these files without editing Python code when the change is policy, threshold, wording, typology, scoring, playbook, or template related.
+Path: `skills/`
+
+The skills layer contains SME-owned AFC domain knowledge and policy. It stores typology rules, motif thresholds, scoring policy, investigation playbooks, narrative templates, prohibited claims, glossary definitions, and contract files.
+
+This layer is intentionally non-executable. It exists so that AFC subject matter experts can update domain logic, policy wording, thresholds, and narrative behavior without changing Python code.
 
 Typical skill content includes:
 
@@ -57,7 +67,9 @@ Working rule:
 
 ### Harness
 
-The harness lives in `src/afc_network_narrative/harness/`. It is the engineering-owned execution layer.
+Path: `src/afc_network_narrative/harness/`
+
+The harness layer is the engineering-owned execution and orchestration layer. It connects model output to AFC skills and produces the final constrained output.
 
 The harness is responsible for:
 
@@ -76,6 +88,33 @@ The harness is responsible for:
 Working rule:
 
 - If an engineer must change how the system executes, validates, computes, or orchestrates, the change belongs in the harness.
+
+### Harness Subfolders
+
+- `harness/app/`: Handles input, selects the adapter, and starts the full pipeline.
+- `harness/schemas/`: Defines and validates `GraphExtraction` and the final output schema.
+- `harness/features/`: Turns the graph into computed features and detected motifs.
+- `harness/rules/`: Reads `skills/afc_typology_mapping/` and `skills/alert_investigation_boost/`, then performs typology matching and scoring.
+- `harness/narrative/`: Reads `skills/narrative_generation/` and the investigation playbooks, generates the narrative, and checks prohibited claims.
+- `harness/reporting/`: Writes the results into a PDF report.
+- `harness/evaluation/`: Runs golden-set evaluation and is not part of the main online pipeline.
+
+### Stable System Contract
+
+```text
+image input
+-> VLMAdapter.extract_graph(...)
+-> GraphExtraction
+-> harness validation and feature computation
+-> skills-driven AFC interpretation
+-> AFCNarrativeOutput
+```
+
+This contract is the key architectural boundary in the project. The model layer produces structured graph facts. The skills layer defines AFC knowledge. The harness layer applies that knowledge to the extracted graph in a controlled and testable way.
+
+### Compliance Boundary
+
+The system is designed as an investigation-support tool, not a final decision engine. It may produce cautious typology hypotheses and alert-investigation priority, but it must not make criminal conclusions or SAR filing decisions.
 
 ## Repository Layout
 
