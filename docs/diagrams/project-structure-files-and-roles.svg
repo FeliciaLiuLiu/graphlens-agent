@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="3000" viewBox="0 0 2600 3000" role="img" aria-labelledby="title desc">
+  <title id="title">afc-network-narrative files and roles</title>
+  <desc id="desc">Detailed project structure for the VLM Adapter boundary, skills files, and harness Python files with their roles.</desc>
+  <style>
+    .bg { fill: #f7f8fb; }
+    .panel { fill: #ffffff; stroke: #d7dbe3; stroke-width: 2; }
+    .model { fill: #eef4ff; stroke: #8ca9df; stroke-width: 2; }
+    .skills { fill: #f2fbf4; stroke: #84ba92; stroke-width: 2; }
+    .harness { fill: #fff8ee; stroke: #d9a768; stroke-width: 2; }
+    .skills-box { fill: #f9fdfa; stroke: #a8cfb2; stroke-width: 1.5; }
+    .harness-box { fill: #fffaf4; stroke: #e3c193; stroke-width: 1.5; }
+    .title { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .subtitle { font: 500 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4b5563; }
+    .section { font: 700 24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #111827; }
+    .path { font: 600 16px Menlo, Consolas, monospace; fill: #334155; }
+    .label { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; }
+    .file { font: 700 14px Menlo, Consolas, monospace; fill: #0f172a; }
+    .role { font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #334155; }
+    .note { font: 600 14px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #475569; }
+    .rule { stroke: #cbd5e1; stroke-width: 2; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="2600" height="3000"/>
+  <text x="70" y="70" class="title">afc-network-narrative: Files and Roles</text>
+  <text x="70" y="104" class="subtitle">VLM is intentionally collapsed into a single adapter boundary. Skills and Harness are expanded to file-level roles.</text>
+
+  <rect class="panel" x="50" y="140" width="2500" height="2800" rx="26"/>
+  <text x="80" y="188" class="path">afc-network-narrative/</text>
+  <line class="rule" x1="80" y1="206" x2="2520" y2="206"/>
+
+  <!-- model -->
+  <rect class="model" x="80" y="245" width="360" height="240" rx="18"/>
+  <text x="110" y="286" class="section">Model</text>
+  <text x="110" y="318" class="path">src/afc_network_narrative/model/</text>
+  <rect class="panel" x="110" y="348" width="300" height="95" rx="14"/>
+  <text x="140" y="386" class="label">VLM Adapter</text>
+  <text x="140" y="412" class="role">Role: load a local vision-language model,</text>
+  <text x="140" y="432" class="role">extract visible graph facts, and return GraphExtraction.</text>
+  <text x="110" y="468" class="note">Model internals are intentionally hidden in this diagram.</text>
+
+  <!-- skills root -->
+  <rect class="skills" x="470" y="245" width="940" height="2650" rx="18"/>
+  <text x="500" y="286" class="section">Skills</text>
+  <text x="500" y="318" class="path">skills/</text>
+  <text x="500" y="344" class="note">SME-editable domain knowledge, prompt text, contracts, policy, and narrative guidance.</text>
+
+  <!-- graph image extraction -->
+  <rect class="skills-box" x="500" y="380" width="880" height="420" rx="16"/>
+  <text x="528" y="415" class="label">graph_image_extraction/</text>
+  <text x="528" y="446" class="file">SKILL.md</text>
+  <text x="770" y="446" class="role">Skill-level instructions for visible-fact extraction and boundary rules.</text>
+  <text x="528" y="472" class="file">extraction_prompt.md</text>
+  <text x="770" y="472" class="role">Prompt text used by the VLM Adapter for graph extraction.</text>
+  <text x="528" y="498" class="file">graph_image_extraction_contract.md</text>
+  <text x="770" y="498" class="role">Human-readable contract for how this skill can be edited safely.</text>
+  <text x="528" y="524" class="file">graph_schema.json</text>
+  <text x="770" y="524" class="role">Expected shape of extracted graph JSON.</text>
+  <text x="528" y="550" class="file">graph_schema_contract.schema.json</text>
+  <text x="770" y="550" class="role">Schema that validates the skill-side graph schema file itself.</text>
+  <text x="528" y="590" class="note">Purpose: keep the visual extraction layer limited to visible graph facts only.</text>
+
+  <!-- typology mapping -->
+  <rect class="skills-box" x="500" y="830" width="880" height="680" rx="16"/>
+  <text x="528" y="865" class="label">afc_typology_mapping/</text>
+  <text x="528" y="896" class="file">SKILL.md</text>
+  <text x="770" y="896" class="role">Top-level editing guidance for AFC typology knowledge.</text>
+  <text x="528" y="922" class="file">typology_rules.yaml</text>
+  <text x="770" y="922" class="role">Core typology rules: conditions, evidence fields, caution text, boosts.</text>
+  <text x="528" y="948" class="file">typology_rules.schema.json</text>
+  <text x="770" y="948" class="role">Structural validator for typology_rules.yaml.</text>
+  <text x="528" y="974" class="file">rule_engine_contract.md</text>
+  <text x="770" y="974" class="role">Explains which rule conditions and evidence fields the harness supports.</text>
+  <text x="528" y="1000" class="file">typology_glossary.yaml</text>
+  <text x="770" y="1000" class="role">Plain-language AFC meaning for each typology id.</text>
+  <text x="528" y="1026" class="file">typology_glossary.schema.json</text>
+  <text x="770" y="1026" class="role">Structural validator for glossary entries.</text>
+  <text x="528" y="1052" class="file">typology_glossary_contract.md</text>
+  <text x="770" y="1052" class="role">Editing contract for glossary content and required keys.</text>
+  <text x="528" y="1078" class="file">source_registry.yaml</text>
+  <text x="770" y="1078" class="role">Registry of public source ids used to justify policy or typology text.</text>
+  <text x="528" y="1104" class="file">source_registry.schema.json</text>
+  <text x="770" y="1104" class="role">Structural validator for source registry entries.</text>
+  <text x="528" y="1130" class="file">source_registry_contract.md</text>
+  <text x="770" y="1130" class="role">Editing contract for source metadata and allowed identifiers.</text>
+  <text x="528" y="1170" class="note">Purpose: connect graph patterns to AFC typology hypotheses and source-backed explanations.</text>
+
+  <!-- boost -->
+  <rect class="skills-box" x="500" y="1540" width="880" height="620" rx="16"/>
+  <text x="528" y="1575" class="label">alert_investigation_boost/</text>
+  <text x="528" y="1606" class="file">SKILL.md</text>
+  <text x="770" y="1606" class="role">Editing guidance for alert scoring, red flags, and next-step playbooks.</text>
+  <text x="528" y="1632" class="file">scoring_policy.yaml</text>
+  <text x="770" y="1632" class="role">Priority points, deductions, bands, and alert-review policy.</text>
+  <text x="528" y="1658" class="file">scoring_policy.schema.json</text>
+  <text x="770" y="1658" class="role">Structural validator for the scoring policy file.</text>
+  <text x="528" y="1684" class="file">scoring_policy_contract.md</text>
+  <text x="770" y="1684" class="role">Human-readable contract for how scoring policy can be changed.</text>
+  <text x="528" y="1710" class="file">sar_red_flags.yaml</text>
+  <text x="770" y="1710" class="role">Graph-supported SAR/STR red-flag review signals and related typologies.</text>
+  <text x="528" y="1736" class="file">sar_red_flags.schema.json</text>
+  <text x="770" y="1736" class="role">Structural validator for red-flag definitions.</text>
+  <text x="528" y="1762" class="file">sar_red_flags_contract.md</text>
+  <text x="770" y="1762" class="role">Editing contract for SAR red-flag policy.</text>
+  <text x="528" y="1788" class="file">investigation_playbooks.yaml</text>
+  <text x="770" y="1788" class="role">Recommended analyst checks for each typology or scenario.</text>
+  <text x="528" y="1814" class="file">investigation_playbooks.schema.json</text>
+  <text x="770" y="1814" class="role">Structural validator for playbooks.</text>
+  <text x="528" y="1840" class="file">investigation_playbooks_contract.md</text>
+  <text x="770" y="1840" class="role">Editing contract for investigation-step coverage.</text>
+  <text x="528" y="1880" class="note">Purpose: tell the system how strongly to prioritize review and what the analyst should check next.</text>
+
+  <!-- narrative -->
+  <rect class="skills-box" x="500" y="2190" width="880" height="655" rx="16"/>
+  <text x="528" y="2225" class="label">narrative_generation/</text>
+  <text x="528" y="2256" class="file">SKILL.md</text>
+  <text x="770" y="2256" class="role">Editing guidance for narrative policy, template wording, and safety constraints.</text>
+  <text x="528" y="2282" class="file">narrative_policy.yaml</text>
+  <text x="770" y="2282" class="role">Policy knobs for section wording, headings, and narrative behavior.</text>
+  <text x="528" y="2308" class="file">narrative_policy.schema.json</text>
+  <text x="770" y="2308" class="role">Structural validator for narrative policy.</text>
+  <text x="528" y="2334" class="file">narrative_policy_contract.md</text>
+  <text x="770" y="2334" class="role">Explains allowed placeholders and policy expectations.</text>
+  <text x="528" y="2360" class="file">narrative_template.md</text>
+  <text x="770" y="2360" class="role">Main human-readable template used to compose the final narrative.</text>
+  <text x="528" y="2386" class="file">prohibited_claims.yaml</text>
+  <text x="770" y="2386" class="role">Claims the narrative must never make.</text>
+  <text x="528" y="2412" class="file">prohibited_claims.schema.json</text>
+  <text x="770" y="2412" class="role">Structural validator for prohibited-claims policy.</text>
+  <text x="528" y="2438" class="file">prohibited_claims_contract.md</text>
+  <text x="770" y="2438" class="role">Editing contract for safety language and forbidden conclusions.</text>
+  <text x="528" y="2478" class="note">Purpose: shape the final explanation while preserving cautious AFC language and groundedness.</text>
+
+  <!-- harness root -->
+  <rect class="harness" x="1445" y="245" width="1075" height="2650" rx="18"/>
+  <text x="1475" y="286" class="section">Harness</text>
+  <text x="1475" y="318" class="path">src/afc_network_narrative/harness/</text>
+  <text x="1475" y="344" class="note">Engineering execution layer: validates, computes, matches, scores, renders, and evaluates.</text>
+
+  <!-- harness package -->
+  <rect class="harness-box" x="1475" y="380" width="1015" height="120" rx="16"/>
+  <text x="1500" y="416" class="label">package root</text>
+  <text x="1500" y="446" class="file">__init__.py</text>
+  <text x="1745" y="446" class="role">Marks the harness package boundary.</text>
+
+  <!-- app -->
+  <rect class="harness-box" x="1475" y="525" width="1015" height="315" rx="16"/>
+  <text x="1500" y="561" class="label">app/</text>
+  <text x="1500" y="588" class="file">__init__.py</text>
+  <text x="1745" y="588" class="role">Marks the app subpackage.</text>
+  <text x="1500" y="614" class="file">main.py</text>
+  <text x="1745" y="614" class="role">FastAPI entrypoints for image/graph JSON analysis and PDF endpoints.</text>
+  <text x="1500" y="640" class="file">pipeline.py</text>
+  <text x="1745" y="640" class="role">Runs validate -&gt; features -&gt; rules -&gt; scoring -&gt; narrative.</text>
+  <text x="1500" y="666" class="file">skill_loader.py</text>
+  <text x="1745" y="666" class="role">Loads skill files, validates JSON/YAML contracts, and enforces semantics.</text>
+  <text x="1500" y="706" class="note">Role: bridge structured graph data to skills and start the full analysis pipeline.</text>
+
+  <!-- schemas -->
+  <rect class="harness-box" x="1475" y="865" width="1015" height="235" rx="16"/>
+  <text x="1500" y="901" class="label">schemas/</text>
+  <text x="1500" y="928" class="file">__init__.py</text>
+  <text x="1745" y="928" class="role">Marks the schemas subpackage.</text>
+  <text x="1500" y="954" class="file">graph_extraction_schema.py</text>
+  <text x="1745" y="954" class="role">Defines GraphValidationError, Node, Edge, GraphExtraction, and validators.</text>
+  <text x="1500" y="980" class="file">afc_output_schema.py</text>
+  <text x="1745" y="980" class="role">Defines AFCNarrativeOutput, the final structured output contract.</text>
+  <text x="1500" y="1020" class="note">Role: keep both input and output contracts explicit and testable.</text>
+
+  <!-- features -->
+  <rect class="harness-box" x="1475" y="1125" width="1015" height="340" rx="16"/>
+  <text x="1500" y="1161" class="label">features/</text>
+  <text x="1500" y="1188" class="file">__init__.py</text>
+  <text x="1745" y="1188" class="role">Marks the features subpackage.</text>
+  <text x="1500" y="1214" class="file">amount_parser.py</text>
+  <text x="1745" y="1214" class="role">Parses amount text into normalized numeric values and currencies.</text>
+  <text x="1500" y="1240" class="file">graph_features.py</text>
+  <text x="1745" y="1240" class="role">Defines NodeFeature and GraphFeatures; computes degrees, weighted amounts, repeats, missing context.</text>
+  <text x="1500" y="1266" class="file">motif_detector.py</text>
+  <text x="1745" y="1266" class="role">Defines MotifResult; detects fan-in, fan-out, relays, cycles, and many-to-many motifs.</text>
+  <text x="1500" y="1306" class="note">Role: turn raw graph structure into deterministic analytical signals.</text>
+
+  <!-- rules -->
+  <rect class="harness-box" x="1475" y="1490" width="1015" height="290" rx="16"/>
+  <text x="1500" y="1526" class="label">rules/</text>
+  <text x="1500" y="1553" class="file">__init__.py</text>
+  <text x="1745" y="1553" class="role">Marks the rules subpackage.</text>
+  <text x="1500" y="1579" class="file">rule_engine.py</text>
+  <text x="1745" y="1579" class="role">Defines TypologyMatch and RuleEngine; maps features/motifs to AFC typology hypotheses.</text>
+  <text x="1500" y="1605" class="file">scoring.py</text>
+  <text x="1745" y="1605" class="role">Scores alert-review priority, builds SAR red-flag review signals, and scenario coverage.</text>
+  <text x="1500" y="1645" class="note">Role: connect computed graph state to AFC knowledge from skill files.</text>
+
+  <!-- narrative -->
+  <rect class="harness-box" x="1475" y="1805" width="1015" height="315" rx="16"/>
+  <text x="1500" y="1841" class="label">narrative/</text>
+  <text x="1500" y="1868" class="file">__init__.py</text>
+  <text x="1745" y="1868" class="role">Marks the narrative subpackage.</text>
+  <text x="1500" y="1894" class="file">grounding.py</text>
+  <text x="1745" y="1894" class="role">Builds evidence objects and checks for prohibited claims.</text>
+  <text x="1500" y="1920" class="file">narrative_builder.py</text>
+  <text x="1745" y="1920" class="role">Builds graph summary, limitations, recommended steps, and the final narrative text.</text>
+  <text x="1500" y="1960" class="note">Role: convert rule/scoring output into a grounded human-readable explanation.</text>
+
+  <!-- reporting -->
+  <rect class="harness-box" x="1475" y="2145" width="1015" height="235" rx="16"/>
+  <text x="1500" y="2181" class="label">reporting/</text>
+  <text x="1500" y="2208" class="file">__init__.py</text>
+  <text x="1745" y="2208" class="role">Marks the reporting subpackage.</text>
+  <text x="1500" y="2234" class="file">pdf_report.py</text>
+  <text x="1745" y="2234" class="role">Defines ReportLine and renders the structured output into a PDF document.</text>
+  <text x="1500" y="2274" class="note">Role: package JSON analysis into a readable report artifact.</text>
+
+  <!-- evaluation -->
+  <rect class="harness-box" x="1475" y="2405" width="1015" height="280" rx="16"/>
+  <text x="1500" y="2441" class="label">evaluation/</text>
+  <text x="1500" y="2468" class="file">__init__.py</text>
+  <text x="1745" y="2468" class="role">Marks the evaluation subpackage.</text>
+  <text x="1500" y="2494" class="file">golden_set_runner.py</text>
+  <text x="1745" y="2494" class="role">Runs the golden-set evaluation workflow over sample inputs and outputs.</text>
+  <text x="1500" y="2520" class="file">metrics.py</text>
+  <text x="1745" y="2520" class="role">Defines evaluation metrics such as precision, recall, grounding, and unsupported-claim rate.</text>
+  <text x="1500" y="2560" class="note">Role: evaluate whether the harness and skills behave as intended offline.</text>
+
+  <rect class="panel" x="80" y="2870" width="2410" height="42" rx="12"/>
+  <text x="110" y="2898" class="note">Runtime path: image -&gt; VLM Adapter -&gt; GraphExtraction -&gt; harness validation -&gt; features -&gt; rules -&gt; scoring -&gt; narrative -&gt; JSON/PDF</text>
+</svg>
